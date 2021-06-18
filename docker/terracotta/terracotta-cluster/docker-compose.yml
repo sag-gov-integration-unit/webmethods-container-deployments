@@ -71,8 +71,8 @@ services:
   tmc:
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     ports:
-      - 9889
-      - 9443
+      - 9889:9889
+      - 9443:9443
     hostname: tmc
     volumes:
       - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro

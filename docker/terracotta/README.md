@@ -37,7 +37,7 @@ docker-compose -f terracotta-standalone-persistence/docker-compose.yml up -d
 Cleanup:
 
 ```
-docker-compose -f terracotta-standalone-persistence/docker-compose.yml down
+docker-compose -f terracotta-standalone-persistence/docker-compose.yml down --volumes
 ```
 
 ## Terracotta cluster
@@ -65,5 +65,5 @@ docker-compose -f terracotta-cluster-persistence/docker-compose.yml up -d
 Cleanup:
 
 ```
-docker-compose -f terracotta-cluster-persistence/docker-compose.yml down
+docker-compose -f terracotta-cluster-persistence/docker-compose.yml down --volumes
 ```

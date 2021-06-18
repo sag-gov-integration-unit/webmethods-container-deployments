@@ -24,9 +24,7 @@ services:
   terracotta:
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     ports:
-      - "9510"
-      - "9530"
-      - "9540"
+      - 9510
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
     volumes:
@@ -38,8 +36,8 @@ services:
   tmc:
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     ports:
-      - "9889"
-      - "9443"
+      - 9889:9889
+      - 9443:9443
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
     volumes:
