@@ -1,0 +1,228 @@
+version: "3.2"
+
+networks:
+  stack:
+    driver: bridge
+
+services:
+  
+  apigateway_configurator:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY:-dev-10.7-latest}
+    command: ["apply_configs.yaml"]
+    # command: ["-vvv","apply_configs.yaml"]
+    environment: 
+      env_apigateway_host: apigateway
+      env_apigateway_port: "5555"
+      env_apigateway_rest_user: Administrator
+      env_apigateway_rest_password: "SomeStrongPassword!"
+      env_apigateway_rest_password_old: "manage"
+      env_apigateway_lb_http_url: "http://external_access"
+      env_apigateway_lb_https_url: "https://external_access"
+      env_apigateway_lb_websocket_url: ""
+      env_apigateway_lb_webapp_url: "http://external_access"
+    networks:
+      - stack
+
+  apigateway1:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway:${TAG_APIGATEWAY:-dev-10.7-latest}
+    ports:
+      - 5555:5555
+      - 9072:9072
+    environment: 
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 2g
+      JAVA_OPTS: ""
+      APIGW_ELASTICSEARCH_TENANTID: apigateway
+      APIGW_ELASTICSEARCH_HOSTS: es01:9200,es02:9200,es03:9200
+      APIGW_ELASTICSEARCH_AUTOSTART: "false"
+      APIGW_ELASTICSEARCH_HTTP_USERNAME: elastic
+      APIGW_ELASTICSEARCH_HTTP_PASSWORD: SomeStrongPassword!
+      APIGW_ELASTICSEARCH_HTTPS_ENABLED: "false"
+      APIGW_KIBANA_DASHBOARDINSTANCE: http://kibana:5601
+      APIGW_KIBANA_AUTOSTART: "false"
+      CLUSTER_AWARE: "true"
+      CLUSTER_NAME: APIGatewayTSAcluster
+      CLUSTER_TSAURLS: terracotta:9510
+      CLUSTER_SESSTIMEOUT: 20
+      CLUSTER_ACTIONONSTARTUPERROR: shutdown
+      CLUSTER_CONNECTTIMEOUT: 30000
+      SCRIPTS_LOGGER_LEVEL: 0
+    volumes:
+      - ./configs:/configs:rw
+      - ${PWD}/licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ${PWD}/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
+    hostname: apigateway1
+    networks:
+      - stack
+    depends_on: 
+      - es01
+      - es02
+      - es03
+      - terracotta
+      - kibana
+
+  apigateway2:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway:${TAG_APIGATEWAY:-dev-10.7-latest}
+    ports:
+      - 6555:5555
+      - 10072:9072
+    environment: 
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 2g
+      JAVA_OPTS: ""
+      APIGW_ELASTICSEARCH_TENANTID: apigateway
+      APIGW_ELASTICSEARCH_HOSTS: es01:9200,es02:9200,es03:9200
+      APIGW_ELASTICSEARCH_AUTOSTART: "false"
+      APIGW_ELASTICSEARCH_HTTP_USERNAME: elastic
+      APIGW_ELASTICSEARCH_HTTP_PASSWORD: SomeStrongPassword!
+      APIGW_ELASTICSEARCH_HTTPS_ENABLED: "false"
+      APIGW_KIBANA_DASHBOARDINSTANCE: http://kibana:5601
+      APIGW_KIBANA_AUTOSTART: "false"
+      CLUSTER_AWARE: "true"
+      CLUSTER_NAME: APIGatewayTSAcluster
+      CLUSTER_TSAURLS: terracotta:9510
+      CLUSTER_SESSTIMEOUT: 20
+      CLUSTER_ACTIONONSTARTUPERROR: shutdown
+      CLUSTER_CONNECTTIMEOUT: 30000
+      SCRIPTS_LOGGER_LEVEL: 0
+    volumes:
+      - ./configs:/configs:rw
+      - ${PWD}/licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ${PWD}/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
+    hostname: apigateway2
+    networks:
+      - stack
+    depends_on: 
+      - es01
+      - es02
+      - es03
+      - terracotta
+      - kibana
+
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION:-7.7.1}
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=SomeStrongPassword!
+      - http.port=9200
+      - transport.port=9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200
+      - 9300
+    networks:
+      - stack
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION:-7.7.1}
+    container_name: es02
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=SomeStrongPassword!
+      - http.port=9200
+      - transport.port=9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200
+      - 9300
+    networks:
+      - stack
+
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION:-7.7.1}
+    container_name: es03
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=SomeStrongPassword!
+      - http.port=9200
+      - transport.port=9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200
+      - 9300
+    networks:
+      - stack
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION:-7.7.1}
+    # image: docker.elastic.co/kibana/kibana-oss:${TAG_ELASTIC_VERSION:-7.7.1}
+    hostname: kibana
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_HOSTS: '["http://es01:9200","http://es02:9200","http://es03:9200"]'
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: SomeStrongPassword!
+      XPACK_SECURITY_ENABLED: "true"
+      SERVER_HOST: 0.0.0.0
+      SERVER_BASEPATH: /apigatewayui/dashboardproxy
+      KIBANA_INDEX: gateway_apigateway_dashboard
+      NODE_OPTIONS: --max_old_space_size=2048
+    ports:
+      - 5601:5601
+    links:
+      - es01
+      - es02
+      - es03
+    networks:
+      - stack
+    depends_on: 
+      - es01
+      - es02
+      - es03
+    
+  terracotta:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    ports:
+      - 9510
+    hostname: terracotta
+    environment:
+      - TSA_PORT=9510
+      - JMX_PORT=9520
+      - GROUP_PORT=9530
+      - MGT_PORT=9540
+      - HEAP_SIZE_MB_MIN=2g
+      - HEAP_SIZE_MB_MAX=2g
+      - DATA_STORAGE_SIZE=20g
+      - DATA_OFFHEAP_SIZE=1g
+      - RESTARTABLE_ENABLED=false
+    volumes:
+      - ${PWD}/terracotta-license.key:/opt/softwareag/Terracotta/terracotta-license.key:ro
+    networks:
+      - stack
+
+  tmc:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    ports:
+      - 9889:9889
+      - 9443:9443
+    hostname: tmc
+    networks:
+      - stack

@@ -1,0 +1,26 @@
+version: "3.2"
+
+networks:
+  stack:
+    driver: bridge
+
+services:
+
+  apiportal:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apiportal:${TAG_APIPORTAL:-dev-10.7-latest}
+    ports:
+      - 18101:18101
+    hostname: apiportal
+    environment: 
+      - DATA_ROOT_DIR=/data
+      - TENANTMGT_SYSTEMUSER_PASSWORD=newpassword
+      - TENANTMGT_SUPERUSER_PASSWORD=newpassword
+      # - SCRIPTS_LOGGER_LEVEL=0
+    volumes:
+      - ${PWD}/licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
+      - apiportal-data:/data:rw
+    networks:
+      - stack
+
+volumes:
+  apiportal-data:

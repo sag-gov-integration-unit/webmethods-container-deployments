@@ -1,0 +1,49 @@
+version: "3.2"
+
+networks:
+  stack:
+    driver: bridge
+
+services:
+
+  client:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta/sample-ehcache-client:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    build:
+      context: ../sample-ehcache-client
+      dockerfile: Dockerfile
+      args:
+        BUILDER_IMAGE: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-builder:${BUILDER_TAG}
+    environment:
+      - LICENSE_FILE=/var/run/terracotta-license.key
+      - TERRACOTTA_SERVER_URL=terracotta:9510
+    volumes:
+      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+    networks:
+      - stack
+
+  terracotta:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    ports:
+      - "9510"
+      - "9530"
+      - "9540"
+    environment: 
+      - LICENSE_FILE=/var/run/terracotta-license.key
+    volumes:
+      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+    hostname: terracotta
+    networks:
+      - stack
+
+  tmc:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    ports:
+      - "9889"
+      - "9443"
+    environment: 
+      - LICENSE_FILE=/var/run/terracotta-license.key
+    volumes:
+      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+    hostname: tmc
+    networks:
+      - stack

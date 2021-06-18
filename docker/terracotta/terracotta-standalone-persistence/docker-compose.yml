@@ -1,0 +1,66 @@
+version: "3.2"
+
+networks:
+  stack:
+    driver: bridge
+
+volumes:
+  data1:
+  backup1:
+  index1:
+
+services:
+
+  client:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta/sample-ehcache-client:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    build:
+      context: ../sample-ehcache-client
+      dockerfile: Dockerfile
+      args:
+        BUILDER_IMAGE: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-builder:${BUILDER_TAG}
+    environment:
+      - LICENSE_FILE=/var/run/terracotta-license.key
+      - TERRACOTTA_SERVER_URL=terracotta:9510
+    volumes:
+      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+    networks:
+      - stack
+
+  terracotta:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    ports:
+      - "9510"
+      - "9530"
+      - "9540"
+    hostname: terracotta
+    environment: 
+      - LICENSE_FILE=/var/run/terracotta-license.key
+      - TSA_PORT="9510"
+      - JMX_PORT="9520"
+      - GROUP_PORT="9530"
+      - MGT_PORT="9540"
+      - HEAP_SIZE_MB_MIN="512m"
+      - HEAP_SIZE_MB_MAX="1024m"
+      - DATA_STORAGE_SIZE="20g"
+      - DATA_OFFHEAP_SIZE="1g"
+      - RESTARTABLE_ENABLED="false"
+    volumes:
+      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - data1:/opt/softwareag/Terracotta/data/diskstore:rw
+      - backup1:/opt/softwareag/Terracotta/data/backup:rw
+      - index1:/opt/softwareag/Terracotta/data/index:rw
+    networks:
+      - stack
+
+  tmc:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    ports:
+      - "9889"
+      - "9443"
+    environment: 
+      - LICENSE_FILE=/var/run/terracotta-license.key
+    volumes:
+      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+    hostname: tmc
+    networks:
+      - stack

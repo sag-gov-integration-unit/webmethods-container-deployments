@@ -1,0 +1,41 @@
+version: "3.2"
+
+networks:
+  stack:
+    driver: bridge
+
+services:
+
+  apigateway:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY:-dev-10.7-latest}
+    ports:
+      - "5555:5555"
+      - "9072:9072"
+    environment: 
+      APIGW_ELASTICSEARCH_TENANTID: apigateway
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 2g
+      JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
+      RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
+    volumes:
+      - ${PWD}/licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+    hostname: apigateway
+    networks:
+      - stack
+
+  apigateway_configurator:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY:-dev-10.7-latest}
+    command: ["apply_configs.yaml"]
+    # command: ["-vvv","apply_configs.yaml"]
+    environment: 
+      env_apigateway_host: apigateway
+      env_apigateway_port: "5555"
+      env_apigateway_rest_user: Administrator
+      env_apigateway_rest_password: "somethingnew"
+      env_apigateway_rest_password_old: "manage"
+      env_apigateway_lb_http_url: "http://external_access"
+      env_apigateway_lb_https_url: "https://external_access"
+      env_apigateway_lb_websocket_url: ""
+      env_apigateway_lb_webapp_url: "http://external_access"
+    networks:
+      - stack
