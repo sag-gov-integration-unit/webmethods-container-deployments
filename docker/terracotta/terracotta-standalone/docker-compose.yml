@@ -23,8 +23,6 @@ services:
 
   terracotta:
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
-    ports:
-      - 9510
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
     volumes:
