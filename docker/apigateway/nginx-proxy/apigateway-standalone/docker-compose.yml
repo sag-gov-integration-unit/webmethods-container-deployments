@@ -1,0 +1,33 @@
+version: "3.2"
+
+networks:
+  stack:
+    driver: bridge
+
+services:
+  
+  reverseproxy:
+    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY:-dev-10.7-latest}
+    build:
+      context: ../../../common/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ${PWD}/nginx-apigateway.conf:/etc/nginx/sites-enabled/nginx-apigateway.conf:ro
+    networks:
+      - stack
+
+  apigateway:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY:-dev-10.7-latest}
+    environment: 
+      APIGW_ELASTICSEARCH_TENANTID: apigateway
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 2g
+      JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
+      RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
+    volumes:
+      - ${PWD}/licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+    hostname: apigateway
+    networks:
+      - stack
