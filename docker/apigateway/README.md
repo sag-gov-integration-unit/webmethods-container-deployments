@@ -26,13 +26,13 @@ docker-compose -f apigateway-standalone/docker-compose.yml down
 Start stack:
 
 ```
-docker-compose -f nginx-proxy/apigateway-standalone/docker-compose.yml up -d
+docker-compose -f apigateway-standalone/docker-compose-nginx.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f nginx-proxy/apigateway-standalone/docker-compose.yml down
+docker-compose -f apigateway-standalone/docker-compose-nginx.yml down
 ```
 
 ## Apigateway Single Node with External ElasticSearch Stack (Elastic Search + Kibana)

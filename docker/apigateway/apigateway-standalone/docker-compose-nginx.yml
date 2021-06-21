@@ -5,20 +5,8 @@ networks:
     driver: bridge
 
 services:
-  
-  reverseproxy:
-    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY:-dev-10.7-latest}
-    build:
-      context: ../../../common/nginx
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    volumes:
-      - ${PWD}/nginx-proxy/apigateway-standalone/sites-enabled/:/etc/nginx/sites-enabled/:ro
-    networks:
-      - stack
 
-  apigateway:
+  apigateway_nginx:
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY:-dev-10.7-latest}
     environment: 
       APIGW_ELASTICSEARCH_TENANTID: apigateway
@@ -29,5 +17,17 @@ services:
     volumes:
       - ${PWD}/licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
+    networks:
+      - stack
+
+  reverseproxy_nginx:
+    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY:-dev-10.7-latest}
+    build:
+      context: ../../../common/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ${PWD}/apigateway-standalone/nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
     networks:
       - stack
