@@ -5,12 +5,21 @@ networks:
     driver: bridge
 
 services:
+
+  reverseproxy_nginx:
+    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY:-dev-10.7-latest}
+    build:
+      context: ../../common/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ${PWD}/apigateway-external-elasticstack/nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
+    networks:
+      - stack
   
   apigateway:
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway:${TAG_APIGATEWAY:-dev-10.7-latest}
-    ports:
-      - 5555:5555
-      - 9072:9072
     environment: 
       JAVA_MIN_MEM: 1g
       JAVA_MAX_MEM: 2g
