@@ -94,7 +94,7 @@ services:
       - elasticsearch
     
   terracotta:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     ports:
       - 9510
     hostname: terracotta
