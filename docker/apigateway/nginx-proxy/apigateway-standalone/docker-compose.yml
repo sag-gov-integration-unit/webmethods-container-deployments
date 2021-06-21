@@ -14,7 +14,7 @@ services:
     ports:
       - "1080:80"
     volumes:
-      - ${PWD}/sites-enabled/:/etc/nginx/sites-enabled/:ro
+      - ${PWD}/nginx-proxy/apigateway-standalone/sites-enabled/:/etc/nginx/sites-enabled/:ro
     networks:
       - stack
 
