@@ -1,10 +1,10 @@
-# Docker Sample Deployments - SoftwareAG webMethods Terracotta
+# Docker Sample Deployments - SoftwareAG webMethods Terracotta BigMemory
 
-Requirement: make sure you download a valid license for terracotta and put it in this directory, named as "terracotta-license.key"
+Requirement: make sure you download a valid license for Terracotta BigMemory and put it in this directory, named as "terracotta-license.key"
 
 By default, all deployments use:
 - Protected Docker registry: harbor.saggs.cloud/library/
-- Terracotta version tag: "dev-4.3.9-latest"
+- Terracotta BigMemory version tag: "dev-4.3.9-latest"
 
 If these must be changed, set the following variables to new registry or tag version:
 ```
@@ -17,13 +17,13 @@ export TAG_TERRACOTTA=
 Start stack:
 
 ```
-docker-compose -f terracotta-standalone/docker-compose.yml up -d
+docker-compose -f terracotta_bigmemory_standalone/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f terracotta-standalone/docker-compose.yml down
+docker-compose -f terracotta_bigmemory_standalone/docker-compose.yml down
 ```
 
 ## Terracotta Standalone with Volume Persistence
@@ -31,13 +31,13 @@ docker-compose -f terracotta-standalone/docker-compose.yml down
 Start stack:
 
 ```
-docker-compose -f terracotta-standalone-persistence/docker-compose.yml up -d
+docker-compose -f terracotta_bigmemory_standalone_persistence/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f terracotta-standalone-persistence/docker-compose.yml down --volumes
+docker-compose -f terracotta_bigmemory_standalone_persistence/docker-compose.yml down --volumes
 ```
 
 ## Terracotta cluster
@@ -45,13 +45,13 @@ docker-compose -f terracotta-standalone-persistence/docker-compose.yml down --vo
 Start stack:
 
 ```
-docker-compose -f terracotta-cluster/docker-compose.yml up -d
+docker-compose -f terracotta_bigmemory_cluster/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f terracotta-cluster/docker-compose.yml down
+docker-compose -f terracotta_bigmemory_cluster/docker-compose.yml down
 ```
 
 ## Terracotta cluster with Volume Persistence
@@ -59,11 +59,11 @@ docker-compose -f terracotta-cluster/docker-compose.yml down
 Start stack:
 
 ```
-docker-compose -f terracotta-cluster-persistence/docker-compose.yml up -d
+docker-compose -f terracotta_bigmemory_cluster_persistence/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f terracotta-cluster-persistence/docker-compose.yml down --volumes
+docker-compose -f terracotta_bigmemory_cluster_persistence/docker-compose.yml down --volumes
 ```
