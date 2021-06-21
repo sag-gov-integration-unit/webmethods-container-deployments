@@ -14,7 +14,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ${PWD}/apigateway-standalone/nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
+      - ${PWD}/apigateway-clustered-external-elasticstack/nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
     networks:
       - stack
 
