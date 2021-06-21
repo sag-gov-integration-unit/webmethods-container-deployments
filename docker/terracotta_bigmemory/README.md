@@ -6,6 +6,13 @@ Requirements:
 2) Make sure you save in this current directory valid licenses:
  - for "Terracotta" (used for APIGateway clustering), and name the file as "terracotta-license.key"
 
+Note: 
+By default, all deployments use the latest image version in the current branch (ie. "dev-4.3.9-latest"). 
+In most cases, that should be good... 
+But if this must be changed, set the following ENV variables to the new desired tag version, ie:
+```
+export TAG_TERRACOTTA=dev-4.3.9-2019 
+```
 ## Terracotta Standalone
 
 Start stack:
