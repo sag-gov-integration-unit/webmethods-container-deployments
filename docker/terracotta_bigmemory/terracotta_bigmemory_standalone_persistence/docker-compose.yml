@@ -11,8 +11,8 @@ volumes:
 
 services:
 
-  client:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta/sample-ehcache-client:${TAG_TERRACOTTA:-dev-4.3.8-latest}
+  caching_client:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta/sample-caching-client:${TAG_TERRACOTTA:-dev-4.3.8-latest}
     build:
       context: ../sample-ehcache-client
       dockerfile: Dockerfile
