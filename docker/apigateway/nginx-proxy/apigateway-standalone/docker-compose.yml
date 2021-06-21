@@ -14,7 +14,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ${PWD}/nginx-apigateway.conf:/etc/nginx/sites-enabled/nginx-apigateway.conf:ro
+      - ${PWD}/nginx-apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf
     networks:
       - stack
 
