@@ -7,6 +7,7 @@ Requirement: Make sure you save in this current directory a valid licenses
  - for "Terracotta" (used for APIGateway clustering), and name the file as "terracotta-license.key"
 
 ## Apigateway Single Standalone Node
+### No Proxy
 
 Start stack:
 
@@ -18,6 +19,20 @@ Cleanup:
 
 ```
 docker-compose -f apigateway-standalone/docker-compose.yml down
+```
+
+### with NGNX Reverse Proxy
+
+Start stack:
+
+```
+docker-compose -f nginx-proxy/apigateway-standalone/docker-compose.yml up -d
+```
+
+Cleanup:
+
+```
+docker-compose -f nginx-proxy/apigateway-standalone/docker-compose.yml down
 ```
 
 ## Apigateway Single Node with External ElasticSearch Stack (Elastic Search + Kibana)
