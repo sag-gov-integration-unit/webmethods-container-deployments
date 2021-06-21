@@ -1,16 +1,10 @@
 # Docker Sample Deployments - SoftwareAG webMethods Terracotta BigMemory
 
-Requirement: make sure you download a valid license for Terracotta BigMemory and put it in this directory, named as "terracotta-license.key"
+Requirements: 
 
-By default, all deployments use:
-- Protected Docker registry: harbor.saggs.cloud/library/
-- Terracotta BigMemory version tag: "dev-4.3.9-latest"
-
-If these must be changed, set the following variables to new registry or tag version:
-```
-export REG=
-export TAG_TERRACOTTA=
-```
+1) Run all commands from this directory (due to volumes path mapping)
+2) Make sure you save in this current directory valid licenses:
+ - for "Terracotta" (used for APIGateway clustering), and name the file as "terracotta-license.key"
 
 ## Terracotta Standalone
 
