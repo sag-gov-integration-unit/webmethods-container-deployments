@@ -2,7 +2,10 @@
 
 Sample deployments of webMethods API Gateway using Docker / Docker-compose:
 
-Requirement: Make sure you save in this current directory a valid licenses
+Requirement: 
+
+1) Run all commands from this directory (due to volumes path mapping)
+2) Make sure you save in this current directory a valid licenses
  - for "ApiGateway Advanced Edition", and name the file as "licenseKey.xml"
  - for "Terracotta" (used for APIGateway clustering), and name the file as "terracotta-license.key"
 
