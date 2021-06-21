@@ -7,12 +7,12 @@ networks:
 services:
 
   caching_client:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta/sample-caching-client:${TAG_TERRACOTTA:-dev-4.3.8-latest}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta/sample-caching-client:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     build:
       context: ../sample-ehcache-client
       dockerfile: Dockerfile
       args:
-        BUILDER_IMAGE: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.8-latest}
+        BUILDER_IMAGE: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     volumes:
       - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
     environment: 
@@ -23,7 +23,7 @@ services:
       - stack
 
   terracotta1:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.8-latest}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     hostname: terracotta1
     volumes:
       - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
@@ -44,7 +44,7 @@ services:
       - stack
 
   terracotta2:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.8-latest}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     hostname: terracotta2
     volumes:
       - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
@@ -65,7 +65,7 @@ services:
       - stack
 
   tmc:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.8-latest}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     ports:
       - 9889:9889
       - 9443:9443
