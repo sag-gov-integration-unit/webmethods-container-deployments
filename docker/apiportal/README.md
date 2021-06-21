@@ -1,31 +1,19 @@
-# Docker Sample Deployments - API Portal
+# Docker Sample Deployments - SoftwareAG webMethods API Portal
 
-Testing the API Portal container using raw Docker:
+Sample deployments of webMethods API Portal using Docker / Docker-compose:
 
-## Testing apiportal Standalone
+Requirement: Make sure you save in this current directory a valid licenses
+ - for "Api Portal", and name the file as "licenseKey.xml"
+## APIPortal Single Standalone Node
 
 Start stack:
 
 ```
-docker-compose -f sag-apiportal/docker-compose.yml up -d
+docker-compose -f apiportal-standalone/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f sag-apiportal/docker-compose.yml down
-```
-
-## Testing apiportal Standalone with Volumes
-
-Start stack:
-
-```
-docker-compose -f sag-apiportal-volumes/docker-compose.yml up -d
-```
-
-Cleanup:
-
-```
-docker-compose -f sag-apiportal-volumes/docker-compose.yml down
+docker-compose -f apiportal-standalone/docker-compose.yml down
 ```

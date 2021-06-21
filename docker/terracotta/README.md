@@ -1,4 +1,4 @@
-# Docker Samnple Deployments - Terracotta
+# Docker Sample Deployments - SoftwareAG webMethods Terracotta
 
 Requirement: make sure you download a valid license for terracotta and put it in this directory, named as "terracotta-license.key"
 
