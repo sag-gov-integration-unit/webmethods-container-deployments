@@ -12,7 +12,7 @@ services:
       context: ../../../common/nginx
       dockerfile: Dockerfile
     ports:
-      - "1080:1080"
+      - "1080:80"
     volumes:
       - ${PWD}/sites-enabled/:/etc/nginx/sites-enabled/:ro
     networks:
