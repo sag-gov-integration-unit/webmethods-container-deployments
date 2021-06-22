@@ -31,3 +31,23 @@ services:
     hostname: apigateway
     networks:
       - stack
+
+  apigateway_configurator:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY:-dev-10.7-latest}
+    command: ["apply_configs.yaml"]
+    # command: ["-vvv","apply_configs.yaml"]
+    environment: 
+      env_apigateway_host: apigateway
+      env_apigateway_port: "5555"
+      env_apigateway_rest_user: Administrator
+      env_apigateway_rest_password_old: "manage"
+      env_apigateway_rest_password: "somethingnew"
+      env_apigateway_configure_lb: "true"
+      env_apigateway_configure_usermgt: "true"
+      env_apigateway_configure_extended_settings: "true"
+      env_apigateway_lb_http_url: "http://localhost"
+      env_apigateway_lb_https_url: ""
+      env_apigateway_lb_websocket_url: ""
+      env_apigateway_lb_webapp_url: "http://localhost"
+    networks:
+      - stack

@@ -36,9 +36,9 @@ services:
       env_apigateway_configure_lb: "true"
       env_apigateway_configure_usermgt: "true"
       env_apigateway_configure_extended_settings: "true"
-      env_apigateway_lb_http_url: "http://localhost"
-      env_apigateway_lb_https_url: "https://localhost"
+      env_apigateway_lb_http_url: "http://localhost:5555"
+      env_apigateway_lb_https_url: ""
       env_apigateway_lb_websocket_url: ""
-      env_apigateway_lb_webapp_url: "http://localhost"
+      env_apigateway_lb_webapp_url: "http://localhost:5555"
     networks:
       - stack
