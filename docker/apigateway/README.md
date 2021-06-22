@@ -15,13 +15,13 @@ Requirement:
 Start stack:
 
 ```
-docker-compose --env-file ./configs/.env.107 -f apigateway-standalone/docker-compose.yml up -d
+docker-compose --env-file ../configs/.env.107 -f apigateway-standalone/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/.env.107 -f apigateway-standalone/docker-compose.yml down
+docker-compose --env-file ../configs/.env.107 -f apigateway-standalone/docker-compose.yml down
 ```
 
 ### with NGNX Reverse Proxy
