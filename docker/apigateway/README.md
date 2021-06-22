@@ -9,19 +9,37 @@ Requirement:
  - for "ApiGateway Advanced Edition", and name the file as "licenseKey.xml"
  - for "Terracotta" (used for APIGateway clustering), and name the file as "terracotta-license.key"
 
+## webMethods Versions
+
+The webMethods versions flavors (wM 10.5, wM 10.7, etc...) are pre-defined in ./configs folder.
+To chose what version to load, you simply need to load the right environment file with your docker-compose command.
+
+To help with that, you can set the following Environment variable, which will then be used in the docker-compose commands on this page:
+If the variable is not defined, the commands will then automatically load the ./configs/.env file which is always set to the latest SAG RELEASE.
+
+```bash
+export SAG_RELEASE=107
+```
+
+or 
+
+```bash
+export SAG_RELEASE=105
+```
+
 ## Apigateway Single Standalone Node
 ### Without any Reverse Proxy
 
 Start stack:
 
 ```
-docker-compose --env-file ../configs/.env.107 -f apigateway-standalone/docker-compose.yml up -d
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ../configs/.env.107 -f apigateway-standalone/docker-compose.yml down
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose.yml down
 ```
 
 ### with NGNX Reverse Proxy
@@ -29,13 +47,13 @@ docker-compose --env-file ../configs/.env.107 -f apigateway-standalone/docker-co
 Start stack:
 
 ```
-docker-compose -f apigateway-standalone/docker-compose-nginx.yml up -d
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-nginx.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f apigateway-standalone/docker-compose-nginx.yml down
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-nginx.yml down
 ```
 
 ## Apigateway Single Node with External ElasticSearch Stack (Elastic Search + Kibana)
@@ -44,26 +62,26 @@ docker-compose -f apigateway-standalone/docker-compose-nginx.yml down
 Start stack:
 
 ```
-docker-compose -f apigateway-external-elasticstack/docker-compose.yml up -d
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f apigateway-external-elasticstack/docker-compose.yml down
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose.yml down
 ```
 ### With NGNX Reverse Proxy
 
 Start stack:
 
 ```
-docker-compose -f apigateway-external-elasticstack/docker-compose-nginx.yml up -d
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose-nginx.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f apigateway-external-elasticstack/docker-compose-nginx.yml down
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose-nginx.yml down
 ```
 ## Apigateway Two-Node Stateful Cluster with External ElasticSearch Stack and Terracotta
 
@@ -72,13 +90,13 @@ docker-compose -f apigateway-external-elasticstack/docker-compose-nginx.yml down
 Start stack:
 
 ```
-docker-compose -f apigateway-clustered-external-elasticstack/docker-compose.yml up -d
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f apigateway-clustered-external-elasticstack/docker-compose.yml down
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose.yml down
 ```
 
 ### With NGNX Reverse Proxy
@@ -86,11 +104,11 @@ docker-compose -f apigateway-clustered-external-elasticstack/docker-compose.yml 
 Start stack:
 
 ```
-docker-compose -f apigateway-clustered-external-elasticstack/docker-compose-nginx.yml up -d
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose-nginx.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose -f apigateway-clustered-external-elasticstack/docker-compose-nginx.yml down
+docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose-nginx.yml down
 ```
