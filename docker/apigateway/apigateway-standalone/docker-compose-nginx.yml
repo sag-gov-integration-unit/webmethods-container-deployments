@@ -33,7 +33,7 @@ services:
       - stack
 
   apigateway_configurator:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY:-dev-10.7-latest}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY:-configurator-10.7-latest}
     command: ["apply_configs.yaml"]
     # command: ["-vvv","apply_configs.yaml"]
     environment: 
