@@ -18,7 +18,7 @@ services:
     networks:
       - stack
 
-  apigateway_nginx:
+  apigateway:
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY:-dev-10.7-latest}
     environment: 
       APIGW_ELASTICSEARCH_TENANTID: apigateway
