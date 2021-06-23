@@ -5,7 +5,7 @@ networks:
 
 x-aws-vpc: ${TARGET_VPC}
 x-aws-loadbalancer: ${TARGET_LOADBALANCER}
-# x-aws-cluster: ${TARGET_ECS_CLUSTER}
+x-aws-cluster: ${TARGET_ECS_CLUSTER}
 
 services:
 
