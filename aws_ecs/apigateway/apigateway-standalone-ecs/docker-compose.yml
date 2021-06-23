@@ -5,6 +5,7 @@ networks:
 
 x-aws-vpc: ${TARGET_VPC}
 x-aws-loadbalancer: ${TARGET_LOADBALANCER}
+# x-aws-cluster: ${TARGET_ECS_CLUSTER}
 
 services:
 
@@ -13,11 +14,19 @@ services:
     build:
       context: nginx
       dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
     ports:
-      - target: 80
-        x-aws-protocol: http
+      - 80:80
     networks:
       - apigwnet
+    links:
+      - "apigateway:apigateway"
+    depends_on:
+      - apigateway
 
   apigateway:
     image: ${REG_ECS}webmethods-apigateway-standalone:${TAG_APIGATEWAY:-dev-10.7-latest}
@@ -26,12 +35,16 @@ services:
       dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY:-dev-10.7-latest}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 8192M
     environment: 
       APIGW_ELASTICSEARCH_TENANTID: apigateway
-      JAVA_MIN_MEM: 1g
+      JAVA_MIN_MEM: 2g
       JAVA_MAX_MEM: 2g
       JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
-    hostname: apigateway
     networks:
       - apigwnet
