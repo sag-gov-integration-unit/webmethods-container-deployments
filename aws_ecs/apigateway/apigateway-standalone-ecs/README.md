@@ -2,7 +2,7 @@
 
 Sample deployments to AWS ECS
 
-## Pre-requisites
+## Pre-requisite 1: Push images to ECR
 
 First, let's push our images to the AWS Elastic Container Registry (ECR).
 
@@ -30,4 +30,20 @@ Create the 2 needed repos in ECR:
 
 ```
 docker-compose -f docker-compose-build.yml push
+```
+
+## Pre-requisite 2: Create Docker ECS content
+
+## Load the deployment into ECS using compose
+
+Simply run:
+
+```
+docker compose up -d
+```
+
+Note: if you want to check out the AWS cloud formation 
+
+```
+docker compose convert
 ```

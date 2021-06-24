@@ -6,6 +6,13 @@ networks:
 x-aws-vpc: ${TARGET_VPC}
 x-aws-loadbalancer: ${TARGET_LOADBALANCER}
 x-aws-cluster: ${TARGET_ECS_CLUSTER}
+x-aws-cloudformation:
+  Resources:
+    ReverseproxynginxTCP80TargetGroup:
+      Properties:
+        HealthCheckPath: /rest/apigateway/health
+        Matcher:
+          HttpCode: "200"
 
 services:
 
@@ -19,6 +26,11 @@ services:
         limits:
           cpus: '0.50'
           memory: 256M
+    ulimits:
+      nproc: 10000
+      nofile:
+        soft: 65535
+        hard: 65535
     ports:
       - 80:80
     networks:
@@ -40,6 +52,13 @@ services:
         limits:
           cpus: '2'
           memory: 8192M
+    ulimits:
+      nproc: 10000
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      vm.max_map_count: 262144
     environment: 
       APIGW_ELASTICSEARCH_TENANTID: apigateway
       JAVA_MIN_MEM: 2g
