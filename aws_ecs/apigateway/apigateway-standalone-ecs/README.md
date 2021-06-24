@@ -11,6 +11,11 @@ Do do so:
 1) login to ECR:
 
 ```
+export REGION=us-east-1
+export REGISTRY=some_ecr_registry
+```
+
+```
 aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${REGISTRY}
 ```
 
