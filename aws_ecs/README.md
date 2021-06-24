@@ -2,12 +2,9 @@
 
 Sample deployments to AWS ECS
 
+For more details about Docker and AWS ECS integration, read https://docs.docker.com/cloud/ecs-integration/
+
 ## Pre-requisites
 
 - Have an AWS account setup fo CLI access
 - Have access to ECS/ECR services
-
-
-```
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 815840818766.dkr.ecr.us-east-1.amazonaws.com
-```
