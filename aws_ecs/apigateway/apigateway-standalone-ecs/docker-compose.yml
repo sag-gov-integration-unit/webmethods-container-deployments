@@ -73,3 +73,29 @@ services:
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10"
     networks:
       - apigwnet
+
+  webmethods-sample-apis-uszip:
+    image: ${REG_APIS}webmethods-sample-apis-uszip:${TAG_APIS}
+    networks:
+      - apigwnet
+
+  webmethods-sample-apis-bookstore:
+    image: ${REG_APIS}webmethods-sample-apis-bookstore:${TAG_APIS}
+    networks:
+      - apigwnet
+
+  webmethods-sample-apis-covid:
+    image: ${REG_APIS}webmethods-sample-apis-covid:${TAG_APIS}
+    networks:
+      - apigwnet
+
+  continuous-curl-runner:
+    image: lanimall/continuous-curl-runner:0.0.1
+    environment: 
+      REQUESTS_JSON: "[{\"method\":\"GET\",\"url\":\"http://reverseproxy_nginx/gateway/bookstore/1.0/books\"},{\"method\":\"GET\",\"url\":\"http://reverseproxy_nginx/gateway/uszip/1.0/findZip/Rockville/MD\"},{\"method\":\"GET\",\"url\":\"http://reverseproxy_nginx/gateway/covid/1.0/findCovidByZip?zip_code=22201\"}]"
+      REQUESTS_INTERVAL: "5"
+      REQUESTS_SELECTION: "random"
+    networks:
+      - apigwnet
+    depends_on:
+      - reverseproxy_nginx
