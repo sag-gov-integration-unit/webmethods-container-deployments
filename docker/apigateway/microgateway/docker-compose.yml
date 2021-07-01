@@ -24,10 +24,13 @@ services:
       - stack
   
   webmethods-microgateway-uszip:
+    # image: webmethods-microgateway:10.7.2-1
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-microgateway:${TAG_APIGATEWAY}
-    environment: 
+    environment:
       PORT_RUNTIME: "9090"
       PORT_RUNTIME_SSL: "9091"
+      # WAIT_FOR: "apigateway:5555"
+      # WAIT_FOR_TIMEOUT: "300"
       mcgw_api_gateway_url: apigateway:5555
       mcgw_api_gateway_user: Administrator
       mcgw_api_gateway_password: manage
