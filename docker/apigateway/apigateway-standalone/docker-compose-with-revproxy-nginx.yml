@@ -9,7 +9,7 @@ services:
   reverseproxy_nginx:
     image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY:-dev-10.7-latest}
     build:
-      context: ../../common/nginx
+      context: ../../../common/nginx
       dockerfile: Dockerfile
     ports:
       - "80:80"
@@ -29,6 +29,16 @@ services:
     volumes:
       - ${PWD}/licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
+    networks:
+      - stack
+
+  webmethods-sample-apis-uszip:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
+    networks:
+      - stack
+
+  webmethods-sample-apis-bookstore:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
     networks:
       - stack
 
