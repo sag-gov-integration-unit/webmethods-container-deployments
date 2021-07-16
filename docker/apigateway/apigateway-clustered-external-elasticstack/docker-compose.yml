@@ -2,7 +2,6 @@ version: "3.2"
 
 networks:
   stack:
-    driver: bridge
 
 services:
   
@@ -32,7 +31,7 @@ services:
       SCRIPTS_LOGGER_LEVEL: 0
     volumes:
       - ./configs:/configs:rw
-      - ${PWD}/licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ${PWD}/apigateway_licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
       - ${PWD}/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
     hostname: apigateway1
     networks:

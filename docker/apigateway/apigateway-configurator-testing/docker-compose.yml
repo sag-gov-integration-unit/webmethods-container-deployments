@@ -3,6 +3,9 @@ version: "3.2"
 networks:
   stack:
 
+volumes:
+  apiportal-data:
+
 services:
 
   apigateway:
@@ -21,21 +24,32 @@ services:
     hostname: apigateway
     networks:
       - stack
-  
-  webmethods-sample-apis-uszip:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
-    networks:
-      - stack
 
-  webmethods-sample-apis-bookstore:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
+  apiportal:
+    image: harbor.saggs.cloud/library/webmethods-apiportal:${TAG_APIPORTAL:-dev-10.7-latest}
+    ports:
+      - 18101:18101
+    hostname: apiportal
+    environment: 
+      - DATA_ROOT_DIR=/data
+      - TENANTMGT_SYSTEMUSER_PASSWORD=somethingnew
+      - TENANTMGT_SUPERUSER_PASSWORD=somethingnew
+      # - SCRIPTS_LOGGER_LEVEL=0
+    volumes:
+      - ${PWD}/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
+      - apiportal-data:/data:rw
     networks:
       - stack
 
   apigateway_configurator:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
-    command: ["-v", "apply_configs.yaml"]
+    # image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
+    image: webmethods-apigateway-configurator:10.7.2-local
+    entrypoint: ["ansible-playbook"]
+    command: ["-v","apply_configs.yaml"]
+    volumes:
+      - ${PWD}/sagdevops-ansible-roles:/ansible/roles:ro
     environment: 
+      ANSIBLE_ROLES_PATH: /ansible/roles
       env_apigateway_host: apigateway
       env_apigateway_port: "5555"
       env_apigateway_rest_user: Administrator

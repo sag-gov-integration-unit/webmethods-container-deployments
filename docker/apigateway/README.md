@@ -33,13 +33,13 @@ export SAG_RELEASE=105
 Start stack:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose.yml up -d
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose.yml down
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose.yml down
 ```
 
 ### with NGNX Reverse Proxy
@@ -47,13 +47,13 @@ docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone
 Start stack:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-nginx.yml up -d
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-nginx.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-nginx.yml down
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-nginx.yml down
 ```
 
 ## Apigateway Single Node with External ElasticSearch Stack (Elastic Search + Kibana)
@@ -62,26 +62,26 @@ docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-standalone
 Start stack:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose.yml up -d
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose.yml down
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose.yml down
 ```
 ### With NGNX Reverse Proxy
 
 Start stack:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose-nginx.yml up -d
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose-nginx.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose-nginx.yml down
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose-nginx.yml down
 ```
 ## Apigateway Two-Node Stateful Cluster with External ElasticSearch Stack and Terracotta
 
@@ -90,13 +90,13 @@ docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-external-e
 Start stack:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose.yml up -d
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose.yml down
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose.yml down
 ```
 
 ### With NGNX Reverse Proxy
@@ -104,11 +104,11 @@ docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-clustered-
 Start stack:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose-nginx.yml up -d
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose-nginx.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ../configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose-nginx.yml down
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-clustered-external-elasticstack/docker-compose-nginx.yml down
 ```
