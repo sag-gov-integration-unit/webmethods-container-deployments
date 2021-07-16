@@ -31,7 +31,7 @@ services:
       SCRIPTS_LOGGER_LEVEL: 0
     volumes:
       - ./configs:/configs:rw
-      - ${PWD}/apigateway_licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ${PWD}/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
       - ${PWD}/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
     hostname: apigateway
     networks:

@@ -17,7 +17,7 @@ services:
       JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
     volumes:
-      - ${PWD}/apigateway_licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ${PWD}/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
     networks:
       - stack
@@ -37,7 +37,7 @@ services:
       mcgw_aliases_uszip_endpoint_type: "simple"
       mcgw_aliases_uszip_endpoint_value: "http://webmethods-sample-apis-uszip:7071"
     volumes:
-      - ${PWD}/microgateway_licenseKey.xml:/opt/softwareag/config/license.xml:ro
+      - ${PWD}/microgateway-licenseKey.xml:/opt/softwareag/config/license.xml:ro
       - ${PWD}/microgateway/custom-settings.yml:/opt/softwareag/config/custom-settings.yml:ro
     networks:
       - stack

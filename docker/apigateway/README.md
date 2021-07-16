@@ -2,16 +2,24 @@
 
 Sample deployments of webMethods API Gateway using Docker / Docker-compose:
 
-Requirement: 
+## Requirements
 
 1) Run all commands from this directory (due to volumes path mapping)
-2) Make sure you save in this current directory a valid licenses
- - for "ApiGateway Advanced Edition", and name the file as "licenseKey.xml"
- - for "Terracotta" (used for APIGateway clustering), and name the file as "terracotta-license.key"
+   
+2) Make sure you save in this current directory *valid licenses* with expected name (for proper volume mapping in docker)
 
-## webMethods Versions
+ - "ApiGateway Advanced Edition"
+   - expected filename: "apigateway-licenseKey.xml"
+ - Terracotta (for clustering)
+   - expected filename: "terracotta-license.key"
+ - "API Portal"
+   - expected filename: "apiportal-licenseKey.xml"
+ - "Microgateway"
+   - expected filename: "microgateway-licenseKey.xml"
 
-The webMethods versions flavors (wM 10.5, wM 10.7, etc...) are pre-defined in ./configs folder.
+## webMethods Major Versions
+
+The webMethods major versions flavors (wM 10.5, wM 10.7, etc...) are pre-defined in the ./configs folder, in files named ".env<version>"
 To chose what version to load, you simply need to load the right environment file with your docker-compose command.
 
 To help with that, you can set the following Environment variable, which will then be used in the docker-compose commands on this page:
