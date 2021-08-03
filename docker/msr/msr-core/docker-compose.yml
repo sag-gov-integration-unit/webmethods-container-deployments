@@ -1,0 +1,20 @@
+version: "3.8"
+
+networks:
+  stack:
+
+services:
+  
+  msr:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-msr:${TAG_MSR:-dev-10.7-latest}
+    ports:
+      - 5555:5555
+    hostname: msr
+    environment: 
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 1g
+      JAVA_OPTS: "-Dtest=1 -Dtes2=2 -Dtest3=3"
+    volumes:
+      - ${PWD}/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/config/licenseKey.xml:rw
+    networks:
+      - stack
