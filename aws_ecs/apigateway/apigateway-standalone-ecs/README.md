@@ -37,9 +37,16 @@ Create the 2 needed repos in ECR:
 docker-compose -f docker-compose-build.yml push
 ```
 
-## Pre-requisite 2: Create Docker ECS content
+## Pre-requisite 2: Create Docker ECS context
 
-TODO
+If you have already installed and configured the AWS CLI, the setup command lets you select an existing AWS profile to connect to Amazon. Otherwise, you can create a new profile by passing an AWS access key ID and a secret access key. Finally, you can configure your ECS context to retrieve AWS credentials by AWS_* environment variables, which is a common way to integrate with third-party tools and single-sign-on providers.
+
+Create ECS context for AWS:
+
+```
+docker context create ecs myecscontext
+```
+
 
 ## Load the deployment into ECS using compose
 
