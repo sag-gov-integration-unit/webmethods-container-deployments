@@ -1,0 +1,80 @@
+version: "3.2"
+
+networks:
+  stack:
+
+volumes:
+  apiportal-data:
+
+services:
+
+  apigateway:
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+    ports:
+      - "5555:5555"
+      - "9072:9072"
+    environment: 
+      APIGW_ELASTICSEARCH_TENANTID: apigateway
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 2g
+      JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
+      RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
+    volumes:
+      - ${PWD}/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+    hostname: apigateway
+    networks:
+      - stack
+
+  apiportal:
+    image: harbor.saggs.cloud/library/webmethods-apiportal:${TAG_APIPORTAL:-dev-10.7-latest}
+    ports:
+      - 18101:18101
+    hostname: apiportal
+    environment: 
+      - DATA_ROOT_DIR=/data
+      - TENANTMGT_SYSTEMUSER_PASSWORD=somethingnew
+      - TENANTMGT_SUPERUSER_PASSWORD=somethingnew
+    volumes:
+      - ${PWD}/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
+      - apiportal-data:/data:rw
+    networks:
+      - stack
+
+  apigateway_configurator:
+    # image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
+    image: webmethods-apigateway-configurator:10.7.2-local
+    entrypoint: ["ansible-playbook"]
+    command: ["-v","apply_configs.yaml"]
+    volumes:
+      - ${PWD}/sagdevops-ansible-roles:/ansible/roles:ro
+    environment: 
+      ANSIBLE_ROLES_PATH: /ansible/roles
+      env_apigateway_host: apigateway
+      env_apigateway_port: "5555"
+      env_apigateway_rest_user: Administrator
+      env_apigateway_rest_password: "somethingnew"
+      env_apigateway_rest_password_old: "manage"
+      env_apigateway_configure_applications: "\"true\""
+      env_apigateway_configure_plans: "\"true\""
+      env_apigateway_configure_packages: "\"true\""
+      env_apigateway_configure_lb: "\"true\""
+      env_apigateway_configure_extended_settings: "\"true\""
+      env_apigateway_configure_portalgateway: "\"true\""
+      env_apigateway_configure_usermgt: "\"true\""
+      env_apigateway_configure_archives: "\"true\""
+      env_apigateway_configure_aliases: "\"true\""
+      env_apigateway_configure_promotions_stages: "\"true\""
+      env_apigateway_configure_apis_publish_groups: "\"false\""
+      env_apigateway_configure_packages_publish_groups: "\"false\""
+      env_apigateway_lb_http_url: "http://external_access"
+      env_apigateway_lb_https_url: "https://external_access"
+      env_apigateway_lb_websocket_url: ""
+      env_apigateway_lb_webapp_url: "http://external_access"
+      env_apigateway_portalgateway_gateway_url: "http://apigateway:5555"
+      env_apigateway_portalgateway_gateway_username: "Administrator"
+      env_apigateway_portalgateway_gateway_password: "somethingnew"
+      env_apigateway_portalgateway_portal_url: "http://apiportal:18101"
+      env_apigateway_portalgateway_portal_username: "system"
+      env_apigateway_portalgateway_portal_password: "somethingnew"
+    networks:
+      - stack

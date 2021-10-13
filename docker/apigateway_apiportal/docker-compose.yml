@@ -26,7 +26,7 @@ services:
       - stack
 
   apiportal:
-    image: harbor.saggs.cloud/library/webmethods-apiportal:${TAG_APIPORTAL:-dev-10.7-latest}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apiportal:${TAG_APIPORTAL}
     ports:
       - 18101:18101
     hostname: apiportal
@@ -34,7 +34,6 @@ services:
       - DATA_ROOT_DIR=/data
       - TENANTMGT_SYSTEMUSER_PASSWORD=somethingnew
       - TENANTMGT_SUPERUSER_PASSWORD=somethingnew
-      # - SCRIPTS_LOGGER_LEVEL=0
     volumes:
       - ${PWD}/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
       - apiportal-data:/data:rw
@@ -42,31 +41,16 @@ services:
       - stack
 
   apigateway_configurator:
-    # image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
-    image: webmethods-apigateway-configurator:10.7.2-local
-    entrypoint: ["ansible-playbook"]
-    command: ["-v","apply_configs.yaml"]
-    volumes:
-      - ${PWD}/sagdevops-ansible-roles:/ansible/roles:ro
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
     environment: 
-      ANSIBLE_ROLES_PATH: /ansible/roles
       env_apigateway_host: apigateway
       env_apigateway_port: "5555"
       env_apigateway_rest_user: Administrator
       env_apigateway_rest_password: "somethingnew"
       env_apigateway_rest_password_old: "manage"
-      env_apigateway_configure_applications: "\"true\""
-      env_apigateway_configure_plans: "\"true\""
-      env_apigateway_configure_packages: "\"true\""
       env_apigateway_configure_lb: "\"true\""
       env_apigateway_configure_extended_settings: "\"true\""
       env_apigateway_configure_portalgateway: "\"true\""
-      env_apigateway_configure_usermgt: "\"true\""
-      env_apigateway_configure_archives: "\"true\""
-      env_apigateway_configure_aliases: "\"true\""
-      env_apigateway_configure_promotions_stages: "\"true\""
-      env_apigateway_configure_apis_publish_groups: "\"false\""
-      env_apigateway_configure_packages_publish_groups: "\"false\""
       env_apigateway_lb_http_url: "http://external_access"
       env_apigateway_lb_https_url: "https://external_access"
       env_apigateway_lb_websocket_url: ""

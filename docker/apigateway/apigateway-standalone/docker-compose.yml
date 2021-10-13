@@ -21,47 +21,20 @@ services:
     hostname: apigateway
     networks:
       - stack
-  
-  webmethods-sample-apis-uszip:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
-    networks:
-      - stack
-
-  webmethods-sample-apis-bookstore:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
-    networks:
-      - stack
 
   apigateway_configurator:
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
-    command: ["-v", "apply_configs.yaml"]
+    command: ["apply_configs.yaml"]
     environment: 
       env_apigateway_host: apigateway
       env_apigateway_port: "5555"
       env_apigateway_rest_user: Administrator
-      env_apigateway_rest_password: "somethingnew"
       env_apigateway_rest_password_old: "manage"
-      env_apigateway_configure_applications: "\"true\""
-      env_apigateway_configure_plans: "\"true\""
-      env_apigateway_configure_packages: "\"true\""
-      env_apigateway_configure_lb: "\"true\""
-      env_apigateway_configure_extended_settings: "\"true\""
-      env_apigateway_configure_portalgateway: "\"true\""
-      env_apigateway_configure_usermgt: "\"true\""
-      env_apigateway_configure_archives: "\"true\""
-      env_apigateway_configure_aliases: "\"true\""
-      env_apigateway_configure_promotions_stages: "\"true\""
-      env_apigateway_configure_apis_publish_groups: "\"false\""
-      env_apigateway_configure_packages_publish_groups: "\"false\""
-      env_apigateway_lb_http_url: "http://external_access"
-      env_apigateway_lb_https_url: "https://external_access"
+      env_apigateway_rest_password: "somethingnew"
+      env_apigateway_configure_lb: "true"
+      env_apigateway_lb_http_url: "http://localhost"
+      env_apigateway_lb_https_url: ""
       env_apigateway_lb_websocket_url: ""
-      env_apigateway_lb_webapp_url: "http://external_access"
-      env_apigateway_portalgateway_gateway_url: "http://apigateway:5555"
-      env_apigateway_portalgateway_gateway_username: "Administrator"
-      env_apigateway_portalgateway_gateway_password: "somethingnew"
-      env_apigateway_portalgateway_portal_url: "http://apiportal:18101"
-      env_apigateway_portalgateway_portal_username: "system"
-      env_apigateway_portalgateway_portal_password: "somethingnew"
+      env_apigateway_lb_webapp_url: "http://localhost"
     networks:
       - stack
