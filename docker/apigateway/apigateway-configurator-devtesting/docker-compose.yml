@@ -20,7 +20,7 @@ services:
       JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
     volumes:
-      - ${PWD}/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
     networks:
       - stack
@@ -35,7 +35,7 @@ services:
       - TENANTMGT_SYSTEMUSER_PASSWORD=somethingnew
       - TENANTMGT_SUPERUSER_PASSWORD=somethingnew
     volumes:
-      - ${PWD}/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
+      - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
       - apiportal-data:/data:rw
     networks:
       - stack
