@@ -55,13 +55,27 @@ docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-standalone/
 Start stack:
 
 ```
-docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-nginx.yml up -d
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-with-revproxy-nginx.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-nginx.yml down
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-with-revproxy-nginx.yml down
+```
+
+## Apigateway with ApiPortal single nodes
+
+Start stack:
+
+```
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml up -d
+```
+
+Cleanup:
+
+```
+docker-compose --env-file ./configs/.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml down
 ```
 
 ## Apigateway Single Node with External ElasticSearch Stack (Elastic Search + Kibana)

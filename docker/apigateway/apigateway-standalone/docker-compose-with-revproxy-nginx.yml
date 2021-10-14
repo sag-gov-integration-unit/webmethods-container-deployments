@@ -6,9 +6,9 @@ networks:
 services:
 
   reverseproxy_nginx:
-    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY:-dev-10.7-latest}
+    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY}
     build:
-      context: ../../../common/nginx
+      context: ../../common/nginx
       dockerfile: Dockerfile
     ports:
       - "80:80"
@@ -18,7 +18,7 @@ services:
       - stack
 
   apigateway:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY:-dev-10.7-latest}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
     environment: 
       APIGW_ELASTICSEARCH_TENANTID: apigateway
       JAVA_MIN_MEM: 1g
@@ -28,16 +28,6 @@ services:
     volumes:
       - ${PWD}/licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
-    networks:
-      - stack
-
-  webmethods-sample-apis-uszip:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
-    networks:
-      - stack
-
-  webmethods-sample-apis-bookstore:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
     networks:
       - stack
 

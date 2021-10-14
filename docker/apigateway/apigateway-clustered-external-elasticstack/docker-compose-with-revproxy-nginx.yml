@@ -6,7 +6,7 @@ networks:
 services:
 
   reverseproxy_nginx:
-    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY:-dev-10.7-latest}
+    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY}
     build:
       context: ../../common/nginx
       dockerfile: Dockerfile
@@ -18,7 +18,7 @@ services:
       - stack
 
   apigateway1:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway:${TAG_APIGATEWAY:-dev-10.7-latest}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway:${TAG_APIGATEWAY}
     environment: 
       JAVA_MIN_MEM: 1g
       JAVA_MAX_MEM: 2g
@@ -53,7 +53,7 @@ services:
       - kibana
 
   apigateway2:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway:${TAG_APIGATEWAY:-dev-10.7-latest}
+    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway:${TAG_APIGATEWAY}
     environment: 
       JAVA_MIN_MEM: 1g
       JAVA_MAX_MEM: 2g
@@ -88,7 +88,7 @@ services:
       - kibana
 
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION:-7.7.1}
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION}
     container_name: es01
     environment:
       - node.name=es01
@@ -109,7 +109,7 @@ services:
       - stack
 
   es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION:-7.7.1}
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION}
     container_name: es02
     environment:
       - node.name=es02
@@ -130,7 +130,7 @@ services:
       - stack
 
   es03:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION:-7.7.1}
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION}
     container_name: es03
     environment:
       - node.name=es03
@@ -151,8 +151,8 @@ services:
       - stack
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION:-7.7.1}
-    # image: docker.elastic.co/kibana/kibana-oss:${TAG_ELASTIC_VERSION:-7.7.1}
+    image: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
+    # image: docker.elastic.co/kibana/kibana-oss:${TAG_ELASTIC_VERSION}
     hostname: kibana
     environment:
       SERVER_NAME: kibana

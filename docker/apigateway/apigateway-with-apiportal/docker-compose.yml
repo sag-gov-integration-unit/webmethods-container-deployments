@@ -42,15 +42,18 @@ services:
 
   apigateway_configurator:
     image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
-    environment: 
+    command: ["-v","apply_configs.yaml"]
+    environment:
+      env_apigateway_configure_default_ignore_errors: "true"
+      env_apigateway_configure_lb: "true"
+      env_apigateway_configure_lb_ignore_errors: "false"
+      env_apigateway_configure_extended_settings: "true"
+      env_apigateway_configure_portalgateway: "true"
       env_apigateway_host: apigateway
       env_apigateway_port: "5555"
       env_apigateway_rest_user: Administrator
       env_apigateway_rest_password: "somethingnew"
       env_apigateway_rest_password_old: "manage"
-      env_apigateway_configure_lb: "\"true\""
-      env_apigateway_configure_extended_settings: "\"true\""
-      env_apigateway_configure_portalgateway: "\"true\""
       env_apigateway_lb_http_url: "http://external_access"
       env_apigateway_lb_https_url: "https://external_access"
       env_apigateway_lb_websocket_url: ""
