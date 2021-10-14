@@ -14,12 +14,12 @@ volumes:
 services:
 
   caching_client:
-    image: ${REG}webmethods-terracotta/sample-caching-client:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    image: ${REG}webmethods-terracotta/sample-caching-client:${TAG_TERRACOTTA}
     build:
       context: ../sample-ehcache-client
       dockerfile: Dockerfile
       args:
-        BUILDER_IMAGE: ${REG}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+        BUILDER_IMAGE: ${REG}webmethods-terracotta:${TAG_TERRACOTTA}
     volumes:
       - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
     environment: 
@@ -30,7 +30,7 @@ services:
       - stack
       
   terracotta1:
-    image: ${REG}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    image: ${REG}webmethods-terracotta:${TAG_TERRACOTTA}
     hostname: terracotta1
     volumes:
       - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
@@ -56,7 +56,7 @@ services:
       - stack
 
   terracotta2:
-    image: ${REG}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    image: ${REG}webmethods-terracotta:${TAG_TERRACOTTA}
     hostname: terracotta2
     volumes:
       - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
@@ -82,7 +82,7 @@ services:
       - stack
 
   tmc:
-    image: ${REG}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    image: ${REG}webmethods-terracotta-tmc:${TAG_TERRACOTTA}
     ports:
       - 9889:9889
       - 9443:9443
