@@ -56,7 +56,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        BASE_IMAGE: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY:-dev-10.7-latest}
+        BASE_IMAGE: ${REG}webmethods-apigateway-standalone:${TAG_APIGATEWAY:-dev-10.7-latest}
     deploy:
       resources:
         limits:

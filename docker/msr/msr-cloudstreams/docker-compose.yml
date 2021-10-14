@@ -6,7 +6,7 @@ networks:
 services:
   
   msr-cloudstreams:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-msr-cloudstreams:${TAG_MSR:-dev-10.7-latest}
+    image: ${REG}webmethods-msr-cloudstreams:${TAG_MSR:-dev-10.7-latest}
     ports:
       - 5555:5555
     hostname: msr

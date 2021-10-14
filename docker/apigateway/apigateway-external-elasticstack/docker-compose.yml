@@ -6,7 +6,7 @@ networks:
 services:
   
   apigateway:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway:${TAG_APIGATEWAY}
+    image: ${REG}webmethods-apigateway:${TAG_APIGATEWAY}
     ports:
       - 5555:5555
       - 9072:9072
@@ -88,7 +88,7 @@ services:
       - elasticsearch
     
   terracotta:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    image: ${REG}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     hostname: terracotta
     environment:
       - TSA_PORT=9510
@@ -106,7 +106,7 @@ services:
       - stack
 
   tmc:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    image: ${REG}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
     ports:
       - 9889:9889
       - 9443:9443

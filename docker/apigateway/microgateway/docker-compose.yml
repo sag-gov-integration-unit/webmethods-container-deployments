@@ -6,7 +6,7 @@ networks:
 services:
 
   apigateway:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+    image: ${REG}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
     ports:
       - "5555:5555"
       - "9072:9072"
@@ -24,7 +24,7 @@ services:
   
   webmethods-microgateway-uszip:
     # image: webmethods-microgateway:10.7.2-1
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-microgateway:${TAG_APIGATEWAY}
+    image: ${REG}webmethods-microgateway:${TAG_APIGATEWAY}
     environment:
       PORT_RUNTIME: "9090"
       PORT_RUNTIME_SSL: "9091"
@@ -43,11 +43,11 @@ services:
       - stack
 
   webmethods-sample-apis-uszip:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
+    image: ${REG}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
     networks:
       - stack
 
   webmethods-sample-apis-bookstore:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
+    image: ${REG}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
     networks:
       - stack

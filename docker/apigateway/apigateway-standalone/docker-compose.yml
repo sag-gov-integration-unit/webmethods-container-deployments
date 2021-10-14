@@ -6,7 +6,7 @@ networks:
 services:
 
   apigateway:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+    image: ${REG}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
     ports:
       - "5555:5555"
       - "9072:9072"
@@ -23,7 +23,7 @@ services:
       - stack
 
   apigateway_configurator:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
+    image: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
     command: ["apply_configs.yaml"]
     environment: 
       env_apigateway_host: apigateway

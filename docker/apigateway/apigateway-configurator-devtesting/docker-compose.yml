@@ -9,7 +9,7 @@ volumes:
 services:
 
   apigateway:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+    image: ${REG}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
     ports:
       - "5555:5555"
       - "9072:9072"
@@ -26,7 +26,7 @@ services:
       - stack
 
   apiportal:
-    image: harbor.saggs.cloud/library/webmethods-apiportal:${TAG_APIPORTAL}
+    image: ${REG}webmethods-apiportal:${TAG_APIPORTAL}
     ports:
       - 18101:18101
     hostname: apiportal
@@ -41,8 +41,8 @@ services:
       - stack
 
   apigateway_configurator:
-    # image: ${REG:-harbor.saggs.cloud/library/}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
-    image: webmethods-apigateway-configurator:10.7.2-local
+    # image: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
+    image: ${REG}webmethods-apigateway-configurator:10.7-latest-local
     entrypoint: ["ansible-playbook"]
     command: ["-v","apply_configs.yaml"]
     volumes:

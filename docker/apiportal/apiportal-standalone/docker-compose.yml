@@ -6,7 +6,7 @@ networks:
 services:
 
   apiportal:
-    image: ${REG:-harbor.saggs.cloud/library/}webmethods-apiportal:${TAG_APIPORTAL}
+    image: ${REG}webmethods-apiportal:${TAG_APIPORTAL}
     ports:
       - 18101:18101
     hostname: apiportal
