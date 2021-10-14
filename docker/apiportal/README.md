@@ -5,8 +5,8 @@ Sample deployments of webMethods API Portal using Docker / Docker-compose:
 Requirement: 
 
 1) Run all commands from this directory (due to volumes path mapping)
-2) Make sure you save in this current directory valid licenses:
- - for "Api Portal", and name the file as "apiportal-licenseKey.xml"
+2) Make sure you save a valid licenses in "licensing" directory:
+ - for "Api Portal", and name the file as "./licensing/apiportal-licenseKey.xml"
 
 ## webMethods Major Versions
 

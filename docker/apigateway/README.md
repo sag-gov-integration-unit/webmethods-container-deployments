@@ -6,16 +6,19 @@ Sample deployments of webMethods API Gateway using Docker / Docker-compose:
 
 1) Run all commands from this directory (due to volumes path mapping)
    
-2) Make sure you save in this current directory *valid licenses* with expected name (for proper volume mapping in docker)
+   a valid licenses :
+
+
+2) Make sure you save a *valid licenses* with expected name (for proper volume mapping in docker) in the "./licensing" directory:
 
  - "ApiGateway Advanced Edition"
-   - expected filename: "apigateway-licenseKey.xml"
+   - expected filename: "./licensing/apigateway-licenseKey.xml"
  - Terracotta (for clustering)
-   - expected filename: "terracotta-license.key"
+   - expected filename: "./licensing/terracotta-license.key"
  - "API Portal"
-   - expected filename: "apiportal-licenseKey.xml"
+   - expected filename: "./licensing/apiportal-licenseKey.xml"
  - "Microgateway"
-   - expected filename: "microgateway-licenseKey.xml"
+   - expected filename: "./licensing/microgateway-licenseKey.xml"
 
 ## webMethods Major Versions
 
