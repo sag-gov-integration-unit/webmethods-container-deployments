@@ -31,11 +31,11 @@ export SAG_RELEASE=105
 Start stack:
 
 ```
-docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f apiportal-standalone/docker-compose.yml up -d
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apiportal-standalone/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f apiportal-standalone/docker-compose.yml down
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apiportal-standalone/docker-compose.yml down
 ```

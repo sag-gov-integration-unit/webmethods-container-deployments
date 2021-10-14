@@ -34,13 +34,13 @@ export SAG_RELEASE=105
 Start stack:
 
 ```
-docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f msr-core/docker-compose.yml up -d
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f msr-core/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f msr-core/docker-compose.yml down
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f msr-core/docker-compose.yml down
 ```
 
 ## MSR JDBC
@@ -48,13 +48,13 @@ docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f msr-core/docker-com
 Start stack:
 
 ```
-docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f msr-jdbc/docker-compose.yml up -d
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f msr-jdbc/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f msr-jdbc/docker-compose.yml down
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f msr-jdbc/docker-compose.yml down
 ```
 
 ## MSR Cloudstreams
@@ -62,11 +62,11 @@ docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f msr-jdbc/docker-com
 Start stack:
 
 ```
-docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f msr-cloudstreams/docker-compose.yml up -d
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f msr-cloudstreams/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.${SAG_RELEASE} -f msr-cloudstreams/docker-compose.yml down
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f msr-cloudstreams/docker-compose.yml down
 ```
