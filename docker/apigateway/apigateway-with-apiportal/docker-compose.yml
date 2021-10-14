@@ -40,6 +40,24 @@ services:
     networks:
       - stack
 
+  webmethods-sample-apis-uszip:
+    image: ${REG}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
+    expose:
+      - "7071"
+    ports:
+      - "7071:7071"
+    networks:
+      - stack
+
+  webmethods-sample-apis-bookstore:
+    image: ${REG}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
+    expose:
+      - "7071"
+    ports:
+      - "7072:7071"
+    networks:
+      - stack
+
   apigateway_configurator:
     image: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
     command: ["-v","apply_configs.yaml"]
