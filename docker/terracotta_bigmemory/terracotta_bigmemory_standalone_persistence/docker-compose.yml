@@ -21,7 +21,7 @@ services:
       - LICENSE_FILE=/var/run/terracotta-license.key
       - TERRACOTTA_SERVER_URL=terracotta:9510
     volumes:
-      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     networks:
       - stack
 
@@ -40,7 +40,7 @@ services:
       - DATA_OFFHEAP_SIZE="1g"
       - RESTARTABLE_ENABLED="false"
     volumes:
-      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
       - data1:/opt/softwareag/Terracotta/data/diskstore:rw
       - backup1:/opt/softwareag/Terracotta/data/backup:rw
       - index1:/opt/softwareag/Terracotta/data/index:rw
@@ -55,7 +55,7 @@ services:
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
     volumes:
-      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     hostname: tmc
     networks:
       - stack

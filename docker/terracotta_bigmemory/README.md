@@ -3,8 +3,9 @@
 Requirements: 
 
 1) Run all commands from this directory (due to volumes path mapping)
-2) Make sure you save in this current directory valid licenses:
- - for "Terracotta" (used for APIGateway clustering), and name the file as "terracotta-license.key"
+2) Make sure you save a *valid licenses* with expected name (for proper volume mapping in docker) in the "./licensing" directory:
+   
+ - for "Terracotta" (used for APIGateway clustering), and name the file as "./licensing/terracotta-license.key"
 
 ## Terracotta Standalone
 

@@ -16,7 +16,7 @@ services:
       - LICENSE_FILE=/var/run/terracotta-license.key
       - TERRACOTTA_SERVER_URL=terracotta:9510
     volumes:
-      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     networks:
       - stack
 
@@ -25,7 +25,7 @@ services:
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
     volumes:
-      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     hostname: terracotta
     networks:
       - stack
@@ -38,7 +38,7 @@ services:
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
     volumes:
-      - ${PWD}/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     hostname: tmc
     networks:
       - stack

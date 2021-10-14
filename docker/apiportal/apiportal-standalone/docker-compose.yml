@@ -16,7 +16,7 @@ services:
       - TENANTMGT_SUPERUSER_PASSWORD=newpassword
       # - SCRIPTS_LOGGER_LEVEL=0
     volumes:
-      - ${PWD}/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
+      - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
       - apiportal-data:/data:rw
     networks:
       - stack
