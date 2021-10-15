@@ -5,9 +5,6 @@ Sample deployments of webMethods API Gateway using Docker / Docker-compose:
 ## Requirements
 
 1) Run all commands from this directory (due to volumes path mapping)
-   
-   a valid licenses :
-
 
 2) Make sure you save a *valid licenses* with expected name (for proper volume mapping in docker) in the "./licensing" directory:
 
