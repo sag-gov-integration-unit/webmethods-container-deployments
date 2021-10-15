@@ -38,6 +38,16 @@ or
 export SAG_RELEASE=105
 ```
 
+## Overwriting Docker Configs
+
+If you need to overwrite certain docker deployment vars like TAG or REG, simply add them to your shell ENV variables...
+
+ie. to use a different registry:
+
+```bash
+export REG=ghcr.io/softwareag-government-solutions/ 
+```
+
 ## Apigateway Single Standalone Node
 ### Without any Reverse Proxy
 
