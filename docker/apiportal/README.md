@@ -46,5 +46,7 @@ docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apiportal-standa
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apiportal-standalone/docker-compose.yml down
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apiportal-standalone/docker-compose.yml down -v
 ```
+
+Note: Notice the "-v" option -- This is to remove the "apiportal-data" volume that was created for the portal data

@@ -56,8 +56,10 @@ docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml down
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml down -v
 ```
+
+Note: Notice the "-v" option -- This is to remove the "apiportal-data" volume that was created for the portal data
 
 ## Deployment Option 2: Just Apigateway Single Standalone Node
 ### Without any Reverse Proxy
