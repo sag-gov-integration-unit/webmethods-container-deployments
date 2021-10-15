@@ -12,6 +12,7 @@ services:
     image: ${REG}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
     ports:
       - "5555:5555"
+      - "5543:5543"
       - "9072:9072"
     environment: 
       APIGW_ELASTICSEARCH_TENANTID: apigateway
@@ -72,10 +73,10 @@ services:
       env_apigateway_rest_user: Administrator
       env_apigateway_rest_password: "somethingnew"
       env_apigateway_rest_password_old: "manage"
-      env_apigateway_lb_http_url: "http://external_access"
-      env_apigateway_lb_https_url: "https://external_access"
+      env_apigateway_lb_http_url: "http://localhost:5555"
+      env_apigateway_lb_https_url: "https://localhost:5543"
       env_apigateway_lb_websocket_url: ""
-      env_apigateway_lb_webapp_url: "http://external_access"
+      env_apigateway_lb_webapp_url: "http://localhost:9072"
       env_apigateway_portalgateway_gateway_url: "http://apigateway:5555"
       env_apigateway_portalgateway_gateway_username: "Administrator"
       env_apigateway_portalgateway_gateway_password: "somethingnew"
