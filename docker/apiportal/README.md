@@ -25,8 +25,17 @@ or
 ```bash
 export SAG_RELEASE=105
 ```
+## Overwriting Docker Configs
 
-## APIPortal Single Standalone Node
+If you need to overwrite certain docker deployment vars like TAG or REG, simply add them to your shell ENV variables...
+
+ie. to use a different registry:
+
+```bash
+export REG=ghcr.io/softwareag-government-solutions/ 
+```
+
+## Deployment Option 1: APIPortal Single Standalone Node
 
 Start stack:
 

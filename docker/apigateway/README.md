@@ -48,7 +48,21 @@ ie. to use a different registry:
 export REG=ghcr.io/softwareag-government-solutions/ 
 ```
 
-## Apigateway Single Standalone Node
+## Deployment Option 1: Full stack - APIGateway Standalone Node + APIPortal Standalone Node
+
+Start stack:
+
+```
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml up -d
+```
+
+Cleanup:
+
+```
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml down
+```
+
+## Deployment Option 2: Just Apigateway Single Standalone Node
 ### Without any Reverse Proxy
 
 Start stack:
@@ -77,21 +91,7 @@ Cleanup:
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-with-revproxy-nginx.yml down
 ```
 
-## Apigateway with ApiPortal single nodes
-
-Start stack:
-
-```
-docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml up -d
-```
-
-Cleanup:
-
-```
-docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml down
-```
-
-## Apigateway Single Node with External ElasticSearch Stack (Elastic Search + Kibana)
+## Deployment Option 3: Apigateway Single Node with External ElasticSearch Stack (Elastic Search + Kibana)
 ### Without any Reverse Proxy
 
 Start stack:
@@ -118,7 +118,7 @@ Cleanup:
 ```
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-external-elasticstack/docker-compose-nginx.yml down
 ```
-## Apigateway Two-Node Stateful Cluster with External ElasticSearch Stack and Terracotta
+## Deployment Option 4: Apigateway Two-Node Stateful Cluster (with Terracotta) with External ElasticSearch Stack
 
 ### Without any Reverse Proxy
 
