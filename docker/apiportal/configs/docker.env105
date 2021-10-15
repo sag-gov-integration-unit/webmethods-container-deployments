@@ -1,2 +1,2 @@
-REG=harbor.saggs.cloud/library/
+REG=ghcr.io/softwareag-government-solutions/
 TAG_APIPORTAL=dev-10.5-latest

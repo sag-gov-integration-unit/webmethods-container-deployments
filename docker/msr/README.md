@@ -13,7 +13,7 @@ Sample deployments of webMethods Microservice Runtime using Docker / Docker-comp
 
 ## webMethods Major Versions
 
-The webMethods major versions flavors (wM 10.5, wM 10.7, etc...) are pre-defined in the ./configs folder, in files named ".env<version>"
+The webMethods major versions flavors (wM 10.5, wM 10.7, etc...) are pre-defined in the ./configs folder, in files named "docker.env<version>"
 To chose what version to load, you simply need to load the right environment file with your docker-compose command.
 
 To help with that, you can set the following Environment variable, which will then be used in the docker-compose commands on this page:
