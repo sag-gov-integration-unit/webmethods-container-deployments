@@ -15,8 +15,8 @@ services:
       - "9072:9072"
     environment: 
       APIGW_ELASTICSEARCH_TENANTID: apigateway
-      JAVA_MIN_MEM: 1g
-      JAVA_MAX_MEM: 2g
+      JAVA_MIN_MEM: 512m
+      JAVA_MAX_MEM: 512m
       JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
     volumes:
@@ -32,8 +32,8 @@ services:
     hostname: apiportal
     environment: 
       - DATA_ROOT_DIR=/data
-      - TENANTMGT_SYSTEMUSER_PASSWORD=somethingnew
-      - TENANTMGT_SUPERUSER_PASSWORD=somethingnew
+      - TENANTMGT_SYSTEMUSER_PASSWORD=${SAG_PASSWORD}
+      - TENANTMGT_SUPERUSER_PASSWORD=${SAG_PASSWORD}
     volumes:
       - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
       - apiportal-data:/data:rw
@@ -52,7 +52,7 @@ services:
       env_apigateway_host: apigateway
       env_apigateway_port: "5555"
       env_apigateway_rest_user: Administrator
-      env_apigateway_rest_password: "somethingnew"
+      env_apigateway_rest_password: "${SAG_PASSWORD}"
       env_apigateway_rest_password_old: "manage"
       env_apigateway_configure_applications: "\"true\""
       env_apigateway_configure_plans: "\"true\""
@@ -72,9 +72,9 @@ services:
       env_apigateway_lb_webapp_url: "http://external_access"
       env_apigateway_portalgateway_gateway_url: "http://apigateway:5555"
       env_apigateway_portalgateway_gateway_username: "Administrator"
-      env_apigateway_portalgateway_gateway_password: "somethingnew"
+      env_apigateway_portalgateway_gateway_password: "${SAG_PASSWORD}"
       env_apigateway_portalgateway_portal_url: "http://apiportal:18101"
       env_apigateway_portalgateway_portal_username: "system"
-      env_apigateway_portalgateway_portal_password: "somethingnew"
+      env_apigateway_portalgateway_portal_password: "${SAG_PASSWORD}"
     networks:
       - stack

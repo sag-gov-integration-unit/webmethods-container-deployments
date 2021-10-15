@@ -45,15 +45,32 @@ ie. to use a different registry:
 export REG=different.registry.com/library/ 
 ```
 
+## Accessing the web interfaces
+
+Upon stack started, and once the deployed containers are healthy, the following URLs should be accessible:
+
+ - http://localhost:9072 (API Gateway UI)
+ - http://localhost:18101 (API Portal UI)
+ - http://localhost:5555 (API Gateway REST API Endpoint)
+ - https://localhost:5543 (SSL-Secure API Gateway REST API Endpoint)
+
+If using the NGINX reverse proxy configuration, the UIs are then accessible at the following "proxied" URLs:
+
+ - http://localhost/apigatewayui (API Gateway UI)
+ - http://localhost (API Gateway REST API Endpoint)
+
+
+Default password: as defined in the value "SAG_PASSWORD" in the ./configs/docker.env<version> file
+
 ## Deployment Option 1: Full stack - APIGateway Standalone Node + APIPortal Standalone Node
 
-Start stack:
+### Start stack:
 
 ```
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml up -d
 ```
 
-Cleanup:
+### Cleanup:
 
 ```
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-apiportal/docker-compose.yml down -v
@@ -61,16 +78,17 @@ docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-
 
 Note: Notice the "-v" option -- This is to remove the "apiportal-data" volume that was created for the portal data
 
+
 ## Deployment Option 2: Just Apigateway Single Standalone Node
 ### Without any Reverse Proxy
 
-Start stack:
+#### Start stack:
 
 ```
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-standalone/docker-compose.yml up -d
 ```
 
-Cleanup:
+#### Cleanup:
 
 ```
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-standalone/docker-compose.yml down
@@ -78,13 +96,13 @@ docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-stand
 
 ### with NGNX Reverse Proxy
 
-Start stack:
+#### Start stack:
 
 ```
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-with-revproxy-nginx.yml up -d
 ```
 
-Cleanup:
+#### Cleanup:
 
 ```
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-standalone/docker-compose-with-revproxy-nginx.yml down

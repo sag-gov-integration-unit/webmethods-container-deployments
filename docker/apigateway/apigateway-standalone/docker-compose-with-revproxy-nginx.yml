@@ -21,8 +21,8 @@ services:
     image: ${REG}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
     environment: 
       APIGW_ELASTICSEARCH_TENANTID: apigateway
-      JAVA_MIN_MEM: 1g
-      JAVA_MAX_MEM: 2g
+      JAVA_MIN_MEM: 512m
+      JAVA_MAX_MEM: 512m
       JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
     volumes:
@@ -39,7 +39,7 @@ services:
       env_apigateway_port: "5555"
       env_apigateway_rest_user: Administrator
       env_apigateway_rest_password_old: "manage"
-      env_apigateway_rest_password: "somethingnew"
+      env_apigateway_rest_password: "${SAG_PASSWORD}"
       env_apigateway_configure_lb: "true"
       env_apigateway_lb_http_url: "http://localhost"
       env_apigateway_lb_https_url: ""

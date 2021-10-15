@@ -11,8 +11,8 @@ services:
       - 5555:5555
       - 9072:9072
     environment: 
-      JAVA_MIN_MEM: 1g
-      JAVA_MAX_MEM: 2g
+      JAVA_MIN_MEM: 512m
+      JAVA_MAX_MEM: 512m
       JAVA_OPTS: ""
       APIGW_ELASTICSEARCH_TENANTID: apigateway
       APIGW_ELASTICSEARCH_HOSTS: es01:9200,es02:9200,es03:9200
@@ -49,8 +49,8 @@ services:
       - 6555:5555
       - 10072:9072
     environment: 
-      JAVA_MIN_MEM: 1g
-      JAVA_MAX_MEM: 2g
+      JAVA_MIN_MEM: 512m
+      JAVA_MAX_MEM: 512m
       JAVA_OPTS: ""
       APIGW_ELASTICSEARCH_TENANTID: apigateway
       APIGW_ELASTICSEARCH_HOSTS: es01:9200,es02:9200,es03:9200

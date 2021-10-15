@@ -7,14 +7,14 @@ Requirements:
    
  - for "Terracotta" (used for APIGateway clustering), and name the file as "./licensing/terracotta-license.key"
 
-## Overwriting Docker Configs
+## Optional: Overwriting Docker Configs
 
 If you need to overwrite certain docker deployment vars like TAG or REG, simply add them to your shell ENV variables...
 
 ie. to use a different registry:
 
 ```bash
-export REG=ghcr.io/softwareag-government-solutions/ 
+export REG=different.registry.com/library/ 
 ```
 
 ## Terracotta Standalone
