@@ -73,10 +73,10 @@ services:
       env_apigateway_rest_user: Administrator
       env_apigateway_rest_password: "${SAG_PASSWORD}"
       env_apigateway_rest_password_old: "manage"
-      env_apigateway_lb_http_url: "http://localhost:5555"
-      env_apigateway_lb_https_url: "https://localhost:5543"
+      env_apigateway_lb_http_url: "http://apigateway:5555"
+      env_apigateway_lb_https_url: "https://apigateway:5543"
       env_apigateway_lb_websocket_url: ""
-      env_apigateway_lb_webapp_url: "http://localhost:9072"
+      env_apigateway_lb_webapp_url: "http://apigateway:9072"
       env_apigateway_portalgateway_gateway_url: "http://apigateway:5555"
       env_apigateway_portalgateway_gateway_username: "Administrator"
       env_apigateway_portalgateway_gateway_password: "${SAG_PASSWORD}"
