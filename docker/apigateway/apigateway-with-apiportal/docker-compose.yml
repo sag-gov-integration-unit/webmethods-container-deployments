@@ -4,7 +4,8 @@ networks:
   stack:
 
 volumes:
-  apiportal-data:
+  apiportaldata:
+  elasticdata:
 
 services:
 
@@ -18,9 +19,11 @@ services:
       APIGW_ELASTICSEARCH_TENANTID: apigateway
       JAVA_MIN_MEM: 512m
       JAVA_MAX_MEM: 512m
+      IDS_HEAP_SIZE: 512m
       JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=50 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10"
     volumes:
+      - elasticdata:/opt/softwareag/InternalDataStore/data:rw
       - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
     networks:
@@ -37,7 +40,7 @@ services:
       - TENANTMGT_SUPERUSER_PASSWORD=${SAG_PASSWORD}
     volumes:
       - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
-      - apiportal-data:/data:rw
+      - apiportaldata:/data:rw
     networks:
       - stack
 
@@ -73,10 +76,13 @@ services:
       env_apigateway_rest_user: Administrator
       env_apigateway_rest_password: "${SAG_PASSWORD}"
       env_apigateway_rest_password_old: "manage"
-      env_apigateway_lb_http_url: "http://apigateway:5555"
-      env_apigateway_lb_https_url: "https://apigateway:5543"
-      env_apigateway_lb_websocket_url: ""
-      env_apigateway_lb_webapp_url: "http://apigateway:9072"
+      env_apigateway_lb_http_url: "http://localhost:5555"
+      env_apigateway_lb_https_url: "https://localhost:5543"
+      env_apigateway_lb_websocket_url: "ws://localhost"
+      env_apigateway_lb_http_url_alt1: "http://apigateway:5555"
+      env_apigateway_lb_https_url_alt1: "https://apigateway:5543"
+      env_apigateway_lb_websocket_url_alt1: "ws://apigateway"
+      env_apigateway_lb_webapp_url: "http://localhost:9072"
       env_apigateway_portalgateway_gateway_url: "http://apigateway:5555"
       env_apigateway_portalgateway_gateway_username: "Administrator"
       env_apigateway_portalgateway_gateway_password: "${SAG_PASSWORD}"
