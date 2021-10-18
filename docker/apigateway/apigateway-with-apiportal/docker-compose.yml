@@ -22,7 +22,7 @@ services:
       JAVA_MIN_MEM: 512m
       JAVA_MAX_MEM: 512m
       IDS_HEAP_SIZE: 512m
-      JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
+      JAVA_OPTS: ""
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=50 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10"
     volumes:
       - apigw-elasticdata:/opt/softwareag/InternalDataStore/data:rw

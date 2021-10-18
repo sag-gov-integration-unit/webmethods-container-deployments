@@ -17,7 +17,7 @@ services:
       APIGW_ELASTICSEARCH_TENANTID: apigateway
       JAVA_MIN_MEM: 512m
       JAVA_MAX_MEM: 512m
-      JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
+      JAVA_OPTS: ""
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
     volumes:
       - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
