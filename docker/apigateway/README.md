@@ -8,13 +8,13 @@ Sample deployments of webMethods API Gateway using Docker / Docker-compose:
 
 2) Make sure you save a *valid licenses* with expected name (for proper volume mapping in docker) in the "./licensing" directory:
 
- - "ApiGateway Advanced Edition"
+ - ApiGateway Advanced
    - expected filename: "./licensing/apigateway-licenseKey.xml"
- - Terracotta (for clustering)
-   - expected filename: "./licensing/terracotta-license.key"
- - "API Portal"
+ - API Portal (only needed for the deployments involving API Portal product)
    - expected filename: "./licensing/apiportal-licenseKey.xml"
- - "Microgateway"
+ - Terracotta (only needed for the deployments involving API Gateway clustering)
+   - expected filename: "./licensing/terracotta-license.key"
+ - Microgateway (only needed for the deployments involving Microgateway product)
    - expected filename: "./licensing/microgateway-licenseKey.xml"
 
 ## webMethods Major Versions
@@ -36,6 +36,10 @@ export SAG_RELEASE=105
 ```
 
 ## Optional: Overwriting Docker Configs
+
+By default, all deployments in this project are setup to use the protected "Software AG Government Solutions GitHub Container Registry" at: 
+
+ghcr.io/softwareag-government-solutions/
 
 If you need to overwrite certain docker deployment vars like TAG or REG, simply add them to your shell ENV variables...
 
