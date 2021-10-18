@@ -4,8 +4,10 @@ networks:
   stack:
 
 volumes:
-  apiportaldata:
-  elasticdata:
+  apip-postgresdata:
+  apip-elasticdata:
+  apip-cloudsearchdata:
+  apigw-elasticdata:
 
 services:
 
@@ -23,7 +25,7 @@ services:
       JAVA_OPTS: "-Dtest2=test2 -Dtest3=test3 -Dtest4=test4"
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=50 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10"
     volumes:
-      - elasticdata:/opt/softwareag/InternalDataStore/data:rw
+      - apigw-elasticdata:/opt/softwareag/InternalDataStore/data:rw
       - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
     networks:
@@ -34,13 +36,11 @@ services:
     ports:
       - 18101:18101
     hostname: apiportal
-    environment: 
-      - DATA_ROOT_DIR=/data
-      - TENANTMGT_SYSTEMUSER_PASSWORD=${SAG_PASSWORD}
-      - TENANTMGT_SUPERUSER_PASSWORD=${SAG_PASSWORD}
     volumes:
       - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
-      - apiportaldata:/data:rw
+      - apip-postgresdata:/opt/softwareag/API_Portal/server/bin/work/work_postgres_m/data:rw
+      - apip-elasticdata:/opt/softwareag/API_Portal/server/bin/work/work_elastic_m/data:rw
+      - apip-cloudsearchdata:/opt/softwareag/API_Portal/server/bin/work/work_cloudsearch_m/rsindex:rw
     networks:
       - stack
 
@@ -88,6 +88,6 @@ services:
       env_apigateway_portalgateway_gateway_password: "${SAG_PASSWORD}"
       env_apigateway_portalgateway_portal_url: "http://apiportal:18101"
       env_apigateway_portalgateway_portal_username: "system"
-      env_apigateway_portalgateway_portal_password: "${SAG_PASSWORD}"
+      env_apigateway_portalgateway_portal_password: "manager"
     networks:
       - stack
