@@ -64,7 +64,6 @@ services:
 
   apigateway_configurator:
     image: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
-    command: ["-v","apply_configs.yaml"]
     environment:
       env_apigateway_configure_default_ignore_errors: "true"
       env_apigateway_configure_lb: "true"
