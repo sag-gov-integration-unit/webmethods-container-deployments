@@ -42,7 +42,6 @@ services:
 
   apigateway_configurator:
     image: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
-    command: ["apply_configs.yaml"]
     environment: 
       env_apigateway_host: apigateway
       env_apigateway_port: "5555"

@@ -43,8 +43,6 @@ services:
   apigateway_configurator:
     # image: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
     image: ${REG}webmethods-apigateway-configurator:10.7-latest-local
-    entrypoint: ["ansible-playbook"]
-    command: ["-v","apply_configs.yaml"]
     volumes:
       - ${PWD}/sagdevops-ansible-roles:/ansible/roles:ro
     environment: 
