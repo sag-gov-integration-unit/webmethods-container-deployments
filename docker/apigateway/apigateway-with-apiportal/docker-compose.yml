@@ -36,6 +36,10 @@ services:
     ports:
       - 18101:18101
     hostname: apiportal
+    environment: 
+      - LB_EXT_SCHEME=http
+      - LB_EXT_HOST=localhost
+      - LB_EXT_PORT=18101
     volumes:
       - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
       - apip-postgresdata:/opt/softwareag/API_Portal/server/bin/work/work_postgres_m/data:rw
