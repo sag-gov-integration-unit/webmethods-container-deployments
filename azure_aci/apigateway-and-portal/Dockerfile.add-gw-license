@@ -1,0 +1,9 @@
+#
+# Example Dockerfile to create a new image that will include the appropriate license key file
+#
+# docker build --rm --no-cache -t 'apigateway-with-license:1' . -f Dockerfile.add-gw-license
+
+FROM ghcr.io/softwareag-government-solutions/webmethods-apigateway-standalone:dev-10.7-latest
+
+##Add your license file here in order to create an image with the appropriate file in place
+COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./apigw-licenseKey.xml ${SAG_HOME}/IntegrationServer/instances/default/config/licenseKey.xml
