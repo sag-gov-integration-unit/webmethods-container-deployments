@@ -16,9 +16,9 @@ Sample deployments to Azure ACI in the Government Cloud
     `export SAG_RELEASE=107`
 
 - Edit the environment variables in the REPO/azure_aci/configs/docker.env{SAG_RELEASE} file for your specific environment.
-- Login to the Software AG Government Solutions container repository and pull the docker images into your environment.  See the docker_pull.sh script in this directory.
-- Copy your license files to this directory.  Rename the API Portal file to apiportal-license.xml and rename the API Gateway file to apigw-license.xml
-- Rebuild the API Portal and API Gateway images to incorporate your license files.  See Dockerfile.add-gw-license and Dockerfile.add-portal-license in this directory to use as an example.
+- Login to the Software AG Government Solutions container repository and pull the docker images into your environment.  See the docker_pull.sh script.
+- Copy your license files to the directory that contains the scripts for the environment you want to generate (for example, "apigateway-and-portal").  Rename the API Portal file to apiportal-license.xml and rename the API Gateway file to apigw-license.xml
+- Rebuild the API Portal and API Gateway images to incorporate your license files.  See Dockerfile.add-gw-license and Dockerfile.add-portal-license to use as an example.
 - Tag your newly-built images for your Azure Container Registry along with the sample API containers and the Gateway Configurator.  You can identify each {IMAGE ID} by using the `docker image ls` command.
 
     `docker tag {IMAGE ID} {Your ACR REGISTRYLOGINSERVER}/webmethods-sample-apis-bookstore:dev-0.0.4`
