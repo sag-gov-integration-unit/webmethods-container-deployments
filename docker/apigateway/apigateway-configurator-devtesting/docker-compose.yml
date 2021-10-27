@@ -74,5 +74,9 @@ services:
       env_apigateway_portalgateway_portal_url: "http://apiportal:18101"
       env_apigateway_portalgateway_portal_username: "system"
       env_apigateway_portalgateway_portal_password: "${SAG_PASSWORD}"
+      env_apigateway_aliases_covid_endpoint: http://webmethods-microgateway-covidreports:9090/gateway
+      env_apigateway_aliases_bookstore_endpoint: http://webmethods-microgateway-bookstore:9090/gateway
+      env_apigateway_aliases_uszip_endpoint: http://webmethods-microgateway-uszip:9090/gateway
+      env_apigateway_aliases_sagtours_endpoint: http://webmethods-sampleapis-sagtours:5555/gateway
     networks:
       - stack
