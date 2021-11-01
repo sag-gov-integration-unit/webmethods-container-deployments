@@ -2,9 +2,11 @@ version: "3.2"
 
 networks:
   stack:
+    driver: bridge
 
 volumes:
-  apiportal-data:
+  esdata:
+    driver: local
 
 services:
 
@@ -39,6 +41,8 @@ services:
       - ELASTIC_PASSWORD=password
       - http.port=9200
       - transport.port=9300
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
     ulimits:
       memlock:
         soft: -1
@@ -46,7 +50,5 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    cap_add:
-      - IPC_LOCK
     networks:
       - stack
