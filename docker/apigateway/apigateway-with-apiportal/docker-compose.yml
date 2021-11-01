@@ -17,6 +17,7 @@ services:
       - "5555:5555"
       - "5543:5543"
       - "9072:9072"
+      - "9073:9073"
     environment: 
       APIGW_ELASTICSEARCH_TENANTID: apigateway
       JAVA_MIN_MEM: 512m
@@ -35,11 +36,12 @@ services:
     image: ${REG}webmethods-apiportal:${TAG_APIPORTAL}
     ports:
       - 18101:18101
+      - 18102:18102
     hostname: apiportal
     environment: 
-      - LB_EXT_SCHEME=http
-      - LB_EXT_HOST=localhost
-      - LB_EXT_PORT=18101
+      - LB_EXT_SCHEME=https
+      - LB_EXT_HOST=apiportal
+      - LB_EXT_PORT=18102
     volumes:
       - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
       - apip-postgresdata:/opt/softwareag/API_Portal/server/bin/work/work_postgres_m/data:rw
@@ -79,17 +81,17 @@ services:
       env_apigateway_rest_user: Administrator
       env_apigateway_rest_password: "${SAG_PASSWORD}"
       env_apigateway_rest_password_old: "manage"
-      env_apigateway_lb_http_url: "http://localhost:5555"
-      env_apigateway_lb_https_url: "https://localhost:5543"
-      env_apigateway_lb_websocket_url: "ws://localhost"
+      env_apigateway_lb_http_url: "http://apigateway:5555"
+      env_apigateway_lb_https_url: "https://apigateway:5543"
+      env_apigateway_lb_websocket_url: "ws://apigateway"
       env_apigateway_lb_http_url_alt1: "http://apigateway:5555"
       env_apigateway_lb_https_url_alt1: "https://apigateway:5543"
       env_apigateway_lb_websocket_url_alt1: "ws://apigateway"
-      env_apigateway_lb_webapp_url: "http://localhost:9072"
+      env_apigateway_lb_webapp_url: "http://apigateway:9072"
       env_apigateway_portalgateway_gateway_url: "http://apigateway:5555"
       env_apigateway_portalgateway_gateway_username: "Administrator"
       env_apigateway_portalgateway_gateway_password: "${SAG_PASSWORD}"
-      env_apigateway_portalgateway_portal_url: "http://apiportal:18101"
+      env_apigateway_portalgateway_portal_url: "https://apiportal:18102"
       env_apigateway_portalgateway_portal_username: "system"
       env_apigateway_portalgateway_portal_password: "manager"
     networks:
