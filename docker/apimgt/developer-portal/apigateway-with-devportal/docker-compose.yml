@@ -23,12 +23,41 @@ services:
       PORTAL_SERVER_CONFIG_LICENSE: /opt/softwareag/licenseKey.xml
       SPRING_ELASTICSEARCH_REST_URIS: http://elasticsearch:9200
       SPRING_ELASTICSEARCH_REST_USERNAME: elastic
-      SPRING_ELASTICSEARCH_REST_PASSWORD: password
+      SPRING_ELASTICSEARCH_REST_PASSWORD: ${ELASTIC_PASSWORD}
     volumes:
       - ${PWD}/licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:ro
     hostname: devportal
     networks:
       - stack
+    depends_on: 
+      elasticsearch:
+        condition: service_started
+
+  apigateway:
+    image: ${REG}webmethods-apigateway:${TAG_APIGATEWAY}
+    ports:
+      - 5555:5555
+      - 9072:9072
+    environment: 
+      JAVA_MIN_MEM: 512m
+      JAVA_MAX_MEM: 512m
+      JAVA_OPTS: ""
+      APIGW_ELASTICSEARCH_TENANTID: apigateway
+      APIGW_ELASTICSEARCH_AUTOSTART: "false"
+      APIGW_ELASTICSEARCH_HOSTS: elasticsearch:9200
+      APIGW_ELASTICSEARCH_HTTP_USERNAME: elastic
+      APIGW_ELASTICSEARCH_HTTP_PASSWORD: ${ELASTIC_PASSWORD}
+      APIGW_ELASTICSEARCH_HTTPS_ENABLED: "false"
+      APIGW_KIBANA_DASHBOARDINSTANCE: http://kibana:5601
+      APIGW_KIBANA_AUTOSTART: "false"
+    volumes:
+      - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+    hostname: apigateway
+    networks:
+      - stack
+    depends_on: 
+      elasticsearch:
+        condition: service_started
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION}
@@ -38,7 +67,7 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - ELASTIC_PASSWORD=password
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - http.port=9200
       - transport.port=9300
     volumes:
@@ -52,3 +81,25 @@ services:
         hard: 65536
     networks:
       - stack
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
+    hostname: kibana
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD}
+      XPACK_SECURITY_ENABLED: "true"
+      SERVER_HOST: 0.0.0.0
+      SERVER_BASEPATH: /apigatewayui/dashboardproxy
+      KIBANA_INDEX: gateway_apigateway_dashboard
+      NODE_OPTIONS: --max_old_space_size=2048
+    networks:
+      - stack
+    depends_on: 
+      elasticsearch:
+        condition: service_started
+    ## this "service_healthy" is very important because apigateway must first create the indices in elastic search BEFORE Kibana starts
+      apigateway:
+        condition: service_healthy

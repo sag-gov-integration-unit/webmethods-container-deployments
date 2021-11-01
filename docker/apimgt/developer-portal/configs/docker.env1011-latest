@@ -6,3 +6,4 @@ TAG_TERRACOTTA=dev-4.3.9-latest
 TAG_SAMPLE_APIS=dev-0.0.4
 TAG_PORTAL=dev-10.11-latest
 SAG_PASSWORD=somethingnew
+ELASTIC_PASSWORD=password
