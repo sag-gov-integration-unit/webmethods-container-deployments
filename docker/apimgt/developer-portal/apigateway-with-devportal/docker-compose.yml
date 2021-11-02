@@ -96,9 +96,11 @@ services:
       env_apigateway_portalgateway_gateway_url: "http://apigateway:5555"
       env_apigateway_portalgateway_gateway_username: "Administrator"
       env_apigateway_portalgateway_gateway_password: "${SAG_PASSWORD}"
-      env_apigateway_portalgateway_portal_url: "https://apiportal:18102"
-      env_apigateway_portalgateway_portal_username: "system"
-      env_apigateway_portalgateway_portal_password: "manager"
+      env_apigateway_portalgateway_portaltype: devportal
+      env_apigateway_portalgateway_devportal_url: "http://devportal:18101"
+      env_apigateway_portalgateway_devportal_tenant: default
+      env_apigateway_portalgateway_devportal_username: "Administrator"
+      env_apigateway_portalgateway_devportal_password: "${SAG_PASSWORD}"
     networks:
       - stack
 
