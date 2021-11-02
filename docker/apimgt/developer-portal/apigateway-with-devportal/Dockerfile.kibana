@@ -1,0 +1,32 @@
+ARG BASE_KIBANA_IMAGE
+ARG BASE_BUILDER_IMAGE
+
+# Builder image to download dockerize
+######################################################################################################
+
+FROM $BASE_BUILDER_IMAGE as builder
+
+RUN yum update -y && yum install -y wget
+
+ENV DOCKERIZE_VERSION="v0.6.1"
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /tmp -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
+# Final kibana image
+######################################################################################################
+
+FROM $BASE_KIBANA_IMAGE
+
+LABEL maintainer="fabien.sanglier@softwareaggov.com" \
+      description="A simple image with dockerize tooling added (ref: https://github.com/jwilder/dockerize/) to be able to wait for external services"
+
+ENV WAIT_FOR_ENABLED="true"
+ENV WAIT_FOR_HOST=""
+ENV WAIT_FOR_PORT=""
+ENV WAIT_FOR_INTERVAL_SEC="10"
+ENV WAIT_FOR_TIMEOUT_SEC="600"
+
+COPY --from=builder /tmp/dockerize /usr/local/bin
+
+CMD dockerize -wait tcp://${WAIT_FOR_HOST}:${WAIT_FOR_PORT} -wait-retry-interval ${WAIT_FOR_INTERVAL_SEC}s -timeout ${WAIT_FOR_TIMEOUT_SEC}s /usr/local/bin/kibana-docker

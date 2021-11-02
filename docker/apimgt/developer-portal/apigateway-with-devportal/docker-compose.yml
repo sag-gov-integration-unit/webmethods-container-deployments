@@ -29,12 +29,11 @@ services:
     hostname: devportal
     networks:
       - stack
-    depends_on: 
-      elasticsearch:
-        condition: service_started
 
   devportal_configurator:
     image: ${REG}webmethods-devportal-configurator:${TAG_PORTAL_CONFIGURATOR}
+    volumes:
+      - ${PWD}/local/sagdevops-ansible-roles:/ansible/roles/sagdevops-ansible-roles-dev-0.2.4:ro
     environment:
       env_devportal_protocol: http
       env_devportal_host: devportal
@@ -43,11 +42,13 @@ services:
       env_devportal_rest_password: "${SAG_PASSWORD}"
       env_devportal_rest_password_old: "manage"
       env_devportal_configure_default_ignore_errors: "true"
+      env_devportal_configure_usermgt: "true"
+      env_devportal_configure_usermgt_ignore_errors: "false"
+      env_devportal_users_sample1_password: password1!
+      env_devportal_users_sample2_password: password2!
+      env_devportal_users_sample3_password: password3!
     networks:
       - stack
-    depends_on: 
-      elasticsearch:
-        condition: service_started
 
   apigateway:
     image: ${REG}webmethods-apigateway:${TAG_APIGATEWAY}
@@ -71,9 +72,6 @@ services:
     hostname: apigateway
     networks:
       - stack
-    depends_on: 
-      elasticsearch:
-        condition: service_started
 
   apigateway_configurator:
     image: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
@@ -103,9 +101,6 @@ services:
       env_apigateway_portalgateway_portal_password: "manager"
     networks:
       - stack
-    depends_on: 
-      apigateway:
-        condition: service_started
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION}
@@ -130,10 +125,23 @@ services:
     networks:
       - stack
 
+  ## Here, we create a small custom Kibana image (based on dockerize tooling) 
+  ## because it's very important to have kibana start AFTER apigateway *on the first run*
+  ## Explanation: Apigateway must first create the indices in elastic search BEFORE Kibana starts 
+  ## (otherwise kibana will create empty analytics indices which gateway will not be able to overwrite)
+  ## WAIT_FOR_HOST and WAIT_FOR_PORT are added env vars to create that waiting condition
   kibana:
-    image: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
+    image: ${REG}webmethods-kibana:${TAG_APIGATEWAY}
+    build:
+      context: .
+      dockerfile: Dockerfile.kibana
+      args:
+        BASE_BUILDER_IMAGE: centos:8
+        BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
     hostname: kibana
     environment:
+      WAIT_FOR_HOST: "apigateway"
+      WAIT_FOR_PORT: "9072"
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       ELASTICSEARCH_USERNAME: elastic
@@ -145,9 +153,3 @@ services:
       NODE_OPTIONS: --max_old_space_size=2048
     networks:
       - stack
-    depends_on: 
-      elasticsearch:
-        condition: service_started
-    ## this "service_healthy" is very important because apigateway must first create the indices in elastic search BEFORE Kibana starts
-      apigateway:
-        condition: service_healthy
