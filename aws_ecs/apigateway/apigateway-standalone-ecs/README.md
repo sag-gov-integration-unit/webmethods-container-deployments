@@ -105,15 +105,20 @@ docker compose up -d
 
 NOTEs: 
 It's important to understand that the "docker compose" command really creates an "AWS CloudFormation" template (AWS automation template), uploads it to AWS, and runs it.
+
+See it for yourself at: [Docker Compose Generated CloudFormation Template](./docker-compose-generated-cloudformation.yaml)
+
 What this means is that at the end of the "docker compose" command above, the environment is not yet fully created... Cloud Formation is still working at creating all the components via CloudFormation.
 To view the CloudFormation task in progress, go to AWS CloudFormation and find the "apigateway-standalone-ecs" stack.
 
-If you want to understand the AWS CloudFormation template generated from the docker-compose (OR if you want to add the AWS CloudFormation template by yourself in AWS), run:
+## Advanced setup - Modify the generated Cloudformation Template
+
+We understand that every cloud environment are different, and that the generated AWS CloudFormation template from the "docker compose" bridge may not be appropriate in all situations. That is why and when you may want to simply generate the "AWS CloudFormation" as a staring point, and then modify it based on your own requirements.
+
+To generate the AWS CloudFormation template from the docker compose bridge, run:
 
 ```
 docker compose convert
 ```
 
-## Advanced setup - Modify the generated Cloudformation Template
-
-
+From there, you can edit and modify anything you want, and upload the AWS CloudFormation template directly to AWS to execute it yourself.
