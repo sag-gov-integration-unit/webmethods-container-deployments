@@ -8,3 +8,9 @@ For more details about Docker and AWS ECS integration, read https://docs.docker.
 
 - Have an AWS account setup fo CLI access
 - Have access to ECS/ECR services
+
+## Current ECS Sample Deployments
+
+Currently available sample ECS deployments:
+
+- [webMethods API Gateway Standalone with NGINX frontend and 3 backend microservices APIs](./apigateway/apigateway-standalone-ecs/README.md)
