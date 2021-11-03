@@ -1,8 +1,15 @@
 # webmethods ApiGateway in AWS Elastic Container Server (ECS) by Software AG Government Solutions 
 
-Sample deployments to AWS ECS
+This is a sample webMethods API Gateway Standalone deployment with NGINX reverse-proxy frontend and 3 backend microservices APIs to be able to test the API Gateway functionnalities.
+Components deployed:
+ - 1 webMethods APIGateway 10.7 standalone
+ - 1 NGINX reverse proxy
+ - 3 sample Microservice APIs (for testing purposes)
+ - 1 load runner (to generate small traffic on the gateway)
 
-1) Run all commands from this directory (due to volumes path mapping)
+## Pre-requisite 0: Run diorectory
+
+Run all commands from this directory (due to volumes path mapping)
 
 ## Pre-requisite 1: SoftwareAG Licenses
 

@@ -1,26 +1,20 @@
 # webmethods Container Deployments by Software AG Government Solutions 
 
-A project with sample container deployment blueprints for the various SoftwareAG webMethods-based solutions.
+A project with sample container deployment blueprints for the various SoftwareAG webMethods-based solutions.\\
 
-## Docker Deployments
+## A note about our container images
 
-Currently available Docker container images and deployments:
+By default, all deployments in this project are setup to use our enhanced-security images currently hosted on "Software AG Government Solutions GitHub Container Registry" at: 
 
-- [webMethods API Gateway](./docker/apigateway/README.md)
-- [webMethods API Portal](./docker/apiportal/README.md)
-- [webMethods Microservice Runtime](./docker/msr/README.md)
-- [webMethods Terracotta BigMemory](./docker/terracotta_bigmemory/README.md)
+[ghcr.io/softwareag-government-solutions/](https://github.com/orgs/softwareag-government-solutions/packages)
 
+To request access to these enhanced-security images, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com) 
 
-Note: By default, all deployments in this project are setup to use the protected "Software AG Government Solutions GitHub Container Registry" at: 
+## Available cloud deployment samples
 
-ghcr.io/softwareag-government-solutions/
+Available cloud deployment samples:
 
-If this must be changed, set the following variables to new registry:
-
-```bash
-export REG=newregistry/registrypath/
-```
-## Kubernetes Deployments
-
-TODO
+- [Docker Desktop](./docker/README.md)
+- [AWS Elatic Container Service (ECS)](./aws_ecs/README.md)
+- [Azure Container Infrastruicture (ACI)](./azure_aci/README.md)
+- [Kubernetes](./kubernetes/README.md)
