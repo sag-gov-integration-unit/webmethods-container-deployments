@@ -13,7 +13,7 @@ services:
       args:
         BUILDER_IMAGE: ${REG}webmethods-terracotta:${TAG_TERRACOTTA}
     volumes:
-      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ./licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
       - TERRACOTTA_SERVER_URL=terracotta1:9510,terracotta2:9510
@@ -25,7 +25,7 @@ services:
     image: ${REG}webmethods-terracotta:${TAG_TERRACOTTA}
     hostname: terracotta1
     volumes:
-      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ./licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
       - TSA_PORT="9510"
@@ -46,7 +46,7 @@ services:
     image: ${REG}webmethods-terracotta:${TAG_TERRACOTTA}
     hostname: terracotta2
     volumes:
-      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ./licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
       - TSA_PORT="9510"
@@ -70,7 +70,7 @@ services:
       - 9443:9443
     hostname: tmc
     volumes:
-      - ${PWD}/licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ./licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
     networks:

@@ -25,7 +25,7 @@ services:
       SPRING_ELASTICSEARCH_REST_USERNAME: elastic
       SPRING_ELASTICSEARCH_REST_PASSWORD: ${ELASTIC_PASSWORD}
     volumes:
-      - ${PWD}/licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:ro
+      - ./licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:ro
     hostname: devportal
     networks:
       - stack
@@ -33,7 +33,7 @@ services:
   devportal_configurator:
     image: ${REG}webmethods-devportal-configurator:${TAG_PORTAL_CONFIGURATOR}
     volumes:
-      - ${PWD}/local/sagdevops-ansible-roles:/ansible/roles/sagdevops-ansible-roles-dev-0.2.4:ro
+      - ./local/sagdevops-ansible-roles:/ansible/roles/sagdevops-ansible-roles-dev-0.2.4:ro
     environment:
       env_devportal_protocol: http
       env_devportal_host: devportal
@@ -68,7 +68,7 @@ services:
       APIGW_KIBANA_DASHBOARDINSTANCE: http://kibana:5601
       APIGW_KIBANA_AUTOSTART: "false"
     volumes:
-      - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
     networks:
       - stack

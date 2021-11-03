@@ -31,8 +31,8 @@ services:
       SCRIPTS_LOGGER_LEVEL: 0
     volumes:
       - ./configs:/configs:rw
-      - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
-      - ${PWD}/licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
+      - ./licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
     hostname: apigateway1
     networks:
       - stack
@@ -69,8 +69,8 @@ services:
       SCRIPTS_LOGGER_LEVEL: 0
     volumes:
       - ./configs:/configs:rw
-      - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
-      - ${PWD}/licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
+      - ./licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
     hostname: apigateway2
     networks:
       - stack
@@ -183,7 +183,7 @@ services:
       - DATA_OFFHEAP_SIZE=1g
       - RESTARTABLE_ENABLED=false
     volumes:
-      - ${PWD}/licensing/terracotta-license.key:/opt/softwareag/Terracotta/terracotta-license.key:ro
+      - ./licensing/terracotta-license.key:/opt/softwareag/Terracotta/terracotta-license.key:ro
     networks:
       - stack
 

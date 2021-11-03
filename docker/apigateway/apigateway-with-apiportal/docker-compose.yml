@@ -27,7 +27,7 @@ services:
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=50 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10"
     volumes:
       - apigw-elasticdata:/opt/softwareag/InternalDataStore/data:rw
-      - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
     networks:
       - stack
@@ -43,7 +43,7 @@ services:
       - LB_EXT_HOST=apiportal
       - LB_EXT_PORT=18102
     volumes:
-      - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
+      - ./licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
       - apip-postgresdata:/opt/softwareag/API_Portal/server/bin/work/work_postgres_m/data:rw
       - apip-elasticdata:/opt/softwareag/API_Portal/server/bin/work/work_elastic_m/data:rw
       - apip-cloudsearchdata:/opt/softwareag/API_Portal/server/bin/work/work_cloudsearch_m/rsindex:rw

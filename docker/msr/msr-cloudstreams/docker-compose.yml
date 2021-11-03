@@ -15,6 +15,6 @@ services:
       JAVA_MAX_MEM: 1g
       JAVA_OPTS: "-Dtest=1 -Dtes2=2 -Dtest3=3"
     volumes:
-      - ${PWD}/licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/config/licenseKey.xml:rw
+      - ./licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/config/licenseKey.xml:rw
     networks:
       - stack

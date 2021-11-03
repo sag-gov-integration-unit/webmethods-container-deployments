@@ -20,7 +20,7 @@ services:
       JAVA_OPTS: ""
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
     volumes:
-      - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
     networks:
       - stack
@@ -35,7 +35,7 @@ services:
       - TENANTMGT_SYSTEMUSER_PASSWORD=${SAG_PASSWORD}
       - TENANTMGT_SUPERUSER_PASSWORD=${SAG_PASSWORD}
     volumes:
-      - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
+      - ./licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
       - apiportal-data:/data:rw
     networks:
       - stack
@@ -44,7 +44,7 @@ services:
     # image: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
     image: ${REG}webmethods-apigateway-configurator:10.7-latest-local
     volumes:
-      - ${PWD}/sagdevops-ansible-roles:/ansible/roles:ro
+      - ./sagdevops-ansible-roles:/ansible/roles:ro
     environment: 
       ANSIBLE_ROLES_PATH: /ansible/roles
       env_apigateway_host: apigateway

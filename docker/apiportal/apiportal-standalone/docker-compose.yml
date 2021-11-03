@@ -16,7 +16,7 @@ services:
       - 18101:18101
     hostname: apiportal
     volumes:
-      - ${PWD}/licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
+      - ./licensing/apiportal-licenseKey.xml:/opt/softwareag/API_Portal/license.xml:rw
       - apip-postgresdata:/opt/softwareag/API_Portal/server/bin/work/work_postgres_m/data:rw
       - apip-elasticdata:/opt/softwareag/API_Portal/server/bin/work/work_elastic_m/data:rw
       - apip-cloudsearchdata:/opt/softwareag/API_Portal/server/bin/work/work_cloudsearch_m/rsindex:rw

@@ -13,7 +13,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ${PWD}/apigateway-standalone/nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
+      - ./apigateway-standalone/nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
     networks:
       - stack
 
@@ -26,7 +26,7 @@ services:
       JAVA_OPTS: ""
       RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
     volumes:
-      - ${PWD}/licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway
     networks:
       - stack
