@@ -8,7 +8,13 @@ TAG_APIPORTAL=dev-10.7.1-36
 SAG_PASSWORD=somethingnew
 
 #Set your Azure ACR Environment Specific Variables
+#
 RESOURCEGROUP=""
+
+#REGISTRYLOGINSERVER - for authentication...no trailing slash
 REGISTRYLOGINSERVER=""
 REGISTRYUSERNAME=""
 REGISTRYPASSWORD=""
+
+#REGISTRYSERVERNAME - docker server name for the tag...use a trailing slash
+REGISTRYSERVERNAME=
