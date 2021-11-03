@@ -10,9 +10,7 @@ By default, all deployments in this project are setup to use our enhanced-securi
 
 To request access to these enhanced-security images, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com) 
 
-## Available cloud deployment samples
-
-Available cloud deployment samples:
+## Available Cloud Deployment types
 
 - [Docker Desktop](./docker/README.md)
 - [AWS Elatic Container Service (ECS)](./aws_ecs/README.md)
