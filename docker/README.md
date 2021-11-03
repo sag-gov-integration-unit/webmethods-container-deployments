@@ -4,7 +4,10 @@
 
 - Have Docker desktop installed
 - Have docker-compose install (if using an older version of docker desktop)
-- Have access to Software Gov Solutions Github Registry at ghcr.io/softwareag-government-solutions/
+- Have access to Software Gov Solutions Github Registry at [ghcr.io/softwareag-government-solutions/](https://github.com/orgs/softwareag-government-solutions/packages)
+- Have valid licenses (trial or full) for SoftwareAG products
+
+If you need help, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com) 
 
 ## Currently available Docker Desktop deployments
 

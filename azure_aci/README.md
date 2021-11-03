@@ -8,6 +8,7 @@ Sample deployments to Azure ACI in the Government Cloud
 - Have your own, private Azure Container Registry created.  Be sure to enable the admin user under "Access Keys".
 - Have your Software AG API Gateway and API Portal license files handy.
 
+If you need help, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com) 
 
 ## Setup Steps
 
