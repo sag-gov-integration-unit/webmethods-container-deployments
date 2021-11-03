@@ -142,6 +142,7 @@ services:
         BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
     hostname: kibana
     environment:
+      WAIT_FOR_ENABLED: "true"
       WAIT_FOR_HOST: "apigateway"
       WAIT_FOR_PORT: "9072"
       SERVER_NAME: kibana

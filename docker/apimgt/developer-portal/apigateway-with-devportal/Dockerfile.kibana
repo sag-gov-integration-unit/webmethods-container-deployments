@@ -21,7 +21,7 @@ FROM $BASE_KIBANA_IMAGE
 LABEL maintainer="fabien.sanglier@softwareaggov.com" \
       description="A simple image with dockerize tooling added (ref: https://github.com/jwilder/dockerize/) to be able to wait for external services"
 
-ENV WAIT_FOR_ENABLED="true"
+ENV WAIT_FOR_ENABLED=""
 ENV WAIT_FOR_HOST=""
 ENV WAIT_FOR_PORT=""
 ENV WAIT_FOR_INTERVAL_SEC="10"
@@ -29,4 +29,4 @@ ENV WAIT_FOR_TIMEOUT_SEC="600"
 
 COPY --from=builder /tmp/dockerize /usr/local/bin
 
-CMD dockerize -wait tcp://${WAIT_FOR_HOST}:${WAIT_FOR_PORT} -wait-retry-interval ${WAIT_FOR_INTERVAL_SEC}s -timeout ${WAIT_FOR_TIMEOUT_SEC}s /usr/local/bin/kibana-docker
+CMD if [ "$WAIT_FOR_ENABLED" != "true" ]; then /usr/local/bin/kibana-docker ; else dockerize -wait tcp://${WAIT_FOR_HOST}:${WAIT_FOR_PORT} -wait-retry-interval ${WAIT_FOR_INTERVAL_SEC}s -timeout ${WAIT_FOR_TIMEOUT_SEC}s /usr/local/bin/kibana-docker; fi
