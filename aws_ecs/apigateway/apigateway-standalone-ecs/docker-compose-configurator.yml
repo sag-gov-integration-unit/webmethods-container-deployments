@@ -3,6 +3,10 @@ version: "3.2"
 networks:
   apigwnet:
 
+x-aws-vpc: ${TARGET_VPC}
+x-aws-loadbalancer: ${TARGET_LOADBALANCER}
+x-aws-cluster: ${TARGET_ECS_CLUSTER}
+
 services:
 
   apigateway_configurator:
