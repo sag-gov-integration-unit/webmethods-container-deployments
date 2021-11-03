@@ -2,7 +2,22 @@
 
 Sample deployments to AWS ECS
 
-## Pre-requisite 1: Push images to ECR
+1) Run all commands from this directory (due to volumes path mapping)
+
+## Pre-requisite 1: SoftwareAG Licenses
+
+Make sure you save a valid licenses in "licensing" directory with the expected file name (due to volume mapping / dockerfile copying):
+
+ - ApiGateway Advanced
+   - expected filename: "./licensing/apigateway-licenseKey.xml"
+ - API Portal (*Optional: only needed for the deployments involving API Portal product*)
+   - expected filename: "./licensing/apiportal-licenseKey.xml"
+ - Terracotta (*Optional: only needed for the deployments involving API Gateway clustering*)
+   - expected filename: "./licensing/terracotta-license.key"
+ - Microgateway (*Optional: only needed for the deployments involving Microgateway product*)
+   - expected filename: "./licensing/microgateway-licenseKey.xml"
+
+## Pre-requisite 2: Push images to ECR
 
 First, let's push our images to the AWS Elastic Container Registry (ECR).
 
@@ -21,23 +36,29 @@ aws ecr get-login-password --region ${REGION} | docker login --username AWS --pa
 
 2) Build the images:
 
+NOTE: this mostly downloads the images from existing non-AWS registry, add licenses as needed, and retag them with the AWS ECR registry so we can push them into AWS ECR.
+
 ```
-docker-compose -f docker-compose-build.yml build
+docker-compose build
 ```
 
-2) Create the repos in AWS ECR
+3) Create the repos in AWS ECR
 
-Create the 2 needed repos in ECR:
+Docker-compose will not create the AWS ECR repository when you push...so we need to pre-create these repository in AWS ECR first (one-time setup) 
 - webmethods-apigateway-reverseproxy
 - webmethods-apigateway-standalone
+- webmethods-apigateway-configurator
+- webmethods-sample-apis-bookstore
+- webmethods-sample-apis-covid
+- webmethods-sample-apis-uszip
 
-3) Push the images:
+4) Push the images:
 
 ```
-docker-compose -f docker-compose-build.yml push
+docker-compose push
 ```
 
-## Pre-requisite 2: Create Docker ECS context
+## Pre-requisite 3: Create Docker ECS context
 
 If you have already installed and configured the AWS CLI, the setup command lets you select an existing AWS profile to connect to Amazon. Otherwise, you can create a new profile by passing an AWS access key ID and a secret access key. Finally, you can configure your ECS context to retrieve AWS credentials by AWS_* environment variables, which is a common way to integrate with third-party tools and single-sign-on providers.
 
@@ -47,6 +68,32 @@ Create ECS context for AWS:
 docker context create ecs myecscontext
 ```
 
+If your ECS context was already created, simple use it by running:
+
+```
+docker context use myecscontext
+```
+
+Make sure the context is actually set by listing them. A "*" annotation beside the context name will show you which context is currently selected (should be your ECS context by now)
+
+```
+docker context list
+
+> myecscontext *      ecs
+```
+## Pre-requisite 4: Create AWS Components
+
+Because cloud operators / architects generally want extra control on the AWS items created, we have structured our docker-compose deployment file to expect the following 3 items to be externally created:
+ - AWS VPC (to host the ECS cluster) 
+ - AWS ECS cluster (to create the type of ECS cluster you want)
+ - AWS Load balancer (to route the traffic to the ECS cluster) 
+
+So in our docker-compose, we allow you to specify the IDs for the following 3 pre-created AWS components by setting up few variables in the .env file:
+ - x-aws-vpc: ${TARGET_VPC}
+ - x-aws-loadbalancer: ${TARGET_LOADBALANCER}
+ - x-aws-cluster: ${TARGET_ECS_CLUSTER}
+
+Overall, use the right IDs to your own resources in AWS.
 
 ## Load the deployment into ECS using compose
 
@@ -56,8 +103,17 @@ Simply run:
 docker compose up -d
 ```
 
-Note: if you want to check out the AWS cloud formation generated from the docker-compose (or if you want to add the cloudformation template by yourself in AWS), run:
+NOTEs: 
+It's important to understand that the "docker compose" command really creates an "AWS CloudFormation" template (AWS automation template), uploads it to AWS, and runs it.
+What this means is that at the end of the "docker compose" command above, the environment is not yet fully created... Cloud Formation is still working at creating all the components via CloudFormation.
+To view the CloudFormation task in progress, go to AWS CloudFormation and find the "apigateway-standalone-ecs" stack.
+
+If you want to understand the AWS CloudFormation template generated from the docker-compose (OR if you want to add the AWS CloudFormation template by yourself in AWS), run:
 
 ```
 docker compose convert
 ```
+
+## Advanced setup - Modify the generated Cloudformation Template
+
+
