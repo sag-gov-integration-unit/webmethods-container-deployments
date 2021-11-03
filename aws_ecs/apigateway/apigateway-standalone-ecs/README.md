@@ -118,6 +118,19 @@ See it for yourself at: [Docker Compose Generated CloudFormation Template](./doc
 What this means is that at the end of the "docker compose" command above, the environment is not yet fully created... Cloud Formation is still working at creating all the components via CloudFormation.
 To view the CloudFormation task in progress, go to AWS CloudFormation and find the "apigateway-standalone-ecs" stack.
 
+## Destroy the environment
+
+Simply run:
+
+```
+docker compose down
+```
+
+NOTE: if you specifically created the following AWS resources for this, you should delte them manually as needed:
+ - x-aws-vpc: ${TARGET_VPC}
+ - x-aws-loadbalancer: ${TARGET_LOADBALANCER}
+ - x-aws-cluster: ${TARGET_ECS_CLUSTER}
+
 ## Advanced setup - Modify the generated Cloudformation Template
 
 We understand that every cloud environment are different, and that the generated AWS CloudFormation template from the "docker compose" bridge may not be appropriate in all situations. That is why and when you may want to simply generate the "AWS CloudFormation" as a staring point, and then modify it based on your own requirements.
