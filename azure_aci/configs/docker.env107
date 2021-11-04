@@ -1,15 +1,22 @@
+#REG is the source of the webMethods containers.  use "ghcr.io/softwareag-government-solutions/" for Software AG Government Solutions
 REG=ghcr.io/softwareag-government-solutions/
+
+#the TAG* values are used for resolving the names and versions of the containers
 TAG_APIGATEWAY=dev-10.7-latest
 TAG_APIGATEWAY_CONFIGURATOR=configurator-10.7-latest
 TAG_ELASTIC_VERSION=7.7.1
 TAG_TERRACOTTA=dev-4.3.9-latest
 TAG_SAMPLE_APIS=dev-0.0.4
 TAG_APIPORTAL=dev-10.7.1-36
+
+#SAG_PASSWORD is what the configurator will set the initial Administrator password to be on the Gateway
 SAG_PASSWORD=somethingnew
 
 #Set your Azure ACR Environment Specific Variables
-#
 RESOURCEGROUP=""
+
+#DNS_PREFIX is used for the dns-label-name which will make the FQDN unique
+DNS_PREFIX="xxx-"
 
 #REGISTRYLOGINSERVER - for authentication...no trailing slash
 REGISTRYLOGINSERVER=""
