@@ -1,0 +1,812 @@
+AWSTemplateFormatVersion: 2010-09-09
+Metadata:
+  Cluster: arn:aws:ecs:us-east-1:815840818766:cluster/myecstests
+Resources:
+  Apigateway5555Listener:
+    Properties:
+      DefaultActions:
+        - ForwardConfig:
+            TargetGroups:
+              - TargetGroupArn:
+                  Ref: Apigateway5555TargetGroup
+          Type: forward
+      LoadBalancerArn: arn:aws:elasticloadbalancing:us-east-1:815840818766:loadbalancer/app/ecs-tests-alb/1eb54db2982c4b6f
+      Port: 5555
+      Protocol: HTTP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  Apigateway5555TargetGroup:
+    Properties:
+      Port: 5555
+      Protocol: HTTP
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+      TargetType: ip
+      VpcId: vpc-0cecc9e7fa3bee3f1
+      HealthCheckPath: /rest/apigateway/health
+      Matcher:
+        HttpCode: "200"
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: "180"
+        - Key: slow_start.duration_seconds
+          Value: "300"
+        - Key: load_balancing.algorithm.type
+          Value: round_robin
+        - Key: stickiness.enabled
+          Value: "true"
+        - Key: stickiness.type
+          Value: lb_cookie
+        - Key: stickiness.lb_cookie.duration_seconds
+          Value: "3600"
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  Apigateway9072Listener:
+    Properties:
+      DefaultActions:
+        - ForwardConfig:
+            TargetGroups:
+              - TargetGroupArn:
+                  Ref: Apigateway9072TargetGroup
+          Type: forward
+      LoadBalancerArn: arn:aws:elasticloadbalancing:us-east-1:815840818766:loadbalancer/app/ecs-tests-alb/1eb54db2982c4b6f
+      Port: 9072
+      Protocol: HTTP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  Apigateway9072TargetGroup:
+    Properties:
+      Port: 9072
+      Protocol: HTTP
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+      TargetType: ip
+      VpcId: vpc-0cecc9e7fa3bee3f1
+      HealthCheckPath: /apigatewayui/login
+      Matcher:
+        HttpCode: "200"
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: "180"
+        - Key: slow_start.duration_seconds
+          Value: "300"
+        - Key: load_balancing.algorithm.type
+          Value: round_robin
+        - Key: stickiness.enabled
+          Value: "true"
+        - Key: stickiness.type
+          Value: lb_cookie
+        - Key: stickiness.lb_cookie.duration_seconds
+          Value: "3600"
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  ApigatewayService:
+    DependsOn:
+      - Apigateway9072Listener
+      - Apigateway5555Listener
+    Properties:
+      Cluster: arn:aws:ecs:us-east-1:815840818766:cluster/myecstests
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: apigateway
+          ContainerPort: 9072
+          TargetGroupArn:
+            Ref: Apigateway9072TargetGroup
+        - ContainerName: apigateway
+          ContainerPort: 5555
+          TargetGroupArn:
+            Ref: Apigateway5555TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Ref: ApigwnetNetwork
+          Subnets:
+            - subnet-07e700c7d40852725
+            - subnet-0c47347954c1717f4
+            - subnet-0ebca36d96481e15e
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+        - RegistryArn:
+            Fn::GetAtt:
+              - ApigatewayServiceDiscoveryEntry
+              - Arn
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: apigateway
+      TaskDefinition:
+        Ref: ApigatewayTaskDefinition
+    Type: AWS::ECS::Service
+  ApigatewayServiceDiscoveryEntry:
+    Properties:
+      Description: '"apigateway" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+          - TTL: 60
+            Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: apigateway
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  ApigatewayTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+        - Command:
+            - us-east-1.compute.internal
+            - dockercompose-apigateway-with-apiportal.local
+          Essential: false
+          Image: docker/ecs-searchdomain-sidecar:1.0
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: Apigateway_ResolvConf_InitContainer
+        - DependsOn:
+            - Condition: SUCCESS
+              ContainerName: Apigateway_ResolvConf_InitContainer
+          Environment:
+            - Name: APIGW_ELASTICSEARCH_TENANTID
+              Value: apigateway
+            - Name: IDS_HEAP_SIZE
+              Value: 1g
+            - Name: JAVA_MAX_MEM
+              Value: 1g
+            - Name: JAVA_MIN_MEM
+              Value: 1g
+            - Name: JAVA_OPTS
+            - Name: RUNTIME_WATT_PROPERTIES
+              Value:
+                watt.net.timeout=400 watt.server.threadPool=50 watt.server.threadPoolMin=25
+                watt.net.maxClientKeepaliveConns=10
+          Essential: true
+          Image: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-apigateway-standalone:dev-10.7.2-36@sha256:97419452682592c1a257c0b0ac0aea0614577076d559f2a83b2e30f2aa13e634
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: apigateway
+          PortMappings:
+            - ContainerPort: 9072
+              HostPort: 9072
+            - ContainerPort: 5555
+              HostPort: 5555
+          Ulimits:
+            - HardLimit: 65535
+              Name: nofile
+              SoftLimit: 65535
+      Cpu: "2048"
+      ExecutionRoleArn:
+        Ref: ApigatewayTaskExecutionRole
+      Family: dockercompose-apigateway-with-apiportal-apigateway
+      Memory: "4096"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  ApigatewayTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: apigateway
+    Type: AWS::IAM::Role
+  Apigwnet5555Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: apigateway:5555/ on apigwnet network
+      FromPort: 5555
+      GroupId:
+        Ref: ApigwnetNetwork
+      IpProtocol: "-1"
+      ToPort: 5555
+    Type: AWS::EC2::SecurityGroupIngress
+  Apigwnet9072Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: apigateway:9072/ on apigwnet network
+      FromPort: 9072
+      GroupId:
+        Ref: ApigwnetNetwork
+      IpProtocol: "-1"
+      ToPort: 9072
+    Type: AWS::EC2::SecurityGroupIngress
+  Apigwnet18101Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: apiportal:18101/ on apigwnet network
+      FromPort: 18101
+      GroupId:
+        Ref: ApigwnetNetwork
+      IpProtocol: "-1"
+      ToPort: 18101
+    Type: AWS::EC2::SecurityGroupIngress
+  ApigwnetNetwork:
+    Properties:
+      GroupDescription:
+        dockercompose-apigateway-with-apiportal Security Group for
+        apigwnet network
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.network
+          Value: dockercompose-apigateway-with-apiportal_apigwnet
+      VpcId: vpc-0cecc9e7fa3bee3f1
+    Type: AWS::EC2::SecurityGroup
+  ApigwnetNetworkIngress:
+    Properties:
+      Description: Allow communication within network apigwnet
+      GroupId:
+        Ref: ApigwnetNetwork
+      IpProtocol: "-1"
+      SourceSecurityGroupId:
+        Ref: ApigwnetNetwork
+    Type: AWS::EC2::SecurityGroupIngress
+  Apiportal18101Listener:
+    Properties:
+      DefaultActions:
+        - ForwardConfig:
+            TargetGroups:
+              - TargetGroupArn:
+                  Ref: Apiportal18101TargetGroup
+          Type: forward
+      LoadBalancerArn: arn:aws:elasticloadbalancing:us-east-1:815840818766:loadbalancer/app/ecs-tests-alb/1eb54db2982c4b6f
+      Port: 18101
+      Protocol: HTTP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  Apiportal18101TargetGroup:
+    Properties:
+      Port: 18101
+      Protocol: HTTP
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+      TargetType: ip
+      VpcId: vpc-0cecc9e7fa3bee3f1
+      HealthCheckPath: /
+      Matcher:
+        HttpCode: "200"
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: "180"
+        - Key: slow_start.duration_seconds
+          Value: "300"
+        - Key: load_balancing.algorithm.type
+          Value: round_robin
+        - Key: stickiness.enabled
+          Value: "true"
+        - Key: stickiness.type
+          Value: lb_cookie
+        - Key: stickiness.lb_cookie.duration_seconds
+          Value: "3600"
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  ApiportalService:
+    DependsOn:
+      - Apiportal18101Listener
+    Properties:
+      Cluster: arn:aws:ecs:us-east-1:815840818766:cluster/myecstests
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: apiportal
+          ContainerPort: 18101
+          TargetGroupArn:
+            Ref: Apiportal18101TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Ref: ApigwnetNetwork
+          Subnets:
+            - subnet-07e700c7d40852725
+            - subnet-0c47347954c1717f4
+            - subnet-0ebca36d96481e15e
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+        - RegistryArn:
+            Fn::GetAtt:
+              - ApiportalServiceDiscoveryEntry
+              - Arn
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: apiportal
+      TaskDefinition:
+        Ref: ApiportalTaskDefinition
+    Type: AWS::ECS::Service
+  ApiportalServiceDiscoveryEntry:
+    Properties:
+      Description: '"apiportal" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+          - TTL: 60
+            Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: apiportal
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  ApiportalTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+        - Command:
+            - us-east-1.compute.internal
+            - dockercompose-apigateway-with-apiportal.local
+          Essential: false
+          Image: docker/ecs-searchdomain-sidecar:1.0
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: Apiportal_ResolvConf_InitContainer
+        - DependsOn:
+            - Condition: SUCCESS
+              ContainerName: Apiportal_ResolvConf_InitContainer
+          Environment:
+            - Name: LB_EXT_HOST
+              Value: aws-alb-hostname
+            - Name: LB_EXT_PORT
+              Value: "18101"
+            - Name: LB_EXT_SCHEME
+              Value: http
+          Essential: true
+          Image: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-apiportal:dev-10.7.1-36@sha256:41c6bb92635108888931be5243872d97632d4b8cb9c2659cdb94cf0119aace87
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: apiportal
+          PortMappings:
+            - ContainerPort: 18101
+              HostPort: 18101
+          Ulimits:
+            - HardLimit: 65535
+              Name: nofile
+              SoftLimit: 65535
+      Cpu: "2048"
+      ExecutionRoleArn:
+        Ref: ApiportalTaskExecutionRole
+      Family: dockercompose-apigateway-with-apiportal-apiportal
+      Memory: "8192"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  ApiportalTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: apiportal
+    Type: AWS::IAM::Role
+  CloudMap:
+    Properties:
+      Description: Service Map for Docker Compose project dockercompose-apigateway-with-apiportal
+      Name: dockercompose-apigateway-with-apiportal.local
+      Vpc: vpc-0cecc9e7fa3bee3f1
+    Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+  DefaultNetwork:
+    Properties:
+      GroupDescription:
+        dockercompose-apigateway-with-apiportal Security Group for
+        default network
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.network
+          Value: dockercompose-apigateway-with-apiportal_default
+      VpcId: vpc-0cecc9e7fa3bee3f1
+    Type: AWS::EC2::SecurityGroup
+  DefaultNetworkIngress:
+    Properties:
+      Description: Allow communication within network default
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: "-1"
+      SourceSecurityGroupId:
+        Ref: DefaultNetwork
+    Type: AWS::EC2::SecurityGroupIngress
+  LogGroup:
+    Properties:
+      LogGroupName: /docker-compose/dockercompose-apigateway-with-apiportal
+    Type: AWS::Logs::LogGroup
+  WebmethodssampleapisbookstoreService:
+    Properties:
+      Cluster: arn:aws:ecs:us-east-1:815840818766:cluster/myecstests
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Ref: ApigwnetNetwork
+          Subnets:
+            - subnet-07e700c7d40852725
+            - subnet-0c47347954c1717f4
+            - subnet-0ebca36d96481e15e
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+        - RegistryArn:
+            Fn::GetAtt:
+              - WebmethodssampleapisbookstoreServiceDiscoveryEntry
+              - Arn
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: webmethods-sample-apis-bookstore
+      TaskDefinition:
+        Ref: WebmethodssampleapisbookstoreTaskDefinition
+    Type: AWS::ECS::Service
+  WebmethodssampleapisbookstoreServiceDiscoveryEntry:
+    Properties:
+      Description:
+        '"webmethods-sample-apis-bookstore" service discovery entry in
+        Cloud Map'
+      DnsConfig:
+        DnsRecords:
+          - TTL: 60
+            Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: webmethods-sample-apis-bookstore
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  WebmethodssampleapisbookstoreTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+        - Command:
+            - us-east-1.compute.internal
+            - dockercompose-apigateway-with-apiportal.local
+          Essential: false
+          Image: docker/ecs-searchdomain-sidecar:1.0
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: Webmethodssampleapisbookstore_ResolvConf_InitContainer
+        - DependsOn:
+            - Condition: SUCCESS
+              ContainerName: Webmethodssampleapisbookstore_ResolvConf_InitContainer
+          Essential: true
+          Image: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-sample-apis-bookstore:dev-0.0.4@sha256:41c18bec73478d205210812f2e107d31f47ac5b58f8bcabfb2b6c06798f61e26
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: webmethods-sample-apis-bookstore
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: WebmethodssampleapisbookstoreTaskExecutionRole
+      Family: dockercompose-apigateway-with-apiportal-webmethods-sample-apis-bookstore
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  WebmethodssampleapisbookstoreTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: webmethods-sample-apis-bookstore
+    Type: AWS::IAM::Role
+  WebmethodssampleapiscovidService:
+    Properties:
+      Cluster: arn:aws:ecs:us-east-1:815840818766:cluster/myecstests
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Ref: ApigwnetNetwork
+          Subnets:
+            - subnet-07e700c7d40852725
+            - subnet-0c47347954c1717f4
+            - subnet-0ebca36d96481e15e
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+        - RegistryArn:
+            Fn::GetAtt:
+              - WebmethodssampleapiscovidServiceDiscoveryEntry
+              - Arn
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: webmethods-sample-apis-covid
+      TaskDefinition:
+        Ref: WebmethodssampleapiscovidTaskDefinition
+    Type: AWS::ECS::Service
+  WebmethodssampleapiscovidServiceDiscoveryEntry:
+    Properties:
+      Description:
+        '"webmethods-sample-apis-covid" service discovery entry in Cloud
+        Map'
+      DnsConfig:
+        DnsRecords:
+          - TTL: 60
+            Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: webmethods-sample-apis-covid
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  WebmethodssampleapiscovidTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+        - Command:
+            - us-east-1.compute.internal
+            - dockercompose-apigateway-with-apiportal.local
+          Essential: false
+          Image: docker/ecs-searchdomain-sidecar:1.0
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: Webmethodssampleapiscovid_ResolvConf_InitContainer
+        - DependsOn:
+            - Condition: SUCCESS
+              ContainerName: Webmethodssampleapiscovid_ResolvConf_InitContainer
+          Essential: true
+          Image: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-sample-apis-covid:dev-0.0.4@sha256:41c18bec73478d205210812f2e107d31f47ac5b58f8bcabfb2b6c06798f61e26
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: webmethods-sample-apis-covid
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: WebmethodssampleapiscovidTaskExecutionRole
+      Family: dockercompose-apigateway-with-apiportal-webmethods-sample-apis-covid
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  WebmethodssampleapiscovidTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: webmethods-sample-apis-covid
+    Type: AWS::IAM::Role
+  WebmethodssampleapisuszipService:
+    Properties:
+      Cluster: arn:aws:ecs:us-east-1:815840818766:cluster/myecstests
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Ref: ApigwnetNetwork
+          Subnets:
+            - subnet-07e700c7d40852725
+            - subnet-0c47347954c1717f4
+            - subnet-0ebca36d96481e15e
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+        - RegistryArn:
+            Fn::GetAtt:
+              - WebmethodssampleapisuszipServiceDiscoveryEntry
+              - Arn
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: webmethods-sample-apis-uszip
+      TaskDefinition:
+        Ref: WebmethodssampleapisuszipTaskDefinition
+    Type: AWS::ECS::Service
+  WebmethodssampleapisuszipServiceDiscoveryEntry:
+    Properties:
+      Description:
+        '"webmethods-sample-apis-uszip" service discovery entry in Cloud
+        Map'
+      DnsConfig:
+        DnsRecords:
+          - TTL: 60
+            Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: webmethods-sample-apis-uszip
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  WebmethodssampleapisuszipTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+        - Command:
+            - us-east-1.compute.internal
+            - dockercompose-apigateway-with-apiportal.local
+          Essential: false
+          Image: docker/ecs-searchdomain-sidecar:1.0
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: Webmethodssampleapisuszip_ResolvConf_InitContainer
+        - DependsOn:
+            - Condition: SUCCESS
+              ContainerName: Webmethodssampleapisuszip_ResolvConf_InitContainer
+          Essential: true
+          Image: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-sample-apis-uszip:dev-0.0.4@sha256:41c18bec73478d205210812f2e107d31f47ac5b58f8bcabfb2b6c06798f61e26
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: dockercompose-apigateway-with-apiportal
+          Name: webmethods-sample-apis-uszip
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: WebmethodssampleapisuszipTaskExecutionRole
+      Family: dockercompose-apigateway-with-apiportal-webmethods-sample-apis-uszip
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  WebmethodssampleapisuszipTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: com.docker.compose.project
+          Value: dockercompose-apigateway-with-apiportal
+        - Key: com.docker.compose.service
+          Value: webmethods-sample-apis-uszip
+    Type: AWS::IAM::Role

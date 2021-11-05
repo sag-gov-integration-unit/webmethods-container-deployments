@@ -1,6 +1,10 @@
 AWSTemplateFormatVersion: 2010-09-09
 Metadata:
   Cluster: arn:aws:ecs:us-east-1:815840818766:cluster/myecstests
+Outputs:
+  ApigatewayConfiguratorTaskDef:
+    Value: !Ref 'ApigatewayconfiguratorTaskDefinition'
+    Description: 'Apigateway Configurator Task Definition'
 Resources:
   ApigatewayconfiguratorTaskDefinition:
     Properties:
@@ -13,11 +17,10 @@ Resources:
         LogConfiguration:
           LogDriver: awslogs
           Options:
-            awslogs-group:
-              Ref: LogGroup
+            awslogs-group: /docker-compose/apigateway-standalone-ecs
             awslogs-region:
               Ref: AWS::Region
-            awslogs-stream-prefix: apigateway-standalone-ecs
+            awslogs-stream-prefix: apigateway-standalone-ecs-configurator
         Name: Apigatewayconfigurator_ResolvConf_InitContainer
       - DependsOn:
         - Condition: SUCCESS
@@ -75,11 +78,10 @@ Resources:
         LogConfiguration:
           LogDriver: awslogs
           Options:
-            awslogs-group:
-              Ref: LogGroup
+            awslogs-group: /docker-compose/apigateway-standalone-ecs
             awslogs-region:
               Ref: AWS::Region
-            awslogs-stream-prefix: apigateway-standalone-ecs
+            awslogs-stream-prefix: apigateway-standalone-ecs-configurator
         Name: apigateway_configurator
       Cpu: "256"
       ExecutionRoleArn:
@@ -106,11 +108,9 @@ Resources:
       - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       Tags:
       - Key: com.docker.compose.project
-        Value: apigateway-standalone-ecs
+        Value: apigateway-standalone-ecs-configurator
       - Key: com.docker.compose.service
         Value: apigateway_configurator
     Type: AWS::IAM::Role
-  LogGroup:
-    Properties:
-      LogGroupName: /docker-compose/apigateway-standalone-ecs
-    Type: AWS::Logs::LogGroup
+
+

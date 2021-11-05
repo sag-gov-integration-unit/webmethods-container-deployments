@@ -1,0 +1,153 @@
+version: "3.2"
+
+networks:
+  apigwnet:
+
+x-aws-vpc: ${TARGET_VPC}
+x-aws-cluster: ${TARGET_ECS_CLUSTER}
+x-aws-loadbalancer: ${TARGET_LOADBALANCER}
+x-aws-cloudformation:
+  Resources:
+    ApigatewayService:
+      Properties:
+        NetworkConfiguration:
+          AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+    ApiportalService:
+      Properties:
+        NetworkConfiguration:
+          AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+    WebmethodssampleapisbookstoreService:
+      Properties:
+        NetworkConfiguration:
+          AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+    WebmethodssampleapiscovidService:
+      Properties:
+        NetworkConfiguration:
+          AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+    WebmethodssampleapisuszipService:
+      Properties:
+        NetworkConfiguration:
+          AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+    Apigateway5555TargetGroup:
+      Properties:
+        HealthCheckPath: /rest/apigateway/health
+        Matcher:
+          HttpCode: "200"
+        TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '180'
+        - Key: slow_start.duration_seconds
+          Value: '300'
+        - Key: load_balancing.algorithm.type
+          Value: 'round_robin'          
+        - Key: stickiness.enabled
+          Value: 'true'
+        - Key: stickiness.type
+          Value: lb_cookie
+        - Key: stickiness.lb_cookie.duration_seconds
+          Value: '3600'
+    Apigateway9072TargetGroup:
+      Properties:
+        HealthCheckPath: /apigatewayui/login
+        Matcher:
+          HttpCode: "200"
+        TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '180'
+        - Key: slow_start.duration_seconds
+          Value: '300'
+        - Key: load_balancing.algorithm.type
+          Value: 'round_robin'          
+        - Key: stickiness.enabled
+          Value: 'true'
+        - Key: stickiness.type
+          Value: lb_cookie
+        - Key: stickiness.lb_cookie.duration_seconds
+          Value: '3600'
+    Apiportal18101TargetGroup:
+      Properties:
+        HealthCheckPath: /
+        Matcher:
+          HttpCode: "200"
+        TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '180'
+        - Key: slow_start.duration_seconds
+          Value: '300'
+        - Key: load_balancing.algorithm.type
+          Value: 'round_robin'          
+        - Key: stickiness.enabled
+          Value: 'true'
+        - Key: stickiness.type
+          Value: lb_cookie
+        - Key: stickiness.lb_cookie.duration_seconds
+          Value: '3600'
+
+services:
+
+  apigateway:
+    image: ${REG_ECR}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+    ports:
+      - target: 9072
+        x-aws-protocol: http
+      - target: 5555
+        x-aws-protocol: http
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4096M
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    environment: 
+      APIGW_ELASTICSEARCH_TENANTID: apigateway
+      JAVA_MIN_MEM: 512m
+      JAVA_MAX_MEM: 512m
+      IDS_HEAP_SIZE: 512m
+      JAVA_OPTS: ""
+      RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=50 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10"
+    networks:
+      - apigwnet
+
+  apiportal:
+    image: ${REG_ECR}webmethods-apiportal:${TAG_APIPORTAL}
+    ports:
+      - target: 18101
+        x-aws-protocol: http
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 8192M
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    environment: 
+      LB_EXT_SCHEME: http
+      LB_EXT_HOST: aws-alb-hostname
+      LB_EXT_PORT: 18101
+    networks:
+      - apigwnet
+
+  webmethods-sample-apis-uszip:
+    image: ${REG_ECR}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
+    networks:
+      - apigwnet
+
+  webmethods-sample-apis-bookstore:
+    image: ${REG_ECR}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
+    networks:
+      - apigwnet
+
+  webmethods-sample-apis-covid:
+    image: ${REG_ECR}webmethods-sample-apis-covid:${TAG_SAMPLE_APIS}
+    networks:
+      - apigwnet

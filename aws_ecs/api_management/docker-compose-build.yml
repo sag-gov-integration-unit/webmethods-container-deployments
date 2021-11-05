@@ -1,0 +1,51 @@
+version: "3.2"
+
+services:
+
+  apigateway:
+    image: ${REG_ECR}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+    build:
+      context: .
+      dockerfile: Dockerfile.ecr.apigateway
+      args:
+        BASE_IMAGE: ${REG}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+
+  apigateway_configurator:
+    image: ${REG_ECR}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
+    build:
+      context: .
+      dockerfile: Dockerfile.ecr.common
+      args:
+        BASE_IMAGE: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
+
+  apiportal:
+    image: ${REG_ECR}webmethods-apiportal:${TAG_APIPORTAL}
+    build:
+      context: .
+      dockerfile: Dockerfile.ecr.apiportal
+      args:
+        BASE_IMAGE: ${REG}webmethods-apiportal:${TAG_APIPORTAL}
+
+  webmethods-sample-apis-uszip:
+    image: ${REG_ECR}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
+    build:
+      context: .
+      dockerfile: Dockerfile.ecr.common
+      args:
+        BASE_IMAGE: ${REG}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
+
+  webmethods-sample-apis-bookstore:
+    image: ${REG_ECR}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
+    build:
+      context: .
+      dockerfile: Dockerfile.ecr.common
+      args:
+        BASE_IMAGE: ${REG}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
+
+  webmethods-sample-apis-covid:
+    image: ${REG_ECR}webmethods-sample-apis-covid:${TAG_SAMPLE_APIS}
+    build:
+      context: .
+      dockerfile: Dockerfile.ecr.common
+      args:
+        BASE_IMAGE: ${REG}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}

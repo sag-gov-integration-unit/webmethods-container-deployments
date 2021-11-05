@@ -86,6 +86,24 @@ services:
     networks:
       - apigwnet
 
+  apiportal:
+    image: ${REG_ECS}webmethods-apiportal:${TAG_APIPORTAL}
+    build:
+      context: .
+      dockerfile: Dockerfile.ecr.apiportal
+      args:
+        BASE_IMAGE: ${REG}webmethods-apiportal:${TAG_APIPORTAL}
+    ports:
+      - 18101:18101
+      - 18102:18102
+    hostname: apiportal
+    environment: 
+      - LB_EXT_SCHEME=http
+      - LB_EXT_HOST=reverseproxy_nginx
+      - LB_EXT_PORT=81
+    networks:
+      - apigwnet
+
   webmethods-sample-apis-uszip:
     image: ${REG_ECS}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
     build:

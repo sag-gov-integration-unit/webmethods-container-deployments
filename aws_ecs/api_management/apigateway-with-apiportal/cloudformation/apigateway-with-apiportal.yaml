@@ -1,4 +1,13 @@
 AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  Cluster:
+    Type: AWS::ECS::Cluster::ClusterName
+  VPCID:
+    Type: AWS::EC2::VPC::Id
+  SubnetIDs:
+    Description: The array of Subnet IDs for the Subnet group
+    Type: List<AWS::EC2::Subnet::Id>
+
 Metadata:
   Cluster: arn:aws:ecs:us-east-1:815840818766:cluster/myecstests
 Resources:
