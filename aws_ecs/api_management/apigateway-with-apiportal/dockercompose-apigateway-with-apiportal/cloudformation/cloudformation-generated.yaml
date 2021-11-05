@@ -124,6 +124,7 @@ Resources:
           Value: apigateway
       TaskDefinition:
         Ref: ApigatewayTaskDefinition
+      HealthCheckGracePeriodSeconds: 600
     Type: AWS::ECS::Service
   ApigatewayServiceDiscoveryEntry:
     Properties:
@@ -163,11 +164,11 @@ Resources:
             - Name: APIGW_ELASTICSEARCH_TENANTID
               Value: apigateway
             - Name: IDS_HEAP_SIZE
-              Value: 1g
+              Value: 512m
             - Name: JAVA_MAX_MEM
-              Value: 1g
+              Value: 512m
             - Name: JAVA_MIN_MEM
-              Value: 1g
+              Value: 512m
             - Name: JAVA_OPTS
             - Name: RUNTIME_WATT_PROPERTIES
               Value:
@@ -302,7 +303,7 @@ Resources:
         - Key: deregistration_delay.timeout_seconds
           Value: "180"
         - Key: slow_start.duration_seconds
-          Value: "300"
+          Value: "600"
         - Key: load_balancing.algorithm.type
           Value: round_robin
         - Key: stickiness.enabled
@@ -353,6 +354,7 @@ Resources:
           Value: apiportal
       TaskDefinition:
         Ref: ApiportalTaskDefinition
+      HealthCheckGracePeriodSeconds: 1200
     Type: AWS::ECS::Service
   ApiportalServiceDiscoveryEntry:
     Properties:
@@ -414,7 +416,7 @@ Resources:
             - HardLimit: 65535
               Name: nofile
               SoftLimit: 65535
-      Cpu: "2048"
+      Cpu: "4096"
       ExecutionRoleArn:
         Ref: ApiportalTaskExecutionRole
       Family: dockercompose-apigateway-with-apiportal-apiportal
