@@ -4,7 +4,7 @@ This is a group of sample deployments for AWS Elastic Container Server (ECS) by 
 
 ## Step 1: SoftwareAG Licenses
 
-Make sure you save a valid licenses in "licensing" directory with the expected file name (due to volume mapping / dockerfile copying):
+Make sure you save a valid licenses in "./licensing" directory with the expected file name (due to volume mapping / dockerfile copying):
 
  - ApiGateway Advanced
    - expected filename: "./licensing/apigateway-licenseKey.xml"
@@ -82,7 +82,7 @@ At this point, you should have all the images in AWS ECR, ready to be used in ou
 
 #### apigateway-with-apiportal
 
-Pick the deployment type you want to try:
+Pick the deployment type you want to try...with more detailed instructions:
 
 - [dockercompose-to-ecs](./apigateway-with-apiportal/dockercompose-apigateway-with-apiportal/README.md)
 - [cloudformation-to-ecs](./apigateway-with-apiportal/cloudformation/README.md)

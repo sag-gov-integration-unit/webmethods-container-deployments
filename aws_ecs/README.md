@@ -2,8 +2,6 @@
 
 Sample deployments to AWS ECS
 
-For more details about Docker and AWS ECS integration, read https://docs.docker.com/cloud/ecs-integration/
-
 ## Pre-requisites
 
 - Have an AWS account setup fo CLI access
@@ -17,4 +15,4 @@ If you need help, contact [Software AG Government Solutions](https://www.softwar
 
 Currently available sample ECS deployments:
 
-- [webMethods API Gateway Standalone with NGINX frontend and 3 backend microservices APIs](./apigateway/apigateway-standalone-ecs/README.md)
+- [webMethods API Management](./api_management/README.md)

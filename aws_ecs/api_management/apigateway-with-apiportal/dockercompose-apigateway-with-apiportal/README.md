@@ -1,5 +1,7 @@
 # Using Docker-compose to deploy webmethods API Management in AWS Elastic Container Server (ECS)
 
+For more details about Docker and AWS ECS integration, read https://docs.docker.com/cloud/ecs-integration/
+
 NOTE: This example is more of a quick start than a real production-ready deployment type.
 
 ## Pre-requisites
