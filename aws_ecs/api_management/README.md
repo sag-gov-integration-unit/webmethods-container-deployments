@@ -76,11 +76,11 @@ Docker-compose will not create the AWS ECR repository when you push...so we need
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f docker-compose-build.yml push
 ```
 
-At this point, you should have all the images in AWS ECR, ready to be used in our AWS ECR deployments.
+At this point, you should have all the images in AWS ECR, and as such, you are now ready to deploy webmethods API Management stacks in AWS ECS.
 
-### Deploy the products
+## Deployments
 
-#### apigateway-with-apiportal
+### Stack Apigateway With Apiportal
 
 Pick the deployment type you want to try...with more detailed instructions:
 

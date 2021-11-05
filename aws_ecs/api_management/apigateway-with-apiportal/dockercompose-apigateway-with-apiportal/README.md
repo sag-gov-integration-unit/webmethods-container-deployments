@@ -2,12 +2,13 @@
 
 For more details about Docker and AWS ECS integration, read https://docs.docker.com/cloud/ecs-integration/
 
-NOTE: This example is more of a quick start than a real production-ready deployment type.
+*Important* 
+This docker-compose example is more of a quick start to test the webmethods API Management for yourself on AWS ECS, than a real production-ready deployment type!!
 
 ## Pre-requisites
 
 1) Make sure you followed the [instructions](../../README.md) to build and push the various SoftwareAG images to your AWS ECR registry.
-2) MAke sure you have Docker Desktop and Docker-Compose installed on your workstation.
+2) Make sure you have Docker Desktop and Docker-Compose installed on your workstation.
 
 ## Step 1: Create or Use Docker AWS ECS context
 
@@ -54,14 +55,18 @@ export TARGET_ECS_CLUSTER=myecstests
 export TARGET_LOADBALANCER=ecs-tests-alb
 ```
 
-NOTE: In our own testing environment we chose to pre-create these 3 components to avoid any creation issues from docker-compose side of things.
+NOTEs: 
+In our own testing environment we chose to pre-create these 3 components to control their creation in more details.
+Also, docker-compose may also not have the capability to create these the expected way.
 
 ## Step 2b - Let the deployment create some or all the AWS external items
 
-If you want the deployment to create all new AWS VPC, AWS ECS, and AWS Load balancer, simply *remove* the desired lines from the docker-compose
+If you want the docker-compose deployment to create all new AWS VPC, AWS ECS, and AWS Load balancer, simply *remove* the desired lines from the docker-compose
  - x-aws-vpc: ${TARGET_VPC}
  - x-aws-cluster: ${TARGET_ECS_CLUSTER}
  - x-aws-loadbalancer: ${TARGET_LOADBALANCER}
+
+NOTEs: This may not work, depending on your AWS environment and capabilities. In which case, go back to 2a)
 
 ## Step 3 - Load the deployment into ECS using compose
 
