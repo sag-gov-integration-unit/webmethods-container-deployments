@@ -92,8 +92,10 @@ And also, if you go to the AWS ALB that you had pre-created before, you should n
  - 18101
 
 Finally, you should be able to access the UIs at the following URLs:
- - API gateway: http://internal-ecs-tests-alb-1320227970.us-east-1.elb.amazonaws.com:9072/apigatewayui
- - API portal: http://internal-ecs-tests-alb-1320227970.us-east-1.elb.amazonaws.com:18101
+ - API gateway: http://<AWS ALB DNS>:9072/apigatewayui
+ - API portal: http://<AWS ALB DNS>:18101
+
+## Generated Cloudformation template
 
 To generate and view the AWS CloudFormation template that gets generated from the docker-compose command, run:
 
@@ -108,7 +110,7 @@ For your convenience, we saved it here at [./cloudformation/docker-compose-cloud
 Simply run:
 
 ```
-docker compose --env-file ../../configs/docker.env${SAG_RELEASE} 
+docker compose --env-file ../../configs/docker.env${SAG_RELEASE} down
 ```
 
 NOTE: if you specifically created the following AWS resources for this, you should delte them manually as needed:

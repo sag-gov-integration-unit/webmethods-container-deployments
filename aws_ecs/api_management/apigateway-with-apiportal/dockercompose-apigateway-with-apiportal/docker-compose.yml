@@ -13,11 +13,13 @@ x-aws-cloudformation:
         NetworkConfiguration:
           AwsvpcConfiguration:
             AssignPublicIp: DISABLED
+        HealthCheckGracePeriodSeconds: 600
     ApiportalService:
       Properties:
         NetworkConfiguration:
           AwsvpcConfiguration:
             AssignPublicIp: DISABLED
+        HealthCheckGracePeriodSeconds: 1200
     WebmethodssampleapisbookstoreService:
       Properties:
         NetworkConfiguration:
@@ -78,7 +80,7 @@ x-aws-cloudformation:
         - Key: deregistration_delay.timeout_seconds
           Value: '180'
         - Key: slow_start.duration_seconds
-          Value: '300'
+          Value: '600'
         - Key: load_balancing.algorithm.type
           Value: 'round_robin'          
         - Key: stickiness.enabled
@@ -124,7 +126,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: '4'
           memory: 8192M
     ulimits:
       nofile:
