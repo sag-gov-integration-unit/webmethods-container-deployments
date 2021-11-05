@@ -11,6 +11,12 @@ Sample deployments to AWS ECS
 
 If you need help, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com) 
 
+## AWS Infrastructure
+
+If you want to generate a quick base AWS environment ready for ECS, with a VPC, Subnets, ALB, and ECS cluster, go to
+
+ [Common AWS ECS Infrastructure Cloudformation Template](./base_ecs_infra/README.md)
+
 ## Current ECS Sample Deployments
 
 Currently available sample ECS deployments:

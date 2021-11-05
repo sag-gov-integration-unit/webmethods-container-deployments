@@ -1,0 +1,445 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation v3 VPC Template
+Parameters:
+  Project:
+    Description: The name of the current project
+    Type: String
+    Default: webmethods-samples-aws
+  VPCCidr:
+    Description: CIDR of the VPC
+    Type: String
+    Default: 192.168.0.0/24
+  DmzCidr1:
+    Description: CIDR of the DMZ Subnet in AZ1
+    Type: String
+    Default: 192.168.0.0/26
+  DmzCidr2:
+    Description: CIDR of the DMZ Subnet in AZ2
+    Type: String
+    Default: 192.168.0.64/26
+  AppCidr1:
+    Description: CIDR of the APP Subnet in AZ1
+    Type: String
+    Default: 192.168.0.128/26
+  AppCidr2:
+    Description: CIDR of the APP Subnet in AZ2
+    Type: String
+    Default: 192.168.0.192/26
+Resources:
+
+######### NETWORKING Section
+
+  VPC:
+    Properties:
+      CidrBlock:
+        Ref: VPCCidr
+      EnableDnsHostnames: 'true'
+      EnableDnsSupport: 'true'
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws
+      - Key: project
+        Value:
+          Ref: Project
+    Type: AWS::EC2::VPC
+  AppAcl:
+    Properties:
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: app
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::NetworkAcl
+  AppNetworkAclEgress1:
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: 'true'
+      NetworkAclId:
+        Ref: AppAcl
+      Protocol: -1
+      RuleAction: allow
+      RuleNumber: 100
+    Type: AWS::EC2::NetworkAclEntry
+  AppNetworkAclIngress1:
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      NetworkAclId:
+        Ref: AppAcl
+      Protocol: -1
+      RuleAction: allow
+      RuleNumber: 100
+    Type: AWS::EC2::NetworkAclEntry
+  AppRouteTable1:
+    Properties:
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws-az1
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: app
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::RouteTable
+  AppRouteTable1NatGatewayRoute:
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: NatGateway1
+      RouteTableId:
+        Ref: AppRouteTable1
+    Type: AWS::EC2::Route
+  AppRouteTable2:
+    Properties:
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws-az2
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: app
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::RouteTable
+  AppRouteTable2NatGatewayRoute:
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: NatGateway2
+      RouteTableId:
+        Ref: AppRouteTable2
+    Type: AWS::EC2::Route
+  AppSubnet1:
+    DependsOn: []
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+        - 0
+        - Fn::GetAZs: ''
+      CidrBlock:
+        Ref: AppCidr1
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws-az1
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: app
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::Subnet
+  AppSubnet2:
+    DependsOn: []
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+        - 1
+        - Fn::GetAZs: ''
+      CidrBlock:
+        Ref: AppCidr2
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws-az2
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: app
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::Subnet
+  AppSubnetAclLink1:
+    Properties:
+      NetworkAclId:
+        Ref: AppAcl
+      SubnetId:
+        Ref: AppSubnet1
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+  AppSubnetAclLink2:
+    Properties:
+      NetworkAclId:
+        Ref: AppAcl
+      SubnetId:
+        Ref: AppSubnet2
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+  AppSubnetRouteTableAssociation1:
+    Properties:
+      RouteTableId:
+        Ref: AppRouteTable1
+      SubnetId:
+        Ref: AppSubnet1
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  AppSubnetRouteTableAssociation2:
+    Properties:
+      RouteTableId:
+        Ref: AppRouteTable2
+      SubnetId:
+        Ref: AppSubnet2
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  DmzAcl:
+    Properties:
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws-dmz
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: dmz
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::NetworkAcl
+  DmzNetworkAclEgress1:
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      Egress: 'true'
+      NetworkAclId:
+        Ref: DmzAcl
+      Protocol: -1
+      RuleAction: allow
+      RuleNumber: 100
+    Type: AWS::EC2::NetworkAclEntry
+  DmzNetworkAclIngress1:
+    Properties:
+      CidrBlock: 0.0.0.0/0
+      NetworkAclId:
+        Ref: DmzAcl
+      Protocol: -1
+      RuleAction: allow
+      RuleNumber: 100
+    Type: AWS::EC2::NetworkAclEntry
+  DmzRouteTable1:
+    Properties:
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws-az1-dmz
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: dmz
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::RouteTable
+  DmzRouteTable1InternetGatewayRoute:
+    DependsOn: InternetGatewayAttachment1
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: InternetGateway1
+      RouteTableId:
+        Ref: DmzRouteTable1
+    Type: AWS::EC2::Route
+  DmzRouteTable2:
+    Properties:
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws-az2-dmz
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: dmz
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::RouteTable
+  DmzRouteTable2InternetGatewayRoute:
+    DependsOn: InternetGatewayAttachment1
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: InternetGateway1
+      RouteTableId:
+        Ref: DmzRouteTable2
+    Type: AWS::EC2::Route
+  DmzSubnet1:
+    DependsOn: []
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+        - 0
+        - Fn::GetAZs: ''
+      CidrBlock:
+        Ref: DmzCidr1
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws-az1-dmz
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: dmz
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::Subnet
+  DmzSubnet2:
+    DependsOn: []
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+        - 1
+        - Fn::GetAZs: ''
+      CidrBlock:
+        Ref: DmzCidr2
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws-az2-dmz
+      - Key: project
+        Value:
+          Ref: Project
+      - Key: Layer
+        Value: dmz
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::Subnet
+  DmzSubnetAclLink1:
+    Properties:
+      NetworkAclId:
+        Ref: DmzAcl
+      SubnetId:
+        Ref: DmzSubnet1
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+  DmzSubnetAclLink2:
+    Properties:
+      NetworkAclId:
+        Ref: DmzAcl
+      SubnetId:
+        Ref: DmzSubnet2
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+  DmzSubnetRouteTableAssociation1:
+    Properties:
+      RouteTableId:
+        Ref: DmzRouteTable1
+      SubnetId:
+        Ref: DmzSubnet1
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  DmzSubnetRouteTableAssociation2:
+    Properties:
+      RouteTableId:
+        Ref: DmzRouteTable2
+      SubnetId:
+        Ref: DmzSubnet2
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  EIP1:
+    Properties:
+      Domain: vpc
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGatewayAttachment1
+  EIP2:
+    Properties:
+      Domain: vpc
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGatewayAttachment1
+  SampleCloudLocal:
+    Properties:
+      HostedZoneConfig:
+        Comment: !Sub Private Hosted Zone for VPC ${VPC}
+      Name: sample.webmethods.local
+      VPCs:
+      - VPCId:
+          Ref: VPC
+        VPCRegion:
+          Ref: AWS::Region
+    Type: AWS::Route53::HostedZone
+  InternetGateway1:
+    Properties:
+      Tags:
+      - Key: Name
+        Value: webmethods-samples-aws
+      - Key: project
+        Value:
+          Ref: Project
+    Type: AWS::EC2::InternetGateway
+  InternetGatewayAttachment1:
+    Properties:
+      InternetGatewayId:
+        Ref: InternetGateway1
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::VPCGatewayAttachment
+  NatGateway1:
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+        - EIP1
+        - AllocationId
+      SubnetId:
+        Ref: DmzSubnet1
+    Type: AWS::EC2::NatGateway
+  NatGateway2:
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+        - EIP2
+        - AllocationId
+      SubnetId:
+        Ref: DmzSubnet2
+    Type: AWS::EC2::NatGateway
+
+######### APP LOAD BALANCER section
+  
+  AppLoadBalancerSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub ${Project}-alb
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 9072
+          ToPort: 9072
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 5555
+          ToPort: 5555
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 18101
+          ToPort: 18101
+      Tags:
+        - Key: Name
+          Value: !Sub ${Project}-alb
+        - Key: project
+          Value:
+            Ref: Project
+      VpcId:
+        Ref: VPC
+  AppLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub ${Project}-alb
+      Scheme: internet-facing
+      Type: application
+      IpAddressType: ipv4
+      SecurityGroups:
+        - Ref: AppLoadBalancerSg
+      Subnets:
+        - Ref: DmzSubnet1
+        - Ref: DmzSubnet2
+      LoadBalancerAttributes:
+        - Key: deletion_protection.enabled
+          Value: "true"
+        - Key: idle_timeout.timeout_seconds
+          Value: "60"
+        - Key: routing.http2.enabled
+          Value: "true"
+      Tags:
+        - Key: project
+          Value:
+            Ref: Project
+
+######### ECS section
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Join ['-', [!Ref Project, cluster]]
