@@ -13,7 +13,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./apigateway-clustered-external-elasticstack/nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
+      - ../apigateway-clustered-external-elasticstack/nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
     networks:
       - stack
 
@@ -39,9 +39,9 @@ services:
       CLUSTER_CONNECTTIMEOUT: 30000
       SCRIPTS_LOGGER_LEVEL: 0
     volumes:
-      - ./configs:/configs:rw
-      - ./licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
-      - ./licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
+      - ../configs:/configs:rw
+      - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ../licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
     hostname: apigateway1
     networks:
       - stack
@@ -74,9 +74,9 @@ services:
       CLUSTER_CONNECTTIMEOUT: 30000
       SCRIPTS_LOGGER_LEVEL: 0
     volumes:
-      - ./configs:/configs:rw
-      - ./licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
-      - ./licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
+      - ../configs:/configs:rw
+      - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ../licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
     hostname: apigateway2
     networks:
       - stack
@@ -189,7 +189,7 @@ services:
       - DATA_OFFHEAP_SIZE=1g
       - RESTARTABLE_ENABLED=false
     volumes:
-      - ./licensing/terracotta-license.key:/opt/softwareag/Terracotta/terracotta-license.key:ro
+      - ../licensing/terracotta-license.key:/opt/softwareag/Terracotta/terracotta-license.key:ro
     networks:
       - stack
 
