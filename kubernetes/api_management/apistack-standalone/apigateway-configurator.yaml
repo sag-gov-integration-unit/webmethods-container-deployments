@@ -60,4 +60,4 @@ spec:
             - name: env_apigateway_lb_websocket_url
               value: "ws://webmethods-apigateway.demo1.apimgt.cloud"
             - name: env_apigateway_lb_webapp_url
-              value: https://webmethods-apigateway.demo1.apimgt.cloud
+              value: http://webmethods-apigateway.demo1.apimgt.cloud

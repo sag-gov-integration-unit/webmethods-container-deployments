@@ -67,6 +67,16 @@ spec:
               value: 1g
             - name: PORTAL_RUNNABLES_PORTALBUNDLE_JAVAMEM
               value: 2g
+            - name: TENANTMGT_SYSTEMUSER_NAME
+              value: "system"
+            - name: TENANTMGT_SYSTEMUSER_PASSWORD_OLD
+              value: "manager"
+            - name: TENANTMGT_SYSTEMUSER_PASSWORD
+              value: "newpassword"
+            - name: TENANTMGT_SUPERUSER_NAME
+              value: "superuser"
+            - name: TENANTMGT_SUPERUSER_PASSWORD
+              value: "newpassword"
             - name: LB_EXT_SCHEME
               value: http
             - name: LB_EXT_HOST
