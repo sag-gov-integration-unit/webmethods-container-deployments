@@ -1,0 +1,148 @@
+# Configuration for deploying an API Gateway with an embedded elasticsearch to a kubernetes cluster.
+# The cluster should provide at least 4 GB of main memory.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webmethods-apiportal-standalone
+spec:
+  type: ClusterIP
+  ports:
+    - port: 18101
+      protocol: TCP
+      name: httpui
+  selector:
+    app.kubernetes.io/name: webmethods-apiportal-standalone
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webmethods-apiportal-standalone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: webmethods-apiportal-standalone
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: webmethods-apiportal-standalone
+    spec:
+      securityContext:
+        runAsUser: 1724
+        runAsGroup: 1724
+        fsGroup: 1724
+      containers:
+        - name: webmethods-apiportal-standalone
+          securityContext:
+            allowPrivilegeEscalation: false
+          image: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-apiportal:dev-10.7.1-36
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 18101
+              name: httpui
+              protocol: TCP
+          startupProbe:
+            failureThreshold: 60
+            periodSeconds: 15
+            exec:
+              command:
+                - /bin/bash
+                - ./healthcheck.sh
+          livenessProbe:
+            successThreshold: 1
+            failureThreshold: 4
+            periodSeconds: 10
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/bash
+                - ./healthcheck.sh
+          env:
+            - name: PORTAL_RUNNABLES_ZOOKEEPER_JAVAMEM
+              value: 512m
+            - name: PORTAL_RUNNABLES_CLOUDSEARCH_JAVAMEM
+              value: 1g
+            - name: PORTAL_RUNNABLES_ELASTIC_JAVAMEM
+              value: 1g
+            - name: PORTAL_RUNNABLES_PORTALBUNDLE_JAVAMEM
+              value: 2g
+            - name: LB_EXT_SCHEME
+              value: http
+            - name: LB_EXT_HOST
+              value: webmethods-apiportal.demo1.apimgt.cloud
+            - name: LB_EXT_PORT
+              value: "80"
+          resources:
+            requests:
+              memory: 6Gi
+              cpu: 2
+            limits:
+              memory: 8Gi
+              cpu: 4
+          volumeMounts:
+            - name: webmethods-apiportal-standalone
+              mountPath: /opt/softwareag/API_Portal/server/bin/work/work_postgres_m/data
+              subPath: postgres
+            - name: webmethods-apiportal-standalone
+              mountPath: /opt/softwareag/API_Portal/server/bin/work/work_elastic_m/data
+              subPath: elastic
+            - name: webmethods-apiportal-standalone
+              mountPath: /opt/softwareag/API_Portal/server/bin/work/work_cloudsearch_m/rsindex
+              subPath: cloudsearch
+      volumes:
+        - name: webmethods-apiportal-standalone
+          persistentVolumeClaim:
+            claimName: webmethods-apiportal-standalone
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: webmethods-apiportal-standalone
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: "gp2"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webmethods-apiportal-standalone
+  labels:
+    app.kubernetes.io/name: webmethods-apiportal-standalone
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+    - host: webmethods-apiportal.demo1.apimgt.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: webmethods-apiportal-standalone
+                port:
+                  number: 18101
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: webmethods-apiportal-standalone
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`webmethods-apiportal.demo1.apimgt.cloud`)
+      kind: Rule
+      services:
+        - name: webmethods-apiportal-standalone
+          port: 18101
+          passHostHeader: true
+          sticky:
+            cookie:
+              name: sticky
