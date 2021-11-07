@@ -1,5 +1,5 @@
-# Configuration for deploying an API Gateway with an embedded elasticsearch to a kubernetes cluster.
-# The cluster should provide at least 4 GB of main memory.
+# Deploying to a kubernetes cluster an API Portal 10.7 standalone with an embedded database and elasticsearch 
+# The cluster should provide at least 8 GB of main memory.
 ---
 apiVersion: v1
 kind: Service
@@ -36,7 +36,7 @@ spec:
         - name: webmethods-apiportal-standalone
           securityContext:
             allowPrivilegeEscalation: false
-          image: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-apiportal:dev-10.7.1-36
+          image: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-apiportal:dev-10.7.4-2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 18101

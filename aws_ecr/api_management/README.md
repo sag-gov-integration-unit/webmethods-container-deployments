@@ -14,7 +14,7 @@ This folder contains sample steps to
 
 If you need help, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com) 
 
-## Step 1: Get the SoftwareAG Licenses
+## Step 1: SoftwareAG Licenses
 
 Make sure you save a valid licenses in "./licensing" directory with the expected file name (due to volume mapping / dockerfile copying):
 
@@ -48,6 +48,15 @@ export SAG_RELEASE=105
 ## Step 3: Build and Push images to ECR
 
 Let's push our images to the AWS Elastic Container Registry (ECR)
+### Login to Software Gov Solutions Github Registry 
+
+Login to [ghcr.io/softwareag-government-solutions](https://github.com/orgs/softwareag-government-solutions/packages)
+
+```
+docker login ghcr.io/softwareag-government-solutions
+```
+
+If you need access to the registry, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com)
 
 ### Login to AWS ECR
 
