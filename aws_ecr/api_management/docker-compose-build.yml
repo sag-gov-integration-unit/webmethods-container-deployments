@@ -18,6 +18,14 @@ services:
       args:
         BASE_IMAGE: ${REG}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
 
+  microgateway:
+    image: ${REG_ECR}webmethods-microgateway:${TAG_APIGATEWAY}
+    build:
+      context: .
+      dockerfile: Dockerfile.ecr.microgateway
+      args:
+        BASE_IMAGE: ${REG}webmethods-microgateway:${TAG_APIGATEWAY}
+
   apiportal:
     image: ${REG_ECR}webmethods-apiportal:${TAG_APIPORTAL}
     build:
