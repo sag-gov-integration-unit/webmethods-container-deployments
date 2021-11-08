@@ -14,5 +14,4 @@ If not done already, please review: [webmethods API Management in AWS Elastic Co
 
 Deployment in EKS mostly follow common Kubernetes deployment practices, so you'll find the sample deployments at:
 
-
-[](kubernetes/api_management/README.md)
+[webmethods Container Deployments in Kubernetes by Software AG Government Solutions](../kubernetes/api_management/README.md)
