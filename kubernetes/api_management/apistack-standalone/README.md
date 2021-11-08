@@ -25,6 +25,12 @@ kubectl delete --namespace=apimgt-demo1 -f apigateway-configurator.yaml
 kubectl delete --namespace=apimgt-demo1 -f apigateway-standalone.yaml
 ```
 
+And delete namepsace
+
+```bash
+kubectl delete namespace apimgt-demo1
+```
+
 ## Troubleshooting
 
 ## View all:
