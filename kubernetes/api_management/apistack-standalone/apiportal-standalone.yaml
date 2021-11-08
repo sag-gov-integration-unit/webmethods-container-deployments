@@ -72,11 +72,17 @@ spec:
             - name: TENANTMGT_SYSTEMUSER_PASSWORD_OLD
               value: "manager"
             - name: TENANTMGT_SYSTEMUSER_PASSWORD
-              value: "newpassword"
+              valueFrom:
+                secretKeyRef:
+                  name: apimgt-admin-secret
+                  key: password
             - name: TENANTMGT_SUPERUSER_NAME
               value: "superuser"
             - name: TENANTMGT_SUPERUSER_PASSWORD
-              value: "newpassword"
+              valueFrom:
+                secretKeyRef:
+                  name: apimgt-admin-secret
+                  key: password
             - name: LB_EXT_SCHEME
               value: http
             - name: LB_EXT_HOST
