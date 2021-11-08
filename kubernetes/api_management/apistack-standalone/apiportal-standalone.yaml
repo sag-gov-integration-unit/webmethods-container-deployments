@@ -36,7 +36,7 @@ spec:
         - name: webmethods-apiportal-standalone
           securityContext:
             allowPrivilegeEscalation: false
-          image: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-apiportal:dev-10.7.4-2
+          image: ${AWS_ECR}webmethods-apiportal:dev-10.7.4-2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 18101
