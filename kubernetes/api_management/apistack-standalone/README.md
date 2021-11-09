@@ -82,9 +82,9 @@ NOTE (out of scope): If these DNS are not accessible in your AWS environment, yo
 ## Delete all
 
 ```bash
-kubectl delete --namespace=apimgt-demo1 -f apiportal-standalone.yaml
-kubectl delete --namespace=apimgt-demo1 -f apigateway-configurator.yaml
-kubectl delete --namespace=apimgt-demo1 -f apigateway-standalone.yaml
+kubectl delete --namespace=apimgt-demo1 -f ./deploy/apiportal-standalone.yaml
+kubectl delete --namespace=apimgt-demo1 -f ./deploy/apigateway-configurator.yaml
+kubectl delete --namespace=apimgt-demo1 -f ./deploy/apigateway-standalone.yaml
 ```
 
 And delete namepsace
