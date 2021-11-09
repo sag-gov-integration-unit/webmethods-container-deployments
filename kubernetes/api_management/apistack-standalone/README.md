@@ -27,12 +27,42 @@ kubectl describe secrets/apimgt-admin-secret \
    --namespace apimgt-demo1
 ```
 
+## Prep the manifests
+
+In order to not hardcode some key values in the manifest, you'll need to first update the manifest with your own values.
+Of course, such mechanism would be taken care by other K8 Tooling like "helm", "kustomize", etc...
+But for now, in order to keep things "simple", we'll leave it up to you to replace with the right values before deploying the manifests.
+
+A naive way could be to use SED to replace the needed variables before the deployment...
+
+```bash
+AWS_ECR=<your ECR>
+TAG_APIGATEWAY=dev-10.7.7-1
+TAG_APIGATEWAY_CONFIGURATOR=configurator-10.7.7-3
+TAG_APIPORTAL=dev-10.7.4-2
+```
+
+then:
+
+```bash
+mkdir -p ./deploy
+
+sed "s/\${AWS_ECR}/${AWS_ECR}\//g" apigateway-standalone.yaml.template > ./deploy/apigateway-standalone.yaml
+sed -i.bak "s/\${TAG_APIGATEWAY}/${TAG_APIGATEWAY}/g" ./deploy/apigateway-standalone.yaml
+
+sed "s/\${AWS_ECR}/${AWS_ECR}\//g" apiportal-standalone.yaml.template > ./deploy/apiportal-standalone.yaml
+sed -i.bak "s/\${TAG_APIPORTAL}/${TAG_APIPORTAL}/g" ./deploy/apiportal-standalone.yaml
+
+sed "s/\${AWS_ECR}/${AWS_ECR}\//g" apigateway-configurator.yaml.template > ./deploy/apigateway-configurator.yaml
+sed -i.bak "s/\${TAG_APIGATEWAY_CONFIGURATOR}/${TAG_APIGATEWAY_CONFIGURATOR}/g" ./deploy/apigateway-configurator.yaml
+```
+
 ## Apply:
 
 ```bash
-kubectl apply --namespace=apimgt-demo1 -f apigateway-standalone.yaml
-kubectl apply --namespace=apimgt-demo1 -f apigateway-configurator.yaml
-kubectl apply --namespace=apimgt-demo1 -f apiportal-standalone.yaml
+kubectl apply --namespace=apimgt-demo1 -f ./deploy/apigateway-standalone.yaml
+kubectl apply --namespace=apimgt-demo1 -f ./deploy/apigateway-configurator.yaml
+kubectl apply --namespace=apimgt-demo1 -f ./deploy/apiportal-standalone.yaml
 ```
 
 ## Access the UIs

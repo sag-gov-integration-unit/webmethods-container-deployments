@@ -39,7 +39,7 @@ spec:
         - name: webmethods-apigateway-standalone
           securityContext:
             allowPrivilegeEscalation: false
-          image: ${AWS_ECR}webmethods-apigateway-standalone:dev-10.7.7-1
+          image: ${AWS_ECR}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5555

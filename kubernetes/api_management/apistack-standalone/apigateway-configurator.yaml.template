@@ -14,7 +14,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: webmethods-apigateway-configurator
-          image: ${AWS_ECR}webmethods-apigateway-configurator:configurator-10.7.7-3
+          image: ${AWS_ECR}webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
           env:
             - name: env_apigateway_configure_default_ignore_errors
               value: "false"
