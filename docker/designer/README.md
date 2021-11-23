@@ -34,3 +34,7 @@ tail -f /opt/softwareag/IntegrationServer/logs/server.log
 ```
 
 You will know if the server is up and running when you see the phrase "Initialization completed in xx seconds." written in the log.
+
+*Please Note* that you will need to copy a valid license file into the appropriate directory in order for the Integration Server to run for more than 30 minutes:
+
+/opt/softwareag/IntegrationServer/config/licenseKey.xml
