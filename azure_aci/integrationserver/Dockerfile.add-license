@@ -1,0 +1,9 @@
+#
+# Example Dockerfile to create a new image that will include the appropriate license key file
+#
+# docker build --rm --no-cache -t 'webmethods4azure-with-license:1' . -f Dockerfile.add-license
+
+FROM ghcr.io/softwareag-government-solutions/webmethods-for-azure:10.7.0
+
+##Add your license file here in order to create an image with the appropriate file in place
+COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./MicroservicesRuntimeLicense.xml ${SAG_HOME}/IntegrationServer/config/licenseKey.xml
