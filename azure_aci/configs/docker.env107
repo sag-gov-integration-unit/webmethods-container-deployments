@@ -9,6 +9,7 @@ TAG_TERRACOTTA=dev-4.3.9-latest
 TAG_SAMPLE_APIS=dev-0.0.4
 TAG_APIPORTAL=dev-10.7.1-36
 TAG_WM4AZURE=1
+TAG_UM=1
 
 #SAG_PASSWORD is what the configurator will set the initial Administrator password to be on the Gateway
 SAG_PASSWORD=somethingnew
