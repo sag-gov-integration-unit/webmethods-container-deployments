@@ -11,6 +11,9 @@ spec:
     - port: 18101
       protocol: TCP
       name: httpui
+    - port: 18102
+      protocol: TCP
+      name: https-httpui
   selector:
     app.kubernetes.io/name: webmethods-apiportal-standalone
 ---
@@ -41,6 +44,9 @@ spec:
           ports:
             - containerPort: 18101
               name: httpui
+              protocol: TCP
+            - containerPort: 18102
+              name: https-httpui
               protocol: TCP
           startupProbe:
             failureThreshold: 60
@@ -143,22 +149,3 @@ spec:
                 name: webmethods-apiportal-standalone
                 port:
                   number: 18101
-
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: webmethods-apiportal-standalone
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`webmethods-apiportal.demo1.apimgt.cloud`)
-      kind: Rule
-      services:
-        - name: webmethods-apiportal-standalone
-          port: 18101
-          passHostHeader: true
-          sticky:
-            cookie:
-              name: sticky
