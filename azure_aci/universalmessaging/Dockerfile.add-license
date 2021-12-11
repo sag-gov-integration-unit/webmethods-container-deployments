@@ -7,4 +7,4 @@
 FROM ghcr.io/softwareag-government-solutions/webmethods-universalmessaging:dev-10.7.4-latest
 
 ##Add your license file here in order to create an image with the appropriate file in place
-COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./UniversalMessaging.xml ${SAG_HOME}/UniversalMessaging/server/umserver/licence.xml
+COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./UniversalMessaging.xml ${SAG_HOME}/UniversalMessaging/server/umserver/licence/licence.xml
