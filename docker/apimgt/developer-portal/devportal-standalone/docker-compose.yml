@@ -27,21 +27,3 @@ services:
     hostname: devportal
     networks:
       - stack
-
-  devportal_configurator:
-    image: ${REG}webmethods-devportal-configurator:${TAG_PORTAL_CONFIGURATOR}
-    environment:
-      env_devportal_protocol: http
-      env_devportal_host: devportal
-      env_devportal_port: "18101"
-      env_devportal_rest_user: Administrator
-      env_devportal_rest_password: "${SAG_PASSWORD}"
-      env_devportal_rest_password_old: "manage"
-      env_devportal_configure_default_ignore_errors: "true"
-      env_devportal_configure_usermgt: "true"
-      env_devportal_configure_usermgt_ignore_errors: "false"
-      env_devportal_users_sample1_password: password1!
-      env_devportal_users_sample2_password: password2!
-      env_devportal_users_sample3_password: password3!
-    networks:
-      - stack

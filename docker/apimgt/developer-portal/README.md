@@ -10,8 +10,6 @@ Requirement:
    - expected filename: "./licensing/apigateway-licenseKey.xml"
  - Developer Portal (only needed for the deployments involving Developer Portal product)
    - expected filename: "./licensing/devportal-licenseKey.xml"
- - Terracotta (only needed for the deployments involving API Gateway clustering)
-   - expected filename: "./licensing/terracotta-license.key"
  - Microgateway (only needed for the deployments involving Microgateway product)
    - expected filename: "./licensing/microgateway-licenseKey.xml"
 
@@ -37,7 +35,21 @@ ie. to use a different registry:
 export REG=different.registry.com/library/ 
 ```
 
-## Deployment Option 1: APIPortal Single Standalone Node
+## Deployment Option 1: DevPortal Single Standalone Node
+
+Start stack:
+
+```
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f devportal-standalone/docker-compose.yml up -d
+```
+
+Cleanup:
+
+```
+docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f devportal-standalone/docker-compose.yml down -v
+```
+
+## Deployment Option 2: ApiGateway with DevPortal, both connected to common ElasticSearch
 
 Start stack:
 
@@ -50,5 +62,3 @@ Cleanup:
 ```
 docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f apigateway-with-devportal/docker-compose.yml down -v
 ```
-
-Note: Notice the "-v" option -- This is to remove the "apiportal-data" volume that was created for the portal data
