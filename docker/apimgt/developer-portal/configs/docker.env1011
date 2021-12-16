@@ -1,11 +1,10 @@
-REG=harbor.saggs.cloud/library/
-TAG_APIGATEWAY=dev-10.11.0-7
-TAG_APIGATEWAY_CONFIGURATOR=configurator-10.11.0-4
+REG=ghcr.io/softwareag-government-solutions/
+TAG_APIGATEWAY=dev-10.11-latest
+TAG_APIGATEWAY_CONFIGURATOR=configurator-10.11-latest
 TAG_ELASTIC_VERSION=7.13.4
 TAG_TERRACOTTA=dev-4.3.9-latest
 TAG_SAMPLE_APIS=dev-0.0.4
-TAG_PORTAL=dev-10.11.1-3
-#TAG_PORTAL_CONFIGURATOR=configurator-10.11.1-1
-TAG_PORTAL_CONFIGURATOR=configurator-10.11-latest
+TAG_PORTAL=dev-10.11-latest
+TAG_PORTAL_CONFIGURATOR=configurator-10.11.1-1
 SAG_PASSWORD=somethingnew
 ELASTIC_PASSWORD=password
