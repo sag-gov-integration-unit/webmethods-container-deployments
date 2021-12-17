@@ -7,6 +7,19 @@ We will go over the general steps:
   2) create new container images with respective licenses (if applicable)
   3) move them to AWS ECR (or other repo of choice) to be used by the other tutorials (AWS ECS, Kubernetes with AWS EKS)
 
+Here are all the images that will get processed/created here:
+
+- webmethods-apigateway-standalone
+- webmethods-apigateway
+- webmethods-microgateway
+- webmethods-apigateway-configurator
+- webmethods-apiportal (only for 10.5/10.7 releases)
+- webmethods-devportal (only for 10.11 and above releases)
+- webmethods-devportal-standalone (only for 10.11 and above releases)
+- webmethods-devportal-configurator (only for 10.11 and above releases)
+- webmethods-sample-apis-bookstore
+- webmethods-sample-apis-uszip
+
 ## Pre-requisites 1
 
 - Have an AWS account setup fo CLI access
@@ -52,47 +65,8 @@ or
 ```bash
 export SAG_RELEASE=105
 ```
-### Step 3: Build the images with licenses
 
-first, load the few variables we will need for the various builds:
-```
-export REG_SOURCE=ghcr.io/softwareag-government-solutions
-export REG_TARGET=<ECR>.amazonaws.com
-source ./configs/docker.env${SAG_RELEASE}
-```
-
-Then, build
-
-APIGateway:
-
-```bash
-docker build -f Dockerfile.apigateway -t ${REG_TARGET}/webmethods-apigateway-standalone:${TAG_APIGATEWAY} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-apigateway-standalone:${TAG_APIGATEWAY} .
-docker build -f Dockerfile.apigateway -t ${REG_TARGET}/webmethods-apigateway:${TAG_APIGATEWAY} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-apigateway:${TAG_APIGATEWAY} .
-```
-
-Microgateway:
-
-```bash
-docker build -f Dockerfile.microgateway -t ${REG_TARGET}/webmethods-microgateway:${TAG_APIGATEWAY} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-microgateway:${TAG_APIGATEWAY} .
-```
-
-API Portal:
-
-```bash
-docker build -f Dockerfile.apiportal -t ${REG_TARGET}/webmethods-apiportal:${TAG_APIPORTAL} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-apiportal:${TAG_APIPORTAL} .
-```
-
-Developer Portal:
-
-```bash
-docker build -f Dockerfile.devportal -t ${REG_TARGET}/webmethods-devportal:${TAG_DEVPORTAL} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-devportal:${TAG_DEVPORTAL} .
-docker build -f Dockerfile.devportal -t ${REG_TARGET}/webmethods-devportal-standalone:${TAG_DEVPORTAL} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-devportal-standalone:${TAG_DEVPORTAL} .
-```
-
-## Step 3: Build and Push images to ECR
-
-Let's push our images to the AWS Elastic Container Registry (ECR)
-### Login to Software Gov Solutions Github Registry 
+## Step 3: Login to Software Gov Solutions Github Registry 
 
 Login to [ghcr.io/softwareag-government-solutions](https://github.com/orgs/softwareag-government-solutions/packages)
 
@@ -102,35 +76,50 @@ docker login ghcr.io/softwareag-government-solutions
 
 If you need access to the registry, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com)
 
+### Step 4: Build the images with licenses
+
+Build all the images:
+
+```bash
+/bin/sh ./build.sh "ghcr.io/softwareag-government-solutions" "<ECR>.amazonaws.com"
+```
+
+## Step 5: Push images to ECR
+
+Let's push our images to the AWS Elastic Container Registry (ECR)
+
 ### Login to AWS ECR
 
-```
+```bash
 export AWS_REGION=us-east-1
 export AWS_ECR=<ECR>.amazonaws.com
 ```
 
+```bash
+aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin "${AWS_ECR}"
 ```
-aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR}
-```
-
-
-
 
 ### Create the repos in AWS ECR
 
-Docker-compose will not create the AWS ECR repository when you push...so we need to pre-create these repository in AWS ECR first (one-time setup)
+Docker will not create the AWS ECR repository when you push...so we need to pre-create these repository in AWS ECR first (one-time setup)
 
 - webmethods-apigateway-standalone
+- webmethods-apigateway
+- webmethods-microgateway
 - webmethods-apigateway-configurator
-- webmethods-apiportal
+- webmethods-apiportal (only for 10.5/10.7 releases)
+- webmethods-devportal (only for 10.11 and above releases)
+- webmethods-devportal-standalone (only for 10.11 and above releases)
+- webmethods-devportal-configurator (only for 10.11 and above releases)
 - webmethods-sample-apis-bookstore
-- webmethods-sample-apis-covid
 - webmethods-sample-apis-uszip
 
 ### Push the images to ECR
 
-```
-docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f docker-compose-build.yml push
+Push all the new images:
+
+```bash
+/bin/sh publish.sh "<ECR>.amazonaws.com"
 ```
 
 ### Next steps

@@ -2,4 +2,4 @@ ARG BASE_IMAGE
 FROM $BASE_IMAGE as base
 
 # copy license file
-COPY ./licensing/apigateway-licenseKey.xml ${SAG_HOME}/IntegrationServer/instances/default/config/licenseKey.xml
+COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./licensing/apigateway-licenseKey.xml ${SAG_HOME}/IntegrationServer/instances/default/config/licenseKey.xml
