@@ -12,14 +12,16 @@ For more info, refer to [Getting started with Amazon ECS](https://aws.amazon.com
 
 - Have an AWS account setup fo CLI access
 - Have access to ECS/ECR services
-- Have access to Software Gov Solutions Github Registry at [ghcr.io/softwareag-government-solutions/](https://github.com/orgs/softwareag-government-solutions/packages)
-- Have valid licenses (trial or full) for SoftwareAG products
 
-If you need help, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com) 
+## Pre-requisites 3
 
-## AWS Infrastructure
+You should already have all the API Management images (with lcienses) already uplaoded to your AWS ECR registry.
+If not, refer to [webMethods API Management](../private_registries/api_management/README.md)
 
-If you want to generate a quick base AWS environment ready for ECS, with a VPC, Subnets, ALB, and ECS cluster, go to [Common AWS ECS Infrastructure Cloudformation Template](./base_ecs_infra/README.md)
+## Get started quick with Base AWS Infrastructure
+
+If you want to generate a quick base AWS environment ready for ECS, with a VPC, Subnets, ALB, and ECS cluster, refer to:
+- [Base AWS ECS Infrastructure Cloudformation Template](./base_ecs_infra/README.md)
 
 ## Current ECS Sample Deployments
 
