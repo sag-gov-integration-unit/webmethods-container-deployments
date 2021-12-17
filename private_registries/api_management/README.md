@@ -1,4 +1,4 @@
-# webmethods API Management in AWS Elastic Container Registry (ECR) by Software AG Government Solutions 
+# webmethods API Management in your Private Registry by Software AG Government Solutions 
 
 This section mostly serves the purpose to create product images containing your valid SoftwareAG licenses, so that the deployments can be easier without needs for volumes mapping etc...
 

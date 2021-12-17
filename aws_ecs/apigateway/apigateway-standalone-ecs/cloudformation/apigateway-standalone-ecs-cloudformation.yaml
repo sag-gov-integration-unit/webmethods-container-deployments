@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: "2010-09-09"
 Metadata:
   Cluster: arn:aws:ecs:us-east-1:815840818766:cluster/myecstests
 Resources:

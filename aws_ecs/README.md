@@ -13,11 +13,6 @@ For more info, refer to [Getting started with Amazon ECS](https://aws.amazon.com
 - Have an AWS account setup fo CLI access
 - Have access to ECS/ECR services
 
-## Pre-requisites 3
-
-You should already have all the API Management images (with lcienses) already uplaoded to your AWS ECR registry.
-If not, refer to [webMethods API Management](../private_registries/api_management/README.md)
-
 ## Get started quick with Base AWS Infrastructure
 
 If you want to generate a quick base AWS environment ready for ECS, with a VPC, Subnets, ALB, and ECS cluster, refer to:

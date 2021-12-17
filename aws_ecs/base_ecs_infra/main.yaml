@@ -26,6 +26,21 @@ Parameters:
     Description: CIDR of the APP Subnet in AZ2
     Type: String
     Default: 192.168.0.192/26
+
+Outputs:
+  VPCID:
+    Value:
+      Ref: VPC
+  ECSArn:
+    Value: !GetAtt ECSCluster.Arn
+  AppSubnets:
+    Value: !Join [',', [!Ref AppSubnet1, !Ref AppSubnet2]]
+  DmzSubnets:
+    Value: !Join [',', [!Ref DmzSubnet1, !Ref DmzSubnet2]]
+  AppLoadBalancerArn:
+    Value:
+      Ref: AppLoadBalancer
+
 Resources:
 
 ######### NETWORKING Section
