@@ -5,7 +5,7 @@ This section mostly serves the purpose to create product images containing your 
 We will go over the general steps: 
   1) download existing Software AG webmethods API Management container images from official secure repo: ghcr.io/softwareag-government-solutions
   2) create new container images with respective licenses (if applicable)
-  3) move them to AWS ECR (or other repo of choice) to be used by the other tutorials (AWS ECS, Kubernetes with AWS EKS)
+  3) move them to you private registry of choice (AWS ECR, Azure Registry, or other repo of choice) to be used by the other tutorials
 
 Here are all the images that will get processed/created here:
 
@@ -22,8 +22,6 @@ Here are all the images that will get processed/created here:
 
 ## Pre-requisites 1
 
-- Have an AWS account setup fo CLI access
-- Have access to ECR services
 - Have access to Software Gov Solutions Github Registry at [ghcr.io/softwareag-government-solutions/](https://github.com/orgs/softwareag-government-solutions/packages)
 - Have valid licenses (trial or full) for SoftwareAG products
 
@@ -81,50 +79,14 @@ If you need access to the registry, contact [Software AG Government Solutions](h
 Build all the images:
 
 ```bash
-/bin/sh ./build.sh "ghcr.io/softwareag-government-solutions" "<ECR>.amazonaws.com"
+/bin/sh ./build.sh "ghcr.io/softwareag-government-solutions" "<PRIVATE_REGISTRY>"
 ```
 
-## Step 5: Push images to ECR
+## Step 5: Push images to your Private Registry
 
-Let's push our images to the AWS Elastic Container Registry (ECR)
-
-### Login to AWS ECR
-
-```bash
-export AWS_REGION=us-east-1
-export AWS_ECR=<ECR>.amazonaws.com
-```
-
-```bash
-aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin "${AWS_ECR}"
-```
-
-### Create the repos in AWS ECR
-
-Docker will not create the AWS ECR repository when you push...so we need to pre-create these repository in AWS ECR first (one-time setup)
-
-- webmethods-apigateway-standalone
-- webmethods-apigateway
-- webmethods-microgateway
-- webmethods-apigateway-configurator
-- webmethods-apiportal (only for 10.5/10.7 releases)
-- webmethods-devportal (only for 10.11 and above releases)
-- webmethods-devportal-standalone (only for 10.11 and above releases)
-- webmethods-devportal-configurator (only for 10.11 and above releases)
-- webmethods-sample-apis-bookstore
-- webmethods-sample-apis-uszip
-
-### Push the images to ECR
-
-Push all the new images:
-
-```bash
-/bin/sh publish.sh "<ECR>.amazonaws.com"
-```
+ - [Pushing to AWS Elastic Container Registry (ECR)](./README-ECR.md)
+ - [Pushing to Azure Container Registry](./README-AzureRegistry.md)
 
 ### Next steps
 
-At this point, you should have all the images in AWS ECR, and as such, you are now ready to deploy webmethods API Management stacks in AWS ECS or AWS EKS.
-
- - [webmethods API Management in AWS ECS](../../aws_ecs/api_management/README.md)
- - [webmethods API Management in AWS EKS](../../kubernetes/api_management/README.md)
+At this point, you should have all the images in AWS ECR, Azure, or other private registry of choice, and as such, you are now ready to deploy webmethods API Management stacks in your own environments.
