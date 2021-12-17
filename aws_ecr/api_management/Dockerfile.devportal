@@ -1,0 +1,5 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE as base
+
+# copy license file
+COPY ./licensing/devportal-licenseKey.xml ${SAG_HOME}/licenseKey.xml

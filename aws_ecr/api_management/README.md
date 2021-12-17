@@ -1,9 +1,11 @@
 # webmethods API Management in AWS Elastic Container Registry (ECR) by Software AG Government Solutions 
 
-This folder contains sample steps to 
+This section mostly serves the purpose to create product images containing your valid SoftwareAG licenses, so that the deployments can be easier without needs for volumes mapping etc...
+
+We will go over the general steps: 
   1) download existing Software AG webmethods API Management container images from official secure repo: ghcr.io/softwareag-government-solutions
   2) create new container images with respective licenses (if applicable)
-  3) move them to AWS ECR to be used by the other tutorials (AWS ECS, Kubernetes with AWS EKS)
+  3) move them to AWS ECR (or other repo of choice) to be used by the other tutorials (AWS ECS, Kubernetes with AWS EKS)
 
 ## Pre-requisites 1
 
@@ -36,6 +38,12 @@ To help with that, you can set the following Environment variable, which will th
 If the variable is not defined, the commands will then automatically load the ./configs/docker.env file which is always set to the latest SAG RELEASE.
 
 ```bash
+export SAG_RELEASE=1011
+```
+
+or
+
+```bash
 export SAG_RELEASE=107
 ```
 
@@ -43,6 +51,42 @@ or
 
 ```bash
 export SAG_RELEASE=105
+```
+### Step 3: Build the images with licenses
+
+first, load the few variables we will need for the various builds:
+```
+export REG_SOURCE=ghcr.io/softwareag-government-solutions
+export REG_TARGET=<ECR>.amazonaws.com
+source ./configs/docker.env${SAG_RELEASE}
+```
+
+Then, build
+
+APIGateway:
+
+```bash
+docker build -f Dockerfile.apigateway -t ${REG_TARGET}/webmethods-apigateway-standalone:${TAG_APIGATEWAY} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-apigateway-standalone:${TAG_APIGATEWAY} .
+docker build -f Dockerfile.apigateway -t ${REG_TARGET}/webmethods-apigateway:${TAG_APIGATEWAY} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-apigateway:${TAG_APIGATEWAY} .
+```
+
+Microgateway:
+
+```bash
+docker build -f Dockerfile.microgateway -t ${REG_TARGET}/webmethods-microgateway:${TAG_APIGATEWAY} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-microgateway:${TAG_APIGATEWAY} .
+```
+
+API Portal:
+
+```bash
+docker build -f Dockerfile.apiportal -t ${REG_TARGET}/webmethods-apiportal:${TAG_APIPORTAL} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-apiportal:${TAG_APIPORTAL} .
+```
+
+Developer Portal:
+
+```bash
+docker build -f Dockerfile.devportal -t ${REG_TARGET}/webmethods-devportal:${TAG_DEVPORTAL} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-devportal:${TAG_DEVPORTAL} .
+docker build -f Dockerfile.devportal -t ${REG_TARGET}/webmethods-devportal-standalone:${TAG_DEVPORTAL} --build-arg BASE_IMAGE=${REG_SOURCE}webmethods-devportal-standalone:${TAG_DEVPORTAL} .
 ```
 
 ## Step 3: Build and Push images to ECR
@@ -69,16 +113,8 @@ export AWS_ECR=<ECR>.amazonaws.com
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR}
 ```
 
-### Build the images
 
-This mostly downloads the images from existing non-AWS registry (ie. ghcr.io/softwareag-government-solutions), add licenses as needed, and retag them with the AWS ECR registry so we can push them into AWS ECR.
 
-IMPORTANT NOTE: make sure you don't forget the "/" at the end of REG_ECR value...it's expected in the docker compose build.
-
-```
-export REG_ECR=${AWS_ECR}/
-docker-compose --env-file ./configs/docker.env${SAG_RELEASE} -f docker-compose-build.yml build
-```
 
 ### Create the repos in AWS ECR
 
