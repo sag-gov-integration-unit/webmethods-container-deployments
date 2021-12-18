@@ -859,7 +859,7 @@ Resources:
             - Name: env_apigateway_portalgateway_devportal_username
               Value: Administrator
             - Name: env_apigateway_portalgateway_devportal_password
-              Value: manage
+              Value: somethingnew
           Image: !Sub ${ECRName}/${ImageApiGatewayConfigurator}:${ImageApiGatewayConfiguratorTag}
           LinuxParameters: {}
           LogConfiguration:
