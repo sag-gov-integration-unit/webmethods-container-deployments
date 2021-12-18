@@ -26,6 +26,7 @@ docker push ${REG_TARGET}/webmethods-apigateway-standalone:${TAG_APIGATEWAY}
 docker push ${REG_TARGET}/webmethods-apigateway:${TAG_APIGATEWAY}
 docker push ${REG_TARGET}/webmethods-microgateway:${TAG_APIGATEWAY}
 docker push ${REG_TARGET}/webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
+docker push ${REG_TARGET}/webmethods-apigateway-deployer-sampleapis:${TAG_APIGATEWAY_CONFIGURATOR}
 
 ## API Portal
 if [[ "$SAG_RELEASE" == "105" || "$SAG_RELEASE" == "107" ]]; then

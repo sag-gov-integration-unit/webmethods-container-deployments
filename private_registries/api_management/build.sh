@@ -33,6 +33,7 @@ echo "Building APIGateway images:"
 docker build -f Dockerfile.apigateway -t ${REG_TARGET}/webmethods-apigateway-standalone:${TAG_APIGATEWAY} --build-arg BASE_IMAGE=${REG_SOURCE}/webmethods-apigateway-standalone:${TAG_APIGATEWAY} .
 docker build -f Dockerfile.apigateway -t ${REG_TARGET}/webmethods-apigateway:${TAG_APIGATEWAY} --build-arg BASE_IMAGE=${REG_SOURCE}/webmethods-apigateway:${TAG_APIGATEWAY} .
 docker build -f Dockerfile.apigateway -t ${REG_TARGET}/webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR} --build-arg BASE_IMAGE=${REG_SOURCE}/webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR} .
+docker build -f Dockerfile.apigateway.deployer -t ${REG_TARGET}/webmethods-apigateway-deployer-sampleapis:${TAG_APIGATEWAY_CONFIGURATOR} --build-arg BASE_IMAGE=${REG_SOURCE}/webmethods-apigateway-deployer:${TAG_APIGATEWAY_CONFIGURATOR} .
 
 ## Microgateway:
 echo "Building Microgateway images"
@@ -43,6 +44,7 @@ docker image ls ${REG_TARGET}/webmethods-apigateway-standalone:${TAG_APIGATEWAY}
 docker image ls ${REG_TARGET}/webmethods-apigateway:${TAG_APIGATEWAY}
 docker image ls ${REG_TARGET}/webmethods-microgateway:${TAG_APIGATEWAY}
 docker image ls ${REG_TARGET}/webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
+docker image ls ${REG_TARGET}/webmethods-apigateway-deployer-sampleapis:${TAG_APIGATEWAY_CONFIGURATOR}
 
 ## API Portal
 if [[ "$SAG_RELEASE" == "105" || "$SAG_RELEASE" == "107" ]]; then

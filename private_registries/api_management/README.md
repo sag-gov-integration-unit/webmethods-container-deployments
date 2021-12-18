@@ -13,6 +13,7 @@ Here are all the images that will get processed/created here:
 - webmethods-apigateway
 - webmethods-microgateway
 - webmethods-apigateway-configurator
+- webmethods-apigateway-deployer-sampleapis
 - webmethods-apiportal (only for 10.5/10.7 releases)
 - webmethods-devportal (only for 10.11 and above releases)
 - webmethods-devportal-standalone (only for 10.11 and above releases)

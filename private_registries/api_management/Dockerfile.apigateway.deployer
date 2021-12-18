@@ -1,0 +1,9 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE as base
+
+LABEL maintainer="fabien.sanglier@softwareaggov.com" \
+      name="apigateway assets deployer" \
+      summary="will deploy the apigateway assets stored in /src"
+
+# copy apigateway assets
+COPY --chown=${SAG_USERID}:${SAG_GROUPID} sampleapis_archives/ /src/

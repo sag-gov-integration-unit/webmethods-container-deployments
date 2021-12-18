@@ -46,6 +46,12 @@ Parameters:
   ImageApiGatewayConfiguratorTag:
     Description: The tag of the image for the api gateway configurator
     Type: String
+  ImageApigatewaySampleAPIsDeployer:
+    Description: The name of the image for the api gateway configurator
+    Type: String
+  ImageApigatewaySampleAPIsDeployerTag:
+    Description: The tag of the image for the api gateway configurator
+    Type: String
   ImagePortalConfigurator:
     Description: The name of the image for the api gateway configurator
     Type: String
@@ -64,6 +70,9 @@ Outputs:
   ApigatewayConfiguratorTaskDef:
     Value:
       Ref: ApigatewayconfiguratorTaskDefinition
+  ApigatewaySampleAPIsDeployerTaskDef:
+    Value:
+      Ref: ApigatewaySampleAPIsDeployerTaskDefinition
   PortalConfiguratorTaskDef:
     Value:
       Ref: PortalConfiguratorTaskDefinition
@@ -974,4 +983,68 @@ Resources:
           Value: apimgt-stack
         - Key: job
           Value: portal_configurator
+    Type: AWS::IAM::Role
+  ApigatewaySampleAPIsDeployerTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+        - Name: ApigatewaySampleAPIsDeployer_ResolvConf_InitContainer
+          Command:
+            - !Sub ${AWS::Region}.compute.internal
+            - apimgt-stack.local
+          Essential: false
+          Image: docker/ecs-searchdomain-sidecar:1.0
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: apimgt-stack
+        - Name: ApigatewaySampleAPIsDeployer
+          DependsOn:
+            - Condition: SUCCESS
+              ContainerName: ApigatewaySampleAPIsDeployer_ResolvConf_InitContainer
+          Essential: true
+          Environment:
+            - Name: env_apigateway_configure_default_ignore_errors
+              Value: "true"
+          Image: !Sub ${ECRName}/${ImageApigatewaySampleAPIsDeployer}:${ImageApigatewaySampleAPIsDeployerTag}
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: apimgt-stack
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: ApigatewaySampleAPIsDeployerTaskExecutionRole
+      Family: apimgt-stack-apigateway-deployer
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  ApigatewaySampleAPIsDeployerTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: project
+          Value: apimgt-stack
+        - Key: job
+          Value: ApigatewaySampleAPIsDeployer
     Type: AWS::IAM::Role
