@@ -40,6 +40,8 @@ Outputs:
   AppLoadBalancerArn:
     Value:
       Ref: AppLoadBalancer
+  AppLoadBalancerDns:
+    Value: !GetAtt AppLoadBalancer.DNSName
 
 Resources:
 

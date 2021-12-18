@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   ECSCluster:
-    Type: AWS::ECS::Cluster::ClusterName
+    Type: String
   VPCID:
     Type: AWS::EC2::VPC::Id
   SubnetIDs:
@@ -9,6 +9,12 @@ Parameters:
     Type: List<AWS::EC2::Subnet::Id>
   ECRName:
     Description: The name of the ECR registry to use
+    Type: String
+  LoadBalancerArn:
+    Description: The ARN of the load balancer
+    Type: String
+  LoadBalancerDNS:
+    Description: The DNS name of the load balancer
     Type: String
   ImageApiGateway:
     Description: The name of the image for the api gateway
@@ -31,10 +37,45 @@ Parameters:
   ImageSampleApisTag:
     Description: The tag of the image for the sample apis
     Type: String
+  ImageApiGatewayConfigurator:
+    Description: The name of the image for the api gateway configurator
+    Type: String
+  ImageApiGatewayConfiguratorTag:
+    Description: The tag of the image for the api gateway configurator
+    Type: String
 
 Metadata:
   Cluster:
     Ref: ECSCluster
+
+Outputs:
+  ApigatewayTaskDef:
+    Value:
+      Ref: ApigatewayTaskDefinition
+  ApigatewayConfiguratorTaskDef:
+    Value:
+      Ref: ApigatewayconfiguratorTaskDefinition
+  ApiportalTaskDef:
+    Value:
+      Ref: ApiportalTaskDefinition
+  SampleAPIsUsZipTaskDef:
+    Value:
+      Ref: WebmethodssampleapisuszipTaskDefinition
+  SampleAPIsBookStoreTaskDef:
+    Value:
+      Ref: WebmethodssampleapisbookstoreTaskDefinition
+  SecurityGroupId:
+    Value:
+      Ref: ApimgtnetNetwork
+  VPCID:
+    Value:
+      Ref: VPCID
+  SubnetIDs:
+    Value: !Join [',',!Ref SubnetIDs]
+  ECSCluster:
+    Value:
+      Ref: ECSCluster
+
 Resources:
   Apigateway5555Listener:
     Properties:
@@ -44,7 +85,8 @@ Resources:
               - TargetGroupArn:
                   Ref: Apigateway5555TargetGroup
           Type: forward
-      LoadBalancerArn: arn:aws:elasticloadbalancing:us-east-1:815840818766:loadbalancer/app/ecs-tests-alb/1eb54db2982c4b6f
+      LoadBalancerArn:
+        Ref: LoadBalancerArn
       Port: 5555
       Protocol: HTTP
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -53,7 +95,7 @@ Resources:
       Port: 5555
       Protocol: HTTP
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
       TargetType: ip
       VpcId:
@@ -83,7 +125,8 @@ Resources:
               - TargetGroupArn:
                   Ref: Apigateway9072TargetGroup
           Type: forward
-      LoadBalancerArn: arn:aws:elasticloadbalancing:us-east-1:815840818766:loadbalancer/app/ecs-tests-alb/1eb54db2982c4b6f
+      LoadBalancerArn:
+        Ref: LoadBalancerArn
       Port: 9072
       Protocol: HTTP
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -92,7 +135,7 @@ Resources:
       Port: 9072
       Protocol: HTTP
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
       TargetType: ip
       VpcId:
@@ -119,7 +162,7 @@ Resources:
       - Apigateway9072Listener
       - Apigateway5555Listener
     Properties:
-      Cluster: 
+      Cluster:
         Ref: ECSCluster
       DeploymentConfiguration:
         MaximumPercent: 200
@@ -153,9 +196,9 @@ Resources:
               - ApigatewayServiceDiscoveryEntry
               - Arn
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.service
+        - Key: service
           Value: apigateway
       TaskDefinition:
         Ref: ApigatewayTaskDefinition
@@ -178,8 +221,9 @@ Resources:
   ApigatewayTaskDefinition:
     Properties:
       ContainerDefinitions:
-        - Command:
-            - us-east-1.compute.internal
+        - Name: Apigateway_ResolvConf_InitContainer
+          Command:
+            - !Sub ${AWS::Region}.compute.internal
             - apimgt-stack.local
           Essential: false
           Image: docker/ecs-searchdomain-sidecar:1.0
@@ -191,8 +235,8 @@ Resources:
               awslogs-region:
                 Ref: AWS::Region
               awslogs-stream-prefix: apimgt-stack
-          Name: Apigateway_ResolvConf_InitContainer
-        - DependsOn:
+        - Name: apigateway
+          DependsOn:
             - Condition: SUCCESS
               ContainerName: Apigateway_ResolvConf_InitContainer
           Environment:
@@ -220,7 +264,6 @@ Resources:
               awslogs-region:
                 Ref: AWS::Region
               awslogs-stream-prefix: apimgt-stack
-          Name: apigateway
           PortMappings:
             - ContainerPort: 9072
               HostPort: 9072
@@ -254,9 +297,9 @@ Resources:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.service
+        - Key: service
           Value: apigateway
     Type: AWS::IAM::Role
   Apimgtnet5555Ingress:
@@ -291,13 +334,12 @@ Resources:
     Type: AWS::EC2::SecurityGroupIngress
   ApimgtnetNetwork:
     Properties:
-      GroupDescription:
-        apimgt-stack Security Group for
+      GroupDescription: apimgt-stack Security Group for
         apimgtnet network
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.network
+        - Key: network
           Value: apimgt-stack_apimgtnet
       VpcId:
         Ref: VPCID
@@ -319,7 +361,8 @@ Resources:
               - TargetGroupArn:
                   Ref: Apiportal18101TargetGroup
           Type: forward
-      LoadBalancerArn: arn:aws:elasticloadbalancing:us-east-1:815840818766:loadbalancer/app/ecs-tests-alb/1eb54db2982c4b6f
+      LoadBalancerArn:
+        Ref: LoadBalancerArn
       Port: 18101
       Protocol: HTTP
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -328,7 +371,7 @@ Resources:
       Port: 18101
       Protocol: HTTP
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
       TargetType: ip
       VpcId:
@@ -354,7 +397,7 @@ Resources:
     DependsOn:
       - Apiportal18101Listener
     Properties:
-      Cluster:  
+      Cluster:
         Ref: ECSCluster
       DeploymentConfiguration:
         MaximumPercent: 200
@@ -384,9 +427,9 @@ Resources:
               - ApiportalServiceDiscoveryEntry
               - Arn
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.service
+        - Key: service
           Value: apiportal
       TaskDefinition:
         Ref: ApiportalTaskDefinition
@@ -410,7 +453,7 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Command:
-            - us-east-1.compute.internal
+            - !Sub ${AWS::Region}.compute.internal
             - apimgt-stack.local
           Essential: false
           Image: docker/ecs-searchdomain-sidecar:1.0
@@ -476,9 +519,9 @@ Resources:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.service
+        - Key: service
           Value: apiportal
     Type: AWS::IAM::Role
   CloudMap:
@@ -490,13 +533,12 @@ Resources:
     Type: AWS::ServiceDiscovery::PrivateDnsNamespace
   DefaultNetwork:
     Properties:
-      GroupDescription:
-        apimgt-stack Security Group for
+      GroupDescription: apimgt-stack Security Group for
         default network
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.network
+        - Key: network
           Value: apimgt-stack_default
       VpcId:
         Ref: VPCID
@@ -512,11 +554,11 @@ Resources:
     Type: AWS::EC2::SecurityGroupIngress
   LogGroup:
     Properties:
-      LogGroupName: /docker-compose/apimgt-stack
+      LogGroupName: apimgt-stack
     Type: AWS::Logs::LogGroup
   WebmethodssampleapisbookstoreService:
     Properties:
-      Cluster:  
+      Cluster:
         Ref: ECSCluster
       DeploymentConfiguration:
         MaximumPercent: 200
@@ -541,9 +583,9 @@ Resources:
               - WebmethodssampleapisbookstoreServiceDiscoveryEntry
               - Arn
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.service
+        - Key: service
           Value: webmethods-sample-apis-bookstore
       TaskDefinition:
         Ref: WebmethodssampleapisbookstoreTaskDefinition
@@ -568,7 +610,7 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Command:
-            - us-east-1.compute.internal
+            - !Sub ${AWS::Region}.compute.internal
             - apimgt-stack.local
           Essential: false
           Image: docker/ecs-searchdomain-sidecar:1.0
@@ -620,14 +662,14 @@ Resources:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.service
+        - Key: service
           Value: webmethods-sample-apis-bookstore
     Type: AWS::IAM::Role
   WebmethodssampleapisuszipService:
     Properties:
-      Cluster:  
+      Cluster:
         Ref: ECSCluster
       DeploymentConfiguration:
         MaximumPercent: 200
@@ -652,9 +694,9 @@ Resources:
               - WebmethodssampleapisuszipServiceDiscoveryEntry
               - Arn
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.service
+        - Key: service
           Value: webmethods-sample-apis-uszip
       TaskDefinition:
         Ref: WebmethodssampleapisuszipTaskDefinition
@@ -679,7 +721,7 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Command:
-            - us-east-1.compute.internal
+            - !Sub ${AWS::Region}.compute.internal
             - apimgt-stack.local
           Essential: false
           Image: docker/ecs-searchdomain-sidecar:1.0
@@ -731,8 +773,112 @@ Resources:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       Tags:
-        - Key: com.docker.compose.project
+        - Key: project
           Value: apimgt-stack
-        - Key: com.docker.compose.service
+        - Key: service
           Value: webmethods-sample-apis-uszip
+    Type: AWS::IAM::Role
+  ApigatewayconfiguratorTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+        - Name: Apigatewayconfigurator_ResolvConf_InitContainer
+          Command:
+            - !Sub ${AWS::Region}.compute.internal
+            - apimgt-stack.local
+          Essential: false
+          Image: docker/ecs-searchdomain-sidecar:1.0
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: apimgt-stack
+        - Name: apigateway_configurator
+          DependsOn:
+            - Condition: SUCCESS
+              ContainerName: Apigatewayconfigurator_ResolvConf_InitContainer
+          Essential: true
+          Environment:
+            - Name: env_apigateway_configure_default_ignore_errors
+              Value: "true"
+            - Name: env_apigateway_configure_extended_settings
+              Value: "true"
+            - Name: env_apigateway_configure_lb
+              Value: "true"
+            - Name: env_apigateway_configure_lb_ignore_errors
+              Value: "false"
+            - Name: env_apigateway_configure_portalgateway
+              Value: "true"
+            - Name: env_apigateway_scheme
+              Value: http
+            - Name: env_apigateway_host
+              Value: apigateway
+            - Name: env_apigateway_port
+              Value: "5555"
+            - Name: env_apigateway_rest_password
+              Value: somethingnew
+            - Name: env_apigateway_rest_password_old
+              Value: manage
+            - Name: env_apigateway_rest_user
+              Value: Administrator
+            - Name: env_apigateway_lb_http_url
+              Value: !Sub http://${LoadBalancerDNS}:5555
+            - Name: env_apigateway_lb_https_url
+              Value: !Sub https://${LoadBalancerDNS}:5543
+            - Name: env_apigateway_lb_webapp_url
+              Value: !Sub http://${LoadBalancerDNS}:9072
+            - Name: env_apigateway_lb_websocket_url
+              Value: !Sub ws://${LoadBalancerDNS}:5555
+            - Name: env_apigateway_portalgateway_gateway_url
+              Value: !Sub http://${LoadBalancerDNS}:5555
+            - Name: env_apigateway_portalgateway_gateway_username
+              Value: Administrator
+            - Name: env_apigateway_portalgateway_gateway_password
+              Value: somethingnew
+            - Name: env_apigateway_portalgateway_portal_url
+              Value: !Sub http://${LoadBalancerDNS}:18101
+            - Name: env_apigateway_portalgateway_portal_username
+              Value: Administrator
+            - Name: env_apigateway_portalgateway_portal_password
+              Value: manage
+          Image: !Sub ${ECRName}/${ImageApiGatewayConfigurator}:${ImageApiGatewayConfiguratorTag}
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: apimgt-stack
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: ApigatewayconfiguratorTaskExecutionRole
+      Family: apimgt-stack-apigateway-configurator
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  ApigatewayconfiguratorTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: project
+          Value: apimgt-stack
+        - Key: job
+          Value: apigateway_configurator
     Type: AWS::IAM::Role
