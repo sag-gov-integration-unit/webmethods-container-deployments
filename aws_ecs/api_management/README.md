@@ -31,6 +31,10 @@ Then, Deploy:
 /bin/sh deploy.sh "$AWS_ECR"
 ```
 
+Once deployed, Product UIs will be available at (the script will actually give you the accurate URL):
+ - APIGateway UI URL: http://<AWS_LB>:9072
+ - Portal UI URL: http://<AWS_LB>:18101
+
 ## Delete stack
 
 ```bash
