@@ -43,6 +43,12 @@ Parameters:
   ImageApiGatewayConfiguratorTag:
     Description: The tag of the image for the api gateway configurator
     Type: String
+  ImageDevPortalConfigurator:
+    Description: The name of the image for the api gateway configurator
+    Type: String
+  ImageDevPortalConfiguratorTag:
+    Description: The tag of the image for the api gateway configurator
+    Type: String
 
 Metadata:
   Cluster:
@@ -55,6 +61,9 @@ Outputs:
   ApigatewayConfiguratorTaskDef:
     Value:
       Ref: ApigatewayconfiguratorTaskDefinition
+  DevPortalConfiguratorTaskDef:
+    Value:
+      Ref: DevPortalConfiguratorTaskDefinition
   ApiportalTaskDef:
     Value:
       Ref: ApiportalTaskDefinition
@@ -811,18 +820,18 @@ Resources:
               Value: "false"
             - Name: env_apigateway_configure_portalgateway
               Value: "true"
-            - Name: env_apigateway_scheme
+            - Name: env_apigateway_protocol
               Value: http
             - Name: env_apigateway_host
               Value: apigateway
             - Name: env_apigateway_port
               Value: "5555"
+            - Name: env_apigateway_rest_user
+              Value: Administrator
             - Name: env_apigateway_rest_password
               Value: somethingnew
             - Name: env_apigateway_rest_password_old
               Value: manage
-            - Name: env_apigateway_rest_user
-              Value: Administrator
             - Name: env_apigateway_lb_http_url
               Value: !Sub http://${LoadBalancerDNS}:5555
             - Name: env_apigateway_lb_https_url
@@ -837,11 +846,15 @@ Resources:
               Value: Administrator
             - Name: env_apigateway_portalgateway_gateway_password
               Value: somethingnew
-            - Name: env_apigateway_portalgateway_portal_url
+            - Name: env_apigateway_portalgateway_portaltype
+              Value: devportal
+            - Name: env_apigateway_portalgateway_devportal_tenant
+              Value: default
+            - Name: env_apigateway_portalgateway_devportal_url
               Value: !Sub http://${LoadBalancerDNS}:18101
-            - Name: env_apigateway_portalgateway_portal_username
+            - Name: env_apigateway_portalgateway_devportal_username
               Value: Administrator
-            - Name: env_apigateway_portalgateway_portal_password
+            - Name: env_apigateway_portalgateway_devportal_password
               Value: manage
           Image: !Sub ${ECRName}/${ImageApiGatewayConfigurator}:${ImageApiGatewayConfiguratorTag}
           LinuxParameters: {}
@@ -881,4 +894,68 @@ Resources:
           Value: apimgt-stack
         - Key: job
           Value: apigateway_configurator
+    Type: AWS::IAM::Role
+  DevPortalConfiguratorTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+        - Name: DevPortalConfigurator_ResolvConf_InitContainer
+          Command:
+            - !Sub ${AWS::Region}.compute.internal
+            - apimgt-stack.local
+          Essential: false
+          Image: docker/ecs-searchdomain-sidecar:1.0
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: apimgt-stack
+        - Name: portal_configurator
+          DependsOn:
+            - Condition: SUCCESS
+              ContainerName: DevPortalConfigurator_ResolvConf_InitContainer
+          Essential: true
+          Environment:
+            - Name: something
+              Value: "true"
+          Image: !Sub ${ECRName}/${ImageDevPortalConfigurator}:${ImageDevPortalConfiguratorTag}
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: apimgt-stack
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: DevPortalConfiguratorTaskExecutionRole
+      Family: apimgt-stack-portal-configurator
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  DevPortalConfiguratorTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: project
+          Value: apimgt-stack
+        - Key: job
+          Value: portal_configurator
     Type: AWS::IAM::Role

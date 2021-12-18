@@ -30,25 +30,26 @@ echo "Parameters: VPCID=$VPCID, ECSCluster=$ECSCluster, SubnetIDs=$SubnetIDs, Lo
 aws cloudformation deploy --template ./cloudformation-apimgt-stack.yaml --stack-name cloudformation-apimgt-stack-ecs --parameter-overrides $(cat configs/params_1011.properties | tr "\n" " ") VPCID=$VPCID ECSCluster=$ECSCluster SubnetIDs=$SubnetIDs LoadBalancerArn=$LoadBalancerArn LoadBalancerDNS=$LoadBalancerDNS ECRName=$ECRName --capabilities CAPABILITY_IAM
 ```
 
-## Run One-Time-Use APIGateway Configurator Task
+## Run One-Time-Use DevPortal Configurator Task
 
-Get the needed values for the task:
+Get the needed values for the previous deployed ECS Cloudformation stack:
 
 ```bash
 VPCID=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='VPCID'].OutputValue" --output text)
 ECSCluster=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='ECSCluster'].OutputValue" --output text)
 SubnetIDs=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='SubnetIDs'].OutputValue" --output text)
 SecurityGroupId=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='SecurityGroupId'].OutputValue" --output text)
-ApiGatewayConfiguratorTaskDef=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='ApigatewayConfiguratorTaskDef'].OutputValue" --output text)
+DevPortalConfiguratorTaskDef=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='DevPortalConfiguratorTaskDef'].OutputValue" --output text)
 
+echo "Parameters: VPCID=$VPCID, ECSCluster=$ECSCluster, SubnetIDs=$SubnetIDs, SecurityGroupId=$SecurityGroupId, DevPortalConfiguratorTaskDef=$DevPortalConfiguratorTaskDef"
 ```
 
-Then, create a task for it:
+Then, create a new task for the configurator:
 
 ```bash
 aws ecs run-task \
     --count 1 \
-    --task-definition $ApiGatewayConfiguratorTaskDef \
+    --task-definition $DevPortalConfiguratorTaskDef \
     --cluster $ECSCluster \
     --group cloudformation-apimgt-stack-ecs \
     --launch-type FARGATE \
@@ -58,25 +59,26 @@ aws ecs run-task \
     --network-configuration "awsvpcConfiguration={subnets=[$SubnetIDs],securityGroups=[$SecurityGroupId],assignPublicIp=DISABLED}"
 ```
 
-## Run One-Time-Use DevPortal Configurator Task
+## Run One-Time-Use APIGateway Configurator Task
 
-Get the needed values for the task:
+Get the needed values for the previous deployed ECS Cloudformation stack:
 
 ```bash
 VPCID=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='VPCID'].OutputValue" --output text)
 ECSCluster=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='ECSCluster'].OutputValue" --output text)
 SubnetIDs=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='SubnetIDs'].OutputValue" --output text)
 SecurityGroupId=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='SecurityGroupId'].OutputValue" --output text)
-DevPortalConfiguratorTaskDef=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='DevPortalConfiguratorTaskDef'].OutputValue" --output text)
+ApiGatewayConfiguratorTaskDef=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='ApigatewayConfiguratorTaskDef'].OutputValue" --output text)
 
+echo "Parameters: VPCID=$VPCID, ECSCluster=$ECSCluster, SubnetIDs=$SubnetIDs, SecurityGroupId=$SecurityGroupId, ApiGatewayConfiguratorTaskDef=$ApiGatewayConfiguratorTaskDef"
 ```
 
-Then, create a task for it:
+Then, create a new task for the configurator:
 
 ```bash
 aws ecs run-task \
     --count 1 \
-    --task-definition $DevPortalConfiguratorTaskDef \
+    --task-definition $ApiGatewayConfiguratorTaskDef \
     --cluster $ECSCluster \
     --group cloudformation-apimgt-stack-ecs \
     --launch-type FARGATE \
