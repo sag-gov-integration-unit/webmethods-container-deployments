@@ -7,7 +7,7 @@ REG_TARGET="$2"
 
 #check for errors
 if [ "x$SAG_RELEASE" == "x" ]; then
-    echo "provide a valid parameter for the product release (10.7,10.11)"
+    echo "Env var SAG_RELEASE is empty. Provide a valid SAG_RELEASE value (107,1011). ie. 'export SAG_RELEASE=1011'"
     exit 2;
 fi
 
