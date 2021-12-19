@@ -864,7 +864,7 @@ Resources:
             - Name: env_apigateway_portalgateway_devportal_tenant
               Value: default
             - Name: env_apigateway_portalgateway_devportal_url
-              Value: !Sub http://${LoadBalancerDNS}:18101
+              Value: !Sub http://${LoadBalancerDNS}:18101/portal
             - Name: env_apigateway_portalgateway_devportal_username
               Value: Administrator
             - Name: env_apigateway_portalgateway_devportal_password
@@ -1022,7 +1022,7 @@ Resources:
             - Name: env_apigateway_archives_import_enabled
               Value: "true"
             - Name: env_apigateway_archives_import_autozip_enabled
-              Value: "true"
+              Value: "false"
             - Name: env_apigateway_archives_import_1_path
               Value: "/src/apigw107-archive-bookstore-1.0.zip"
             - Name: env_apigateway_api_alias_1_name
