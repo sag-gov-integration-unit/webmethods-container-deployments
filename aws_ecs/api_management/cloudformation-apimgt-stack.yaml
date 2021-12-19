@@ -1007,8 +1007,30 @@ Resources:
               ContainerName: ApigatewaySampleAPIsDeployer_ResolvConf_InitContainer
           Essential: true
           Environment:
-            - Name: env_apigateway_configure_default_ignore_errors
+            - Name: env_apigateway_protocol
+              Value: http
+            - Name: env_apigateway_host
+              Value: !Sub ${LoadBalancerDNS}
+            - Name: env_apigateway_port
+              Value: "5555"
+            - Name: env_apigateway_rest_user
+              Value: Administrator
+            - Name: env_apigateway_rest_password
+              Value: somethingnew
+            - Name: env_apigateway_archives_import_enabled
               Value: "true"
+            - Name: env_apigateway_archives_import_1_path
+              Value: "/src/apigw107-archive-bookstore-1.0.zip"
+            - Name: env_apigateway_archives_import_1_autozip_enabled
+              Value: "true"
+            - Name: env_apigateway_api_alias_create_enabled
+              Value: "true"
+            - Name: env_apigateway_api_alias_1_name
+              Value: "bookstore_endpoint"
+            - Name: env_apigateway_api_alias_1_description
+              Value: "endpoint for the bookstore api"
+            - Name: env_apigateway_api_alias_1_value
+              Value: "http://webmethods-sample-apis-bookstore:7071"
           Image: !Sub ${ECRName}/${ImageApigatewaySampleAPIsDeployer}:${ImageApigatewaySampleAPIsDeployerTag}
           LinuxParameters: {}
           LogConfiguration:
