@@ -1017,14 +1017,14 @@ Resources:
               Value: Administrator
             - Name: env_apigateway_rest_password
               Value: somethingnew
+            - Name: env_apigateway_api_alias_create_enabled
+              Value: "true"
             - Name: env_apigateway_archives_import_enabled
+              Value: "true"
+            - Name: env_apigateway_archives_import_autozip_enabled
               Value: "true"
             - Name: env_apigateway_archives_import_1_path
               Value: "/src/apigw107-archive-bookstore-1.0.zip"
-            - Name: env_apigateway_archives_import_1_autozip_enabled
-              Value: "true"
-            - Name: env_apigateway_api_alias_create_enabled
-              Value: "true"
             - Name: env_apigateway_api_alias_1_name
               Value: "bookstore_endpoint"
             - Name: env_apigateway_api_alias_1_description

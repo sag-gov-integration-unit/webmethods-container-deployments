@@ -52,7 +52,7 @@ aws ecs run-task \
     --count 1 \
     --task-definition $PortalConfiguratorTaskDef \
     --cluster $ECSCluster \
-    --group cloudformation-apimgt-stack-ecs \
+    --group ${DEPLOY_STACK_NAME} \
     --launch-type FARGATE \
     --platform-version 1.4.0 \
     --propagate-tags TASK_DEFINITION \
@@ -66,8 +66,8 @@ echo "#################################################################"
 echo "Launching Apigateway Configurator Task"
 echo "#################################################################"
 
-SecurityGroupId=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='SecurityGroupId'].OutputValue" --output text)
-ApiGatewayConfiguratorTaskDef=$(aws cloudformation describe-stacks --stack-name cloudformation-apimgt-stack-ecs --query "Stacks[0].Outputs[?OutputKey=='ApigatewayConfiguratorTaskDef'].OutputValue" --output text)
+SecurityGroupId=$(aws cloudformation describe-stacks --stack-name ${DEPLOY_STACK_NAME} --query "Stacks[0].Outputs[?OutputKey=='SecurityGroupId'].OutputValue" --output text)
+ApiGatewayConfiguratorTaskDef=$(aws cloudformation describe-stacks --stack-name ${DEPLOY_STACK_NAME} --query "Stacks[0].Outputs[?OutputKey=='ApigatewayConfiguratorTaskDef'].OutputValue" --output text)
 
 echo "Parameters: SecurityGroupId=$SecurityGroupId, ApiGatewayConfiguratorTaskDef=$ApiGatewayConfiguratorTaskDef"
 
@@ -75,7 +75,7 @@ aws ecs run-task \
     --count 1 \
     --task-definition $ApiGatewayConfiguratorTaskDef \
     --cluster $ECSCluster \
-    --group cloudformation-apimgt-stack-ecs \
+    --group ${DEPLOY_STACK_NAME} \
     --launch-type FARGATE \
     --platform-version 1.4.0 \
     --propagate-tags TASK_DEFINITION \
@@ -84,6 +84,29 @@ aws ecs run-task \
     > /dev/null
 
 echo "Launch Apigateway Configurator Task Done!"
+
+echo "#################################################################"
+echo "Launching Apigateway SampleAPIs Asset Deployer Task"
+echo "#################################################################"
+
+SecurityGroupId=$(aws cloudformation describe-stacks --stack-name ${DEPLOY_STACK_NAME} --query "Stacks[0].Outputs[?OutputKey=='SecurityGroupId'].OutputValue" --output text)
+ApigatewaySampleAPIsDeployerTaskDef=$(aws cloudformation describe-stacks --stack-name ${DEPLOY_STACK_NAME} --query "Stacks[0].Outputs[?OutputKey=='ApigatewaySampleAPIsDeployerTaskDef'].OutputValue" --output text)
+
+echo "Parameters: SecurityGroupId=$SecurityGroupId, ApigatewaySampleAPIsDeployerTaskDef=$ApigatewaySampleAPIsDeployerTaskDef"
+
+aws ecs run-task \
+    --count 1 \
+    --task-definition $ApigatewaySampleAPIsDeployerTaskDef \
+    --cluster $ECSCluster \
+    --group ${DEPLOY_STACK_NAME} \
+    --launch-type FARGATE \
+    --platform-version 1.4.0 \
+    --propagate-tags TASK_DEFINITION \
+    --enable-ecs-managed-tags \
+    --network-configuration "awsvpcConfiguration={subnets=[$SubnetIDs],securityGroups=[$SecurityGroupId],assignPublicIp=DISABLED}" \
+    > /dev/null
+
+echo "Launch Apigateway SampleAPIs Asset Deployer Task Done!"
 
 echo "#################################################################"
 echo "All DONE!!!!"
