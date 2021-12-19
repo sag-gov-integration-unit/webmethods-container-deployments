@@ -1044,7 +1044,7 @@ Resources:
       Cpu: "256"
       ExecutionRoleArn:
         Ref: ApigatewaySampleAPIsDeployerTaskExecutionRole
-      Family: apimgt-stack-apigateway-deployer
+      Family: ApigatewaySampleAPIsDeployer
       Memory: "512"
       NetworkMode: awsvpc
       RequiresCompatibilities:
