@@ -15,7 +15,7 @@ To facilitate the Tutorial, we have created a base infrastructure Cloudformation
  - 1 load balancer
  - 1 ECS cluster
 
-Refer to [Common AWS ECS Infrastructure Cloudformation Template](../base_ecs_infra/README.md) to run...
+Refer to [Base AWS ECS Infrastructure for ECS Tutorials > Deploy](../base_ecs_infra/README.md) to run...
 
 ## Deploy the API Management container stack into ECS (using cloudformation)
 
@@ -40,3 +40,9 @@ Once deployed, Product UIs will be available at (the script will actually give y
 ```bash
 /bin/sh destroy.sh
 ```
+
+## Delete Base Infrastructure
+
+If you're done, don't forget to destroy the base infrastructure too:
+
+Refer to [Base AWS ECS Infrastructure for ECS Tutorials > Destroy](../base_ecs_infra/README.md) for detais on that.
