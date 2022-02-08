@@ -1,0 +1,14 @@
+---
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana
+spec:
+  version: 7.13.4
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch
+  # config:
+  #   server.basePath: /apigatewayui/dashboardproxy
+  #   server.rewriteBasePath: false
+  #   kibana.index: gateway_default_dashboard
