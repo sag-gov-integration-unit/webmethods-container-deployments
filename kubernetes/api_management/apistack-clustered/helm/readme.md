@@ -24,6 +24,10 @@ Get the charts from gthub directly:
 
 git clone -b develop https://github.com/softwareag-government-solutions/saggov-helm-charts.git
 
+## Add Developer Portal stack
+
+helm install --namespace $DEMO_NS -f devportal.yaml ./saggov-helm-charts/webmethods-devportal --generate-name
+
 ## Add Terracotta stack
 
 helm install -f terracotta.yaml saggov/webmethods-terracotta ./saggov-helm-charts/webmethods-terracotta
