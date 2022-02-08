@@ -28,6 +28,10 @@ docker push ${REG_TARGET}/webmethods-microgateway:${TAG_APIGATEWAY}
 docker push ${REG_TARGET}/webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
 docker push ${REG_TARGET}/webmethods-apigateway-deployer-sampleapis:${TAG_APIGATEWAY_CONFIGURATOR}
 
+echo "Pushing newly created Terracotta images"
+docker push ${REG_TARGET}/webmethods-terracotta:${TAG_TERRACOTTA}
+docker push ${REG_TARGET}/webmethods-terracotta-tmc:${TAG_TERRACOTTA}
+
 ## API Portal
 if [[ "$SAG_RELEASE" == "105" || "$SAG_RELEASE" == "107" ]]; then
     echo "Pushing newly created API Portal images"

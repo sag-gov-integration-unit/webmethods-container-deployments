@@ -18,7 +18,16 @@ kubectl --namespace $DEMO_NS apply -f elasticsearch.yaml
 kubectl --namespace $DEMO_NS apply -f kibana.yaml
 ```
 
+## Prep - get the charts from source directly (for now)
+
+Get the charts from gthub directly:
+
+git clone -b develop https://github.com/softwareag-government-solutions/saggov-helm-charts.git
+
 ## Add Terracotta stack
+
+helm install -f terracotta.yaml saggov/webmethods-terracotta ./saggov-helm-charts/webmethods-terracotta
+
 
 ## Create secrets for the demo
 

@@ -1,0 +1,38 @@
+image:
+  repository: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-terracotta
+  tag: dev-10.11-latest
+replicaCount: 2
+resources:
+  requests:
+    memory: 1256Mi
+    cpu: 250m
+  limits:
+    memory: 3Gi
+    cpu: 1
+env:
+  - name: TSA_PORT
+    value: "9510"
+  - name: JMX_PORT
+    value: "9520"
+  - name: GROUP_PORT
+    value: "9530"
+  - name: MGT_PORT
+    value: "9540"
+  - name: HEAP_SIZE_MB_MIN
+    value: "512m"
+  - name: HEAP_SIZE_MB_MAX
+    value: "2048m"
+  - name: DATA_STORAGE_SIZE
+    value: "5g"
+  - name: DATA_OFFHEAP_SIZE
+    value: "512m"
+  - name: RESTARTABLE_ENABLED
+    value: "false"
+  - name: TC_SERVER_NAME1
+    value: "webmethods-terracotta-0"
+  - name: TC_SERVER_NAME2
+    value: "webmethods-terracotta-1"
+  - name: TC_SERVER_HOST1
+    value: "webmethods-terracotta-0.webmethods-terracotta-hl"
+  - name: TC_SERVER_HOST2
+    value: "webmethods-terracotta-1.webmethods-terracotta-hl"

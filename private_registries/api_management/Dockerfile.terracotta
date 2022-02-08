@@ -1,0 +1,5 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE as base
+
+# copy license file
+COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./licensing/terracotta-license.key ${SAG_HOME}/Terracotta/terracotta-license.key

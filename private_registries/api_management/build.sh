@@ -35,6 +35,10 @@ docker build -f Dockerfile.apigateway --no-cache -t ${REG_TARGET}/webmethods-api
 docker build -f Dockerfile.apigateway --no-cache -t ${REG_TARGET}/webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR} --build-arg BASE_IMAGE=${REG_SOURCE}/webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR} .
 docker build -f Dockerfile.apigateway.deployer --no-cache -t ${REG_TARGET}/webmethods-apigateway-deployer-sampleapis:${TAG_APIGATEWAY_CONFIGURATOR} --build-arg BASE_IMAGE=${REG_SOURCE}/webmethods-apigateway-deployer:${TAG_APIGATEWAY_CONFIGURATOR} .
 
+## terracotta
+docker build -f Dockerfile.terracotta --no-cache -t ${REG_TARGET}/webmethods-terracotta:${TAG_TERRACOTTA} --build-arg BASE_IMAGE=${REG_SOURCE}/webmethods-terracotta:${TAG_TERRACOTTA} .
+docker build -f Dockerfile.terracotta --no-cache -t ${REG_TARGET}/webmethods-terracotta-tmc:${TAG_TERRACOTTA} --build-arg BASE_IMAGE=${REG_SOURCE}/webmethods-terracotta-tmc:${TAG_TERRACOTTA} .
+
 ## Microgateway:
 echo "Building Microgateway images"
 docker build -f Dockerfile.microgateway --no-cache -t ${REG_TARGET}/webmethods-microgateway:${TAG_APIGATEWAY} --build-arg BASE_IMAGE=${REG_SOURCE}/webmethods-microgateway:${TAG_APIGATEWAY} .
