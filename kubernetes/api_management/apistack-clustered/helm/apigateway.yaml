@@ -1,145 +1,57 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: webmethods-apigateway
-  namespace: ${tenantName}
-spec:
-  interval: 5m
-  chart:
-    spec:
-      chart: webmethods-apigateway
-      sourceRef:
-        kind: GitRepository
-        name: helm-charts
-        namespace: default
-      interval: 1m
-  install:
-    timeout: 20m
-    remediation:
-      retries: -1
-  upgrade:
-    timeout: 20m
-    remediation:
-      retries: -1
-  rollback:
-    timeout: 20m
-  dependsOn:
-    - name: webmethods-terracotta
-  values:
-    image:
-      repository: ${repo}/webmethods-apigateway
-      tag: ${webmethodsTag}
-    apigwLicenseSecret: "apigateway-license"
-    terracottaLicenseSecret: "terracotta-license"
-    replicaCount: 2
-    podSecurityContext:
-      runAsUser: 1724
-      runAsGroup: 1724
-      fsGroup: 1724
-    securityContext:
-      allowPrivilegeEscalation: false
-    resources:
-      requests:
-        memory: 2Gi
-        cpu: 1
-      limits:
-        memory: 4Gi
-        cpu: 2
-    
-    envConfigs:
-      JAVA_MIN_MEM: 1g
-      JAVA_MAX_MEM: 2g
-      JAVA_OPTS: ""
-      RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
-      APIGW_ELASTICSEARCH_TENANTID: ${tenantId}
-      APIGW_ELASTICSEARCH_HOSTS: elasticsearch-es-sag-eventdatastore:9200
-      APIGW_KIBANA_DASHBOARDINSTANCE: http://kibana-kb-http:5601
-      APIGW_ELASTICSEARCH_HTTP_USERNAME: elastic
-      CLUSTER_AWARE: true
-      CLUSTER_NAME: APIGatewayTSAcluster
-      CLUSTER_TSAURLS: webmethods-terracotta-0.webmethods-terracotta-hl:9510,webmethods-terracotta-1.webmethods-terracotta-hl:9510
-      CLUSTER_SESSTIMEOUT: 30
-      CLUSTER_ACTIONONSTARTUPERROR: shutdown
-      CLUSTER_CONNECTTIMEOUT: 30000
-      HEALTHCHECK_ELASTIC_USER: elastic
-    
-    envSecretConfigs:
-      APIGW_ELASTICSEARCH_HTTP_PASSWORD:
-        secretKeyRef: elasticsearch-es-elastic-user
-        key: elastic
-      HEALTHCHECK_ELASTIC_PASSWORD:
-        secretKeyRef: elasticsearch-es-elastic-user
-        key: elastic
-    
-    config:
-      apigw:
-        elasticsearch:
-          autostart: false
-          http:
-            keepAlive: true
-            keepAliveMaxConnections: 10
-            keepAliveMaxConnectionsPerRoute: 100
-            connectionTimeout: 1000
-            socketTimeout: 10000
-            maxRetryTimeout: 100000
-          https:
-            enabled: false
-          sniff:
-            enable: false
-            timeInterval: 1000
-          outboundProxy:
-            enabled: false
-            alias: somealias
-          clientHttpResponseSize: 1001231
-        kibana:
-          autostart: false
-          
-    autoscaling:
-      enabled: false
-      minReplicas: 2
-      maxReplicas: 20
-      targetCPUUtilizationPercentage: 50
-      #targetMemoryUtilizationPercentage: 80
+---
 
-    # we probably have to setup 2 different service, because 1 is sticky, not the other...
-    service:
-      gwruntime:
-        type: ClusterIP
-        port: 5543
-        annotations:
-          traefik.ingress.kubernetes.io/service.serversscheme: https
-          traefik.ingress.kubernetes.io/service.passhostheader: "true"
-      gwui:
-        type: ClusterIP
-        port: 9073
-        annotations:
-          traefik.ingress.kubernetes.io/service.serversscheme: https
-          traefik.ingress.kubernetes.io/service.passhostheader: "true"
-          traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
-          traefik.ingress.kubernetes.io/service.sticky.cookie.secure: "true"
-          traefik.ingress.kubernetes.io/service.sticky.cookie.samesite: "none"
-          traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
+image:
+  repository: ${repo}/webmethods-apigateway
+  tag: ${webmethodsTag}
 
-    containerPorts:
-      - containerPort: 5543
-        name: gwruntimessl
-        protocol: TCP
-      - containerPort: 9073
-        name: gwuissl
-        protocol: TCP
+replicaCount: 2
 
-    # Runtime ingress
-    # runtime path are /gateway, /rest, /invoke, /WmAPIGateway
-    ingress:
-      enabled: true
-      annotations:
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        # note: to add a traefik middleware via annotation, it's important follow the format: < traefik_namespace >-< middlewarename >@kubernetescrd
-        traefik.ingress.kubernetes.io/router.middlewares: traefik-enforce-ssl-xforward-headers@kubernetescrd
-      hosts:
-      - host: webmethods-apigateway-${tenantId}${host}
-        paths:
+envConfigs:
+  JAVA_MIN_MEM: 1g
+  JAVA_MAX_MEM: 2g
+  JAVA_OPTS: ""
+  RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
+  APIGW_ELASTICSEARCH_TENANTID: apigateway
+  APIGW_ELASTICSEARCH_HOSTS: elasticsearch-es-sag-apidatastore:9200
+  APIGW_KIBANA_DASHBOARDINSTANCE: http://kibana-kb-http:5601
+  APIGW_ELASTICSEARCH_HTTP_USERNAME: elastic
+  CLUSTER_AWARE: true
+  CLUSTER_NAME: APIGatewayTSAcluster
+  CLUSTER_TSAURLS: webmethods-terracotta-0.webmethods-terracotta-hl:9510,webmethods-terracotta-1.webmethods-terracotta-hl:9510
+  CLUSTER_SESSTIMEOUT: 30
+  CLUSTER_ACTIONONSTARTUPERROR: shutdown
+  CLUSTER_CONNECTTIMEOUT: 30000
+  HEALTHCHECK_ELASTIC_USER: elastic
+
+envSecretConfigs:
+  APIGW_ELASTICSEARCH_HTTP_PASSWORD:
+    secretKeyRef: elasticsearch-es-elastic-user
+    key: elastic
+  HEALTHCHECK_ELASTIC_PASSWORD:
+    secretKeyRef: elasticsearch-es-elastic-user
+    key: elastic
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 50
+  #targetMemoryUtilizationPercentage: 80
+
+# apply stickiness for the ingress
+service:
+  gwui:
+    annotations:
+      traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+
+# Runtime ingress: runtime path are /gateway, /rest, /invoke, /WmAPIGateway
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  hosts:
+    - host: webmethods-apigateway.cluster-demo.apimgt.saggov
+      paths:
         - path: /gateway
           pathType: Prefix
           backendServiceName: webmethods-apigateway-gwruntime
@@ -160,117 +72,3 @@ spec:
           pathType: Prefix
           backendServiceName: webmethods-apigateway-gwui
           backendServicePort: 9073
-        
-    loadrunner:
-      enabled: ${apigatewaySampleData}
-      replicaCount: 1
-      image:
-        repository: "lanimall/continuous-curl-runner"
-        tag: "0.0.3"
-        pullPolicy: "IfNotPresent"
-      env:
-        - name: REQUESTS_INTERVAL
-          value: "5"
-        - name: REQUESTS_SELECTION
-          value: "random"
-        - name: REQUESTS_JSON
-          value: "[{\"method\":\"GET\",\"url\":\"https://webmethods-apigateway-gwruntime:5543/gateway/bookstore/1.0/books\",\"basic_auth\":{\"username\":\"env{loadrunner_username}\",\"password\":\"env{loadrunner_password}\"},\"headers\":{\"Content-Type\":\"application/json\"}},{\"method\":\"GET\",\"url\":\"https://webmethods-apigateway-gwruntime:5543/gateway/uszip/1.0/findZip/Rockville/MD\",\"basic_auth\":{\"username\":\"env{loadrunner_username}\",\"password\":\"env{loadrunner_password}\"},\"headers\":{\"Content-Type\":\"application/json\"}},{\"method\":\"GET\",\"url\":\"https://webmethods-apigateway-gwruntime:5543/gateway/covid/1.0/findCovidByZip?zip_code=22201\",\"basic_auth\":{\"username\":\"env{loadrunner_username}\",\"password\":\"env{loadrunner_password}\"},\"headers\":{\"Content-Type\":\"application/json\"}}]"
-        - name: loadrunner_username
-          value: "loadrunner"
-        - name: loadrunner_password
-          value: "manage"
-
-    configurator:
-      enabled: true
-      verbose: true
-      sampleData: ${apigatewaySampleData}
-      envConfigs:
-        env_apigateway_configure_default_ignore_errors: true
-        env_apigateway_configure_lb: true
-        env_apigateway_configure_lb_ignore_errors: false
-        env_apigateway_configure_extended_settings: true
-        env_apigateway_configure_extended_settings_ignore_errors: false
-        env_apigateway_configure_portalgateway: true
-        env_apigateway_configure_portalgateway_ignore_errors: true
-        env_apigateway_configure_ports: false
-        env_apigateway_configure_ldap: false
-        env_apigateway_configure_saml: false
-        env_apigateway_stage: test
-        env_apigateway_protocol: https
-        env_apigateway_host: webmethods-apigateway-gwruntime
-        env_apigateway_port: 5543
-        env_apigateway_no_check_certs: true
-        env_apigateway_rest_user: Administrator
-        env_apigateway_rest_password_old: manage
-        env_apigateway_portalgateway_gateway_url: https://webmethods-apigateway-gwruntime:5543
-        env_apigateway_portalgateway_gateway_username: Administrator
-        env_apigateway_portalgateway_portaltype: ${portalName}
-        env_apigateway_portalgateway_apiportal_url: https://webmethods-${portalName}:18102
-        env_apigateway_portalgateway_apiportal_tenant: default
-        env_apigateway_portalgateway_apiportal_username: system
-        env_apigateway_portalgateway_devportal_url: https://webmethods-${portalName}:18102/portal/
-        env_apigateway_portalgateway_devportal_tenant: ${tenantId}
-        env_apigateway_portalgateway_devportal_username: Administrator
-        env_apigateway_lb_http_url: http://webmethods-apigateway-${tenantId}.${host}
-        env_apigateway_lb_https_url: https://webmethods-apigateway-${tenantId}.${host}
-        env_apigateway_lb_websocket_url: ""
-        env_apigateway_lb_webapp_url: https://webmethods-apigateway-${tenantId}.${host}
-      envSecretConfigs:
-        AWS_ACCESS_KEY_ID:
-          secretKeyRef: aws-dev-secret
-          key: aws_access_key_id
-        AWS_SECRET_ACCESS_KEY:
-          secretKeyRef: aws-dev-secret
-          key: aws_secret_access_key
-        env_apigateway_rest_password:
-          secretKeyRef: tenant-secret
-          key: Administrator
-        env_apigateway_portalgateway_gateway_password:
-          secretKeyRef: tenant-secret
-          key: Administrator
-        env_apigateway_portalgateway_apiportal_password:
-          secretKeyRef: tenant-secret
-          key: Administrator
-        env_apigateway_portalgateway_devportal_password:
-          secretKeyRef: tenant-secret
-          key: Administrator
-      envSampleDataConfigs:
-        env_apigateway_configure_usermgt: true
-        env_apigateway_configure_archives: true
-        env_apigateway_configure_aliases: true
-        env_apigateway_configure_promotions_stages: true
-        env_apigateway_configure_applications: true
-        env_apigateway_configure_plans: true
-        env_apigateway_configure_packages: true
-        env_apigateway_configure_apis_publish_groups: true
-        env_apigateway_configure_packages_publish_groups: true
-        env_apigateway_users_loadrunner_username: loadrunner
-        env_apigateway_users_loadrunner_password: manage
-        env_apigateway_aliases_covid_endpoint: http://webmethods-sample-apis-covidreports:7071
-        env_apigateway_aliases_bookstore_endpoint: http://webmethods-sample-apis-bookstore:7071
-        env_apigateway_aliases_uszip_endpoint: http://webmethods-sample-apis-uszip:7071
-        env_apigateway_aliases_sagtours_endpoint: http://webmethods-sample-apis-sagtours:5555
-        ## these are for microgateway ones...but disabling as it adds complications and issues for now
-        # env_apigateway_aliases_covid_endpoint: http://webmethods-microgateway-covidreports:9090/gateway
-        # env_apigateway_aliases_bookstore_endpoint: http://webmethods-microgateway-bookstore:9090/gateway
-        # env_apigateway_aliases_uszip_endpoint: http://webmethods-microgateway-uszip:9090/gateway
-      envSampleDataSecretConfigs: 
-        env_apigateway_users_sample1_password:
-          secretKeyRef: sample-user-secret
-          key: sample-user
-        env_apigateway_users_sample2_password:
-          secretKeyRef: sample-user-secret
-          key: sample-user
-        env_apigateway_users_sample3_password:
-          secretKeyRef: sample-user-secret
-          key: sample-user
-        
-      image:
-        repository: ${repo}/webmethods-apigateway-configurator
-        tag: ${apigatewayConfiguratorTag}
-
-      env:
-      - name: AWS_DEFAULT_REGION
-        value: "us-east-1"
-      - name: AWS_DEFAULT_OUTPUT
-        value: "json"

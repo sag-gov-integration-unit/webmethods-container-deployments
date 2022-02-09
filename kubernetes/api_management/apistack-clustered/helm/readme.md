@@ -26,11 +26,18 @@ git clone -b develop https://github.com/softwareag-government-solutions/saggov-h
 
 ## Add Developer Portal stack
 
-helm install --namespace $DEMO_NS -f devportal.yaml ./saggov-helm-charts/webmethods-devportal --generate-name
+helm install --namespace $DEMO_NS -f devportal.yaml webmethods-devportal ./saggov-helm-charts/webmethods-devportal
 
 ## Add Terracotta stack
 
-helm install -f terracotta.yaml saggov/webmethods-terracotta ./saggov-helm-charts/webmethods-terracotta
+helm install --namespace $DEMO_NS -f terracotta.yaml webmethods-terracotta ./saggov-helm-charts/webmethods-terracotta
+
+
+
+
+## Uninstall
+
+helm uninstall --namespace $DEMO_NS webmethods-terracotta
 
 
 ## Create secrets for the demo

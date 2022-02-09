@@ -3,3 +3,4 @@ FROM $BASE_IMAGE as base
 
 # copy license file
 COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./licensing/apigateway-licenseKey.xml ${SAG_HOME}/IntegrationServer/instances/default/config/licenseKey.xml
+COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./licensing/terracotta-license.key ${SAG_HOME}/common/conf/terracotta-license.key
