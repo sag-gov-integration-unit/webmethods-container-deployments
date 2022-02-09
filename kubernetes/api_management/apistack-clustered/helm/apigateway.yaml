@@ -11,7 +11,7 @@ envConfigs:
   JAVA_MAX_MEM: 2g
   JAVA_OPTS: ""
   RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
-  APIGW_ELASTICSEARCH_TENANTID: apigateway
+  APIGW_ELASTICSEARCH_TENANTID: default
   APIGW_ELASTICSEARCH_HOSTS: elasticsearch-es-sag-apidatastore:9200
   APIGW_KIBANA_DASHBOARDINSTANCE: http://kibana-kb-http:5601
   APIGW_ELASTICSEARCH_HTTP_USERNAME: elastic

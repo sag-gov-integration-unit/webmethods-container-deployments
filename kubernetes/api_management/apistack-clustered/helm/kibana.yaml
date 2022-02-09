@@ -8,7 +8,7 @@ spec:
   count: 1
   elasticsearchRef:
     name: elasticsearch
-  # config:
-  #   server.basePath: /apigatewayui/dashboardproxy
-  #   server.rewriteBasePath: false
-  #   kibana.index: gateway_default_dashboard
+  config:
+    server.basePath: /apigatewayui/dashboardproxy
+    server.rewriteBasePath: false
+    kibana.index: gateway_default_dashboard

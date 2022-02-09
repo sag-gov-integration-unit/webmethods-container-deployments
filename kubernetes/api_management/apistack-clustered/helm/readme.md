@@ -8,6 +8,24 @@ kubectl create ns $DEMO_NS
 kubectl config set-context --current --namespace=$DEMO_NS
 ```
 
+## Create Secret for the Admin User
+
+We'll be using this secret to update the passwords for API gateway / API Portal:
+
+```bash
+echo -n "Enter Admin password: "; read -s password; echo "$password" > /tmp/password.txt
+kubectl create secret generic apimgt-admin-secret \
+   --from-file=password=/tmp/password.txt \
+   --namespace $DEMO_NS
+```
+
+Verify:
+
+```bash
+kubectl describe secrets/apimgt-admin-secret \
+   --namespace $DEMO_NS
+```
+
 ## Add ElasticSearch stack
 
 NOTE: The command below rely on ECK available on the cluster.
@@ -32,27 +50,15 @@ helm install --namespace $DEMO_NS -f devportal.yaml webmethods-devportal ./saggo
 
 helm install --namespace $DEMO_NS -f terracotta.yaml webmethods-terracotta ./saggov-helm-charts/webmethods-terracotta
 
+## Add API Gateway stack
 
-## Uninstall
+helm install --namespace $DEMO_NS -f apigateway.yaml webmethods-apigateway ./saggov-helm-charts/webmethods-apigateway
 
+## Uninstall All
+
+helm uninstall --namespace $DEMO_NS webmethods-apigateway
 helm uninstall --namespace $DEMO_NS webmethods-terracotta
-helm uninstall --namespace $DEMO_NS webmethods-terracotta
+helm uninstall --namespace $DEMO_NS webmethods-devportal
 
-
-## Create secrets for the demo
-
-We'll be using this secret to update the passwords for API gateway / API Portal:
-
-```bash
-echo -n "Enter Admin password: "; read -s password; echo "$password" > /tmp/password.txt
-kubectl create secret generic apimgt-admin-secret \
-   --from-file=password=/tmp/password.txt \
-   --namespace $DEMO_NS
-```
-
-Verify:
-
-```bash
-kubectl describe secrets/apimgt-admin-secret \
-   --namespace $DEMO_NS
-```
+kubectl --namespace $DEMO_NS delete -f elasticsearch.yaml
+kubectl --namespace $DEMO_NS delete -f kibana.yaml
