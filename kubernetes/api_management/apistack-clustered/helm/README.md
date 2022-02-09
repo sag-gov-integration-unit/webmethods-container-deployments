@@ -42,8 +42,10 @@ helm repo add saggov-helm-charts https://softwareag-government-solutions.github.
 
 ### Add ElasticSearch stack
 
-NOTE: The command below rely on ECK available on the cluster.
+NOTE: The command below rely on Elastic Cloud on Kubernetes (ECK) available and installed in the cluster.
 Elastic Cloud on Kubernetes (ECK) is a Kubernetes operator to orchestrate Elastic applications (Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent, and Elastic Maps Server) on Kubernetes. More info at https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-installing-eck.html
+
+Once ECK is installed, simply run the following 2 commands to install the elastic stack:
 
 ```bash
 kubectl --namespace $DEMO_NAMESPACE apply -f elasticsearch.yaml
@@ -68,7 +70,7 @@ helm install --namespace $DEMO_NAMESPACE -f terracotta.yaml webmethods-terracott
 helm install --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
 ```
 
-## Uninstall Steps
+### Uninstall Steps
 
 ```bash
 helm uninstall --namespace $DEMO_NAMESPACE webmethods-apigateway
