@@ -1,5 +1,4 @@
 ---
-
 image:
   repository: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-apigateway
   tag: dev-10.11-latest
