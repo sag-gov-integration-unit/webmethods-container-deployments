@@ -27,11 +27,11 @@ Verify:
 kubectl describe secrets/apimgt-admin-secret \
    --namespace $DEMO_NAMESPACE
 ```
-### Get the charts from source directly (for now)
+### Add the Helm REPO
 
-Get the charts from gthub directly:
-
-git clone -b develop https://github.com/softwareag-government-solutions/saggov-helm-charts.git
+```bash
+helm repo add saggov-helm-charts https://softwareag-government-solutions.github.io/saggov-helm-charts
+```
 
 ## Deploy/Detroy stack
 ### Deploy stack
@@ -60,21 +60,29 @@ kubectl --namespace $DEMO_NAMESPACE apply -f kibana.yaml
 
 ### Add Developer Portal stack
 
-helm install --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devportal ./saggov-helm-charts/webmethods-devportal
+```bash
+helm install --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
+```
 
 ### Add Terracotta stack
 
-helm install --namespace $DEMO_NAMESPACE -f terracotta.yaml webmethods-terracotta ./saggov-helm-charts/webmethods-terracotta
+```bash
+helm install --namespace $DEMO_NAMESPACE -f terracotta.yaml webmethods-terracotta saggov-helm-charts/webmethods-terracotta
+```
 
 ### Add API Gateway stack
 
-helm install --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway ./saggov-helm-charts/webmethods-apigateway
+```bash
+helm install --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
+```
 
 ## Uninstall Steps
 
+```bash
 helm uninstall --namespace $DEMO_NAMESPACE webmethods-apigateway
 helm uninstall --namespace $DEMO_NAMESPACE webmethods-terracotta
 helm uninstall --namespace $DEMO_NAMESPACE webmethods-devportal
 
 kubectl --namespace $DEMO_NAMESPACE delete -f elasticsearch.yaml
 kubectl --namespace $DEMO_NAMESPACE delete -f kibana.yaml
+```

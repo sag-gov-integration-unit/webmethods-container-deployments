@@ -10,6 +10,6 @@ fi
 
 kubectl --namespace $NAMESPACE apply -f elasticsearch.yaml
 kubectl --namespace $NAMESPACE apply -f kibana.yaml
-helm install --namespace $NAMESPACE -f devportal.yaml webmethods-devportal ./saggov-helm-charts/webmethods-devportal
-helm install --namespace $NAMESPACE -f terracotta.yaml webmethods-terracotta ./saggov-helm-charts/webmethods-terracotta
-helm install --namespace $NAMESPACE -f apigateway.yaml webmethods-apigateway ./saggov-helm-charts/webmethods-apigateway
+helm install --namespace $NAMESPACE -f devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
+helm install --namespace $NAMESPACE -f terracotta.yaml webmethods-terracotta saggov-helm-charts/webmethods-terracotta
+helm install --namespace $NAMESPACE -f apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
