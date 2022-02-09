@@ -1,8 +1,8 @@
 ---
 
 image:
-  repository: ${repo}/webmethods-apigateway
-  tag: ${webmethodsTag}
+  repository: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-apigateway
+  tag: dev-10.11-latest
 
 replicaCount: 2
 
@@ -36,9 +36,8 @@ autoscaling:
   minReplicas: 2
   maxReplicas: 20
   targetCPUUtilizationPercentage: 50
-  #targetMemoryUtilizationPercentage: 80
 
-# apply stickiness for the ingress
+# apply stickiness for the UI ingress
 service:
   gwui:
     annotations:
@@ -55,20 +54,20 @@ ingress:
         - path: /gateway
           pathType: Prefix
           backendServiceName: webmethods-apigateway-gwruntime
-          backendServicePort: 5543
+          backendServicePort: 5555
         - path: /rest
           pathType: Prefix
           backendServiceName: webmethods-apigateway-gwruntime
-          backendServicePort: 5543
+          backendServicePort: 5555
         - path: /invoke
           pathType: Prefix
           backendServiceName: webmethods-apigateway-gwruntime
-          backendServicePort: 5543
+          backendServicePort: 5555
         - path: /WmAPIGateway
           pathType: Prefix
           backendServiceName: webmethods-apigateway-gwruntime
-          backendServicePort: 5543
+          backendServicePort: 5555
         - path: /
           pathType: Prefix
           backendServiceName: webmethods-apigateway-gwui
-          backendServicePort: 9073
+          backendServicePort: 9072
