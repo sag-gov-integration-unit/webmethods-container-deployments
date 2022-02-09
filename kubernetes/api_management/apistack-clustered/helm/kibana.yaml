@@ -33,3 +33,7 @@ spec:
                 secretKeyRef:
                   name: elasticsearch-es-elastic-user
                   key: elastic
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
