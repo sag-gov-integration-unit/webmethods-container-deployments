@@ -9,22 +9,22 @@ Production-ready deployment is out of scope for this simple tutorial.
 kubectl create ns apimgt-demo1
 ```
 
-## Create secrets for the demo
+### Create Secret for the Admin User
 
 We'll be using this secret to update the passwords for API gateway / API Portal:
 
 ```bash
-echo -n 'SuperSecretPassword123!' > /tmp/password.txt
+echo -n "Enter Admin password: "; read -s password; echo "$password" > /tmp/password.txt
 kubectl create secret generic apimgt-admin-secret \
    --from-file=password=/tmp/password.txt \
-   --namespace apimgt-demo1
+   --namespace $DEMO_NAMESPACE
 ```
 
 Verify:
 
 ```bash
 kubectl describe secrets/apimgt-admin-secret \
-   --namespace apimgt-demo1
+   --namespace $DEMO_NAMESPACE
 ```
 
 ## Prep the manifests

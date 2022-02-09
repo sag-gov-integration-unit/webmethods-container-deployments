@@ -1,5 +1,14 @@
 # webmethods APIGateway and APIPortal Clustered in Kubernetes - Using Helm Charts 
 
+This page will walk through the deployment of a realistic scalable API Management cluster in your kubernetes environment:
+
+ - 2 API Gateway runtime servers (clustered)
+ - 2 Developer portal servers (clustered)
+ - 2 Terracotta servers (clustered)
+ - 3 Elastic Search servers (clustered)
+ - 2 Kibana servers
+
+
 ## Prep steps
 
 ### Create demo namespace
@@ -10,23 +19,6 @@ kubectl create ns $DEMO_NAMESPACE
 kubectl config set-context --current --namespace=$DEMO_NAMESPACE
 ```
 
-### Create Secret for the Admin User
-
-We'll be using this secret to update the passwords for API gateway / API Portal:
-
-```bash
-echo -n "Enter Admin password: "; read -s password; echo "$password" > /tmp/password.txt
-kubectl create secret generic apimgt-admin-secret \
-   --from-file=password=/tmp/password.txt \
-   --namespace $DEMO_NAMESPACE
-```
-
-Verify:
-
-```bash
-kubectl describe secrets/apimgt-admin-secret \
-   --namespace $DEMO_NAMESPACE
-```
 ### Add the Helm REPO
 
 ```bash
