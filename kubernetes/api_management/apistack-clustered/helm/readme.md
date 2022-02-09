@@ -33,10 +33,9 @@ helm install --namespace $DEMO_NS -f devportal.yaml webmethods-devportal ./saggo
 helm install --namespace $DEMO_NS -f terracotta.yaml webmethods-terracotta ./saggov-helm-charts/webmethods-terracotta
 
 
-
-
 ## Uninstall
 
+helm uninstall --namespace $DEMO_NS webmethods-terracotta
 helm uninstall --namespace $DEMO_NS webmethods-terracotta
 
 
@@ -45,7 +44,7 @@ helm uninstall --namespace $DEMO_NS webmethods-terracotta
 We'll be using this secret to update the passwords for API gateway / API Portal:
 
 ```bash
-echo -n 'SuperSecretPassword123!' > /tmp/password.txt
+echo -n "Enter Admin password: "; read -s password; echo "$password" > /tmp/password.txt
 kubectl create secret generic apimgt-admin-secret \
    --from-file=password=/tmp/password.txt \
    --namespace $DEMO_NS
@@ -57,8 +56,3 @@ Verify:
 kubectl describe secrets/apimgt-admin-secret \
    --namespace $DEMO_NS
 ```
-
-
-
-helm repo add elastic https://helm.elastic.co
-

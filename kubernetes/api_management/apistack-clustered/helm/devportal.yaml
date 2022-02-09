@@ -4,14 +4,11 @@ replicaCount: 2
 
 image:
   repository: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-devportal
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
   tag: dev-10.11-latest
-  imagePullSecrets: []
 
 settings:
   tenant: default
-  loadbalancerUrl: "http://webmethods-devportal.cluster-demo.apimgt.saggov/portal"
+  loadbalancerUrl: http://webmethods-devportal.cluster-demo.apimgt.saggov/portal
   javaMemMin: 1g
   javaMemMax: 1g
   javaOpts: ""
