@@ -1,9 +1,20 @@
 ---
 
-replicaCount: 2
 image:
-  repository: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-terracotta
+  registry: ghcr.io/softwareag-government-solutions
+  repository: webmethods-terracotta
+  pullPolicy: IfNotPresent
   tag: dev-10.11-latest
+imagePullSecrets:
+  - name: saggov-ghcr 
+
+licenseSecret:
+  name: "softwareag-webmethods-licenses"
+  key: "terracotta-license"
+  path: "terracotta-license.key"
+
+replicaCount: 2
+
 env:
   - name: TSA_PORT
     value: "9510"
