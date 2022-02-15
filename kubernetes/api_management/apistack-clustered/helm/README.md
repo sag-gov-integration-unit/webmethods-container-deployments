@@ -21,12 +21,8 @@ kubectl config set-context --current --namespace=$DEMO_NAMESPACE
 
 ### Add Elastic Operator (if not there alteady)
 
-```bash
-helm repo add elastic https://helm.elastic.co
-helm repo update
 
-helm install elastic-operator elastic/eck-operator -n elastic-system --create-namespace
-```
+See instructions at: https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-deploy-eck.html
 
 ### Add the Helm REPO
 
