@@ -1,7 +1,12 @@
 ---
+
 image:
-  repository: 815840818766.dkr.ecr.us-east-1.amazonaws.com/webmethods-apigateway
+  registry: ghcr.io/softwareag-government-solutions
+  repository: webmethods-apigateway
+  pullPolicy: IfNotPresent
   tag: dev-10.11-latest
+imagePullSecrets:
+  - name: saggov-ghcr 
 
 replicaCount: 2
 

@@ -19,10 +19,41 @@ kubectl create ns $DEMO_NAMESPACE
 kubectl config set-context --current --namespace=$DEMO_NAMESPACE
 ```
 
+### Add Elastic Operator (if not there alteady)
+
+
+See instructions at: https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-deploy-eck.html
+
 ### Add the Helm REPO
 
 ```bash
 helm repo add saggov-helm-charts https://softwareag-government-solutions.github.io/saggov-helm-charts
+helm repo update
+```
+
+### Add pull secrets for the container images
+
+The container images in our GitHub Container Registry are not publically accessible. Upon access granted, you'll need to add your auth_token into a K8s secret entry for proper image pulling...
+Here it is:
+
+```bash
+kubectl create secret docker-registry saggov-ghrc --docker-server=ghcr.io/softwareag-government-solutions --docker-username=mygithubusername --docker-password=mygithubreadtoken --docker-email=mygithubemail
+```
+
+where: 
+mygithubusername = your github username
+mygithubreadtoken = your github auth token with read access to the registry
+mygithubemail = your github email
+
+### Add license secrets for the container images
+
+Each product require a valid license to operate. We'll add the valid licenses in K8s secrets so they can be used by the deployments.
+
+```bash
+kubectl create secret generic softwareag-webmethods-licenses \
+  --from-file=terracotta-license=./licensing/terracotta-license.key \
+  --from-file=apigateway-license=./licensing/apigateway-license.xml \
+  --from-file=devportal-license=./licensing/devportal-license.xml
 ```
 
 ## Deploy/Detroy stack
