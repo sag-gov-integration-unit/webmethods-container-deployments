@@ -5,8 +5,9 @@ image:
   repository: webmethods-apigateway
   pullPolicy: IfNotPresent
   tag: dev-10.11-latest
+
 imagePullSecrets:
-  - name: saggov-ghcr 
+  - name: saggov-ghcr
 
 replicaCount: 2
 
@@ -15,25 +16,50 @@ envConfigs:
   JAVA_MAX_MEM: 2g
   JAVA_OPTS: ""
   RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
-  APIGW_ELASTICSEARCH_TENANTID: default
-  APIGW_ELASTICSEARCH_HOSTS: elasticsearch-es-sag-apidatastore:9200
-  APIGW_KIBANA_DASHBOARDINSTANCE: http://kibana-kb-http:5601
-  APIGW_ELASTICSEARCH_HTTP_USERNAME: elastic
-  CLUSTER_AWARE: true
-  CLUSTER_NAME: APIGatewayTSAcluster
-  CLUSTER_TSAURLS: webmethods-terracotta-0.webmethods-terracotta-hl:9510,webmethods-terracotta-1.webmethods-terracotta-hl:9510
-  CLUSTER_SESSTIMEOUT: 30
-  CLUSTER_ACTIONONSTARTUPERROR: shutdown
-  CLUSTER_CONNECTTIMEOUT: 30000
   HEALTHCHECK_ELASTIC_USER: elastic
+  apigw_elasticsearch_tenantId: default
+  apigw_elasticsearch_hosts: elasticsearch-es-sag-apidatastore:9200
+  apigw_elasticsearch_autostart: "false"
+  apigw_elasticsearch_http_username: elastic
+  apigw_elasticsearch_https_enabled: "false"
+  apigw_kibana_autostart: "false"
+  apigw_kibana_dashboardInstance: http://kibana-kb-http:5601
 
 envSecretConfigs:
-  APIGW_ELASTICSEARCH_HTTP_PASSWORD:
+  apigw_elasticsearch_http_password:
     secretKeyRef: elasticsearch-es-elastic-user
     key: elastic
   HEALTHCHECK_ELASTIC_PASSWORD:
     secretKeyRef: elasticsearch-es-elastic-user
     key: elastic
+
+clusteringType: ignite
+
+commonConfigs:
+  apigw:
+    elasticsearch:
+      http:
+        keepAlive: true
+        keepAliveMaxConnections: 10
+        keepAliveMaxConnectionsPerRoute: 100
+        connectionTimeout: 1000
+        socketTimeout: 10000
+        maxRetryTimeout: 100000
+      https:
+        enabled: false
+        enforceHostnameVerification: false
+        # keystoreFilepath: "{{ webmethods_apigateway_keystore_filepath }}"
+        # truststoreFilepath: "{{ webmethods_apigateway_truststore_filepath }}"
+        # keystoreAlias: "{{ webmethods_apigateway_keystore_keyalias }}"
+        # keystorePassword: "{{ webmethods_apigateway_keystore_password }}"
+        # truststorePassword: "{{ webmethods_apigateway_truststore_password }}"
+      sniff:
+        enable: false
+        timeInterval: 1000
+      outboundProxy:
+        enabled: false
+        alias: somealias
+      clientHttpResponseSize: 1001231
 
 autoscaling:
   enabled: false
@@ -43,35 +69,22 @@ autoscaling:
 
 # apply stickiness for the UI ingress
 service:
+  gwruntime:
+    port: 5555
   gwui:
     annotations:
       traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+    port: 9072
 
-# Runtime ingress: runtime path are /gateway, /rest, /invoke, /WmAPIGateway
+# ingress
 ingress:
-  enabled: true
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-  hosts:
-    - host: webmethods-apigateway.cluster-demo.apimgt.saggov
-      paths:
-        - path: /gateway
-          pathType: Prefix
-          backendServiceName: webmethods-apigateway-gwruntime
-          backendServicePort: 5555
-        - path: /rest
-          pathType: Prefix
-          backendServiceName: webmethods-apigateway-gwruntime
-          backendServicePort: 5555
-        - path: /invoke
-          pathType: Prefix
-          backendServiceName: webmethods-apigateway-gwruntime
-          backendServicePort: 5555
-        - path: /WmAPIGateway
-          pathType: Prefix
-          backendServiceName: webmethods-apigateway-gwruntime
-          backendServicePort: 5555
-        - path: /
-          pathType: Prefix
-          backendServiceName: webmethods-apigateway-gwui
-          backendServicePort: 9072
+  gwruntime:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    host: webmethods-apigateway.cluster-demo.apimgt.saggov
+  gwui:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    host: webmethods-apigateway.cluster-demo.apimgt.saggov

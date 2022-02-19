@@ -1,13 +1,11 @@
-# webmethods APIGateway and APIPortal Clustered in Kubernetes - Using Helm Charts 
+# webmethods APIGateway and Developer 10.11, Clustered in Kubernetes - Using Helm Charts 
 
-This page will walk through the deployment of a realistic scalable API Management cluster in your kubernetes environment:
+This page will walk through the deployment of a realistic scalable API Management 10.11 cluster in your kubernetes environment:
 
  - 2 API Gateway runtime servers (clustered)
  - 2 Developer portal servers (clustered)
- - 2 Terracotta servers (clustered)
  - 3 Elastic Search servers (clustered)
  - 2 Kibana servers
-
 
 ## Prep steps
 
@@ -70,7 +68,7 @@ First, download and copy the licenses into the following ./licensing directory:
 NOTE: Make sure to use the expected file name for the next "create secret" command to work.
 
 ```bash
-kubectl create secret generic softwareag-webmethods-licenses
+kubectl create secret generic softwareag-webmethods-licenses \
   --from-file=apigateway-license=./licensing/apigateway-license.xml \
   --from-file=devportal-license=./licensing/devportal-license.xml
 ```
@@ -103,15 +101,26 @@ kubectl --namespace $DEMO_NAMESPACE apply -f kibana.yaml
 
 ### Add Developer Portal stack
 
+
 ```bash
-helm install --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
+helm upgrade -i --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
 ```
+
+or locally:
+
+helm upgrade -i --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devportal ./saggov-helm-charts/src/webmethods-devportal
 
 ### Add API Gateway stack
 
 ```bash
-helm install --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
+helm upgrade -i --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
 ```
+
+or locally:
+
+helm upgrade -i --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway ./saggov-helm-charts/src/webmethods-apigateway
+
+
 
 ### Uninstall Steps
 

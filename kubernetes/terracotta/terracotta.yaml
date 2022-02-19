@@ -5,8 +5,9 @@ image:
   repository: webmethods-terracotta
   pullPolicy: IfNotPresent
   tag: dev-10.11-latest
+
 imagePullSecrets:
-  - name: saggov-ghcr 
+  - name: saggov-ghcr
 
 licenseSecret:
   name: "softwareag-webmethods-licenses"
