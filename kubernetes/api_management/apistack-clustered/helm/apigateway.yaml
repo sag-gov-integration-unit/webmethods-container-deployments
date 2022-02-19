@@ -9,6 +9,11 @@ image:
 imagePullSecrets:
   - name: saggov-ghcr
 
+licenseSecret:
+  name: softwareag-webmethods-licenses
+  key: apigateway-license
+  path: licenseKey.xml
+
 replicaCount: 2
 
 envConfigs:

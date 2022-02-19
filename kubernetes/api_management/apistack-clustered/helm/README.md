@@ -106,21 +106,11 @@ kubectl --namespace $DEMO_NAMESPACE apply -f kibana.yaml
 helm upgrade -i --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
 ```
 
-or locally:
-
-helm upgrade -i --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devportal ./saggov-helm-charts/src/webmethods-devportal
-
 ### Add API Gateway stack
 
 ```bash
 helm upgrade -i --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
 ```
-
-or locally:
-
-helm upgrade -i --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway ./saggov-helm-charts/src/webmethods-apigateway
-
-
 
 ### Uninstall Steps
 
