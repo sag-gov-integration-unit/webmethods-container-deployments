@@ -12,7 +12,7 @@ imagePullSecrets:
 licenseSecret:
   name: softwareag-webmethods-licenses
   key: devportal-license
-  path: licenseKey.xml
+  path: license.xml
 
 replicaCount: 2
 
@@ -22,7 +22,6 @@ settings:
   javaMemMin: 1g
   javaMemMax: 1g
   javaOpts: ""
-  licensePath: "/opt/softwareag/licenseKey.xml" 
   clustering:
     enabled: true
   elastic:

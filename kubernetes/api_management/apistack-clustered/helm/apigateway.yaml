@@ -12,7 +12,7 @@ imagePullSecrets:
 licenseSecret:
   name: softwareag-webmethods-licenses
   key: apigateway-license
-  path: licenseKey.xml
+  path: license.xml
 
 replicaCount: 2
 
