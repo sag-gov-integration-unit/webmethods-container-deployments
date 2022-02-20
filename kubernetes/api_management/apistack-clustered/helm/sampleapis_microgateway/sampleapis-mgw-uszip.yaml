@@ -19,8 +19,9 @@ resources:
     memory: 256Mi
     cpu: 500m
 
+## important: here we specify the microgateway port as the external port to be reached
 service:
-  port: 7071
+  port: 9090
 
 # app specifics
 appPort: 7071
