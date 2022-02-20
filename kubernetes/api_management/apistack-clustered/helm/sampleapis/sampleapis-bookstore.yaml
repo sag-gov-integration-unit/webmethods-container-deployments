@@ -1,0 +1,29 @@
+---
+
+image:
+  registry: ghcr.io/softwareag-government-solutions
+  repository: webmethods-sample-apis-bookstore
+  pullPolicy: IfNotPresent
+  tag: dev-0.0.4
+
+imagePullSecrets:
+  - name: saggov-ghcr
+
+replicaCount: 2
+
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 250m
+  limits:
+    memory: 256Mi
+    cpu: 500m
+
+service:
+  port: 7071
+
+# app specifics
+appPort: 7071
+appContextPath: /bookstore
+appHealthCheckPath: /books/0
+appHealthCheckHeaders: []
