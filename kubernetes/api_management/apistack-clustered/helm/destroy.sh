@@ -8,8 +8,6 @@ if [ "x$NAMESPACE" == "x" ]; then
     exit 2;
 fi
 
-helm uninstall --namespace $NAMESPACE sampleapis-bookstore
-helm uninstall --namespace $NAMESPACE sampleapis-uszip
 helm uninstall --namespace $NAMESPACE webmethods-apigateway
 helm uninstall --namespace $NAMESPACE webmethods-devportal
 kubectl --namespace $NAMESPACE delete -f elasticsearch.yaml
