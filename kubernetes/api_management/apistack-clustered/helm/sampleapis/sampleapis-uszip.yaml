@@ -2,7 +2,7 @@
 
 image:
   registry: ghcr.io/softwareag-government-solutions
-  repository: webmethods-sample-apis-bookstore
+  repository: webmethods-sample-apis-uszip
   pullPolicy: IfNotPresent
   tag: dev-0.0.4
 

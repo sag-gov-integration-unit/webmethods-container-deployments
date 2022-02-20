@@ -68,7 +68,7 @@ First, download and copy the licenses into the following ./licensing directory:
 NOTE: Make sure to use the expected file name for the next "create secret" command to work.
 
 ```bash
-kubectl create secret generic softwareag-webmethods-licenses \
+kubectl create secret generic softwareag-apimgt-licenses \
   --from-file=apigateway-license=./licensing/apigateway-license.xml \
   --from-file=devportal-license=./licensing/devportal-license.xml
 ```

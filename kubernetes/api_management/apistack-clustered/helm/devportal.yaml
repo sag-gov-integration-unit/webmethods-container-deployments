@@ -10,7 +10,7 @@ imagePullSecrets:
   - name: saggov-ghcr
 
 licenseSecret:
-  name: softwareag-webmethods-licenses
+  name: softwareag-apimgt-licenses
   key: devportal-license
   path: license.xml
 

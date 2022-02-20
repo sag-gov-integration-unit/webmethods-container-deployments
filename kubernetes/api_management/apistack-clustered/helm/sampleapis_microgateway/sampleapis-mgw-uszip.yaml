@@ -1,0 +1,90 @@
+---
+
+image:
+  registry: ghcr.io/softwareag-government-solutions
+  repository: webmethods-sample-apis-uszip
+  pullPolicy: IfNotPresent
+  tag: dev-0.0.4
+
+imagePullSecrets:
+  - name: saggov-ghcr
+
+replicaCount: 2
+
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 250m
+  limits:
+    memory: 256Mi
+    cpu: 500m
+
+service:
+  port: 7071
+
+# app specifics
+appPort: 7071
+appContextPath: /uszip
+appHealthCheckPath: /findZip/city/statecode
+appHealthCheckHeaders: []
+
+microgateway:
+  enabled: true
+  image:
+    registry: ghcr.io/softwareag-government-solutions
+    repository: webmethods-microgateway
+    pullPolicy: IfNotPresent
+    tag: "dev-10.11-latest"
+  commandArgs: {}
+  port: 9090
+  portSSL: 9091
+  logLevel: WARN
+  licenseSecret:
+    name: softwareag-apimgt-microgateway-licenses
+    key: microgateway-license
+    path: license.xml
+  env:
+    - name: mcgw_api_gateway_url
+      value: "webmethods-apigateway-gwruntime:5555"
+    - name: mcgw_api_gateway_user
+      value: "Administrator"
+    - name: mcgw_api_gateway_password
+      value: "manage"
+  config:
+    api_endpoint:
+      base_path: "/gateway"
+    admin_api:
+      admin_path: "/rest/microgateway"
+    applications_sync:
+      enabled: true
+      applications_to_sync: registeredApplications
+      polling_interval_secs: 10
+      connection_timeout_secs: 10
+    aliases:
+      uszip_endpoint:
+        type: simple
+        value: http://localhost:7071
+    microgatewayPool:
+      microgatewayPoolName: USzip Microgateway
+      microgatewayPoolDescription: The microgateway for the USzip microservices
+    gateway_destination:
+      metricsPublishInterval: "60"
+      sendAuditlogAPIManagementEvent: "true"
+      sendAuditlogAccessControlListManagementEvent: "true"
+      sendAuditlogAccessProfileManagementEvent: "true"
+      sendAuditlogAdministrationEvent: "true"
+      sendAuditlogAliasManagementEvent: "true"
+      sendAuditlogApplicationManagementEvent: "true"
+      sendAuditlogApprovalManagementEvent: "true"
+      sendAuditlogGroupManagementEvent: "true"
+      sendAuditlogPackageManagementEvent: "true"
+      sendAuditlogPlanManagementEvent: "true"
+      sendAuditlogPolicyManagementEvent: "true"
+      sendAuditlogPromotionManagementEvent: "true"
+      sendAuditlogRuleManagementEvent: "true"
+      sendAuditlogRuntimeDataManagementEvent: "true"
+      sendAuditlogUserManagementEvent: "true"
+      sendErrorEvent: "true"
+      sendLifecycleEvent: "true"
+      sendPerformanceMetrics: "true"
+      sendPolicyViolationEvent: "true"
