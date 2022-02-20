@@ -50,7 +50,7 @@ microgateway:
       value: "Administrator"
     - name: mcgw_api_gateway_password
       value: "manage"
-  config:
+  configs:
     api_endpoint:
       base_path: "/gateway"
     admin_api:
