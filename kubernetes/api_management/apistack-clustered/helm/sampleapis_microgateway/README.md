@@ -54,3 +54,26 @@ kubectl create configmap mgw-uszip-archives \
 ```bash
 /bin/sh destroy.sh $DEMO_NAMESPACE
 ```
+
+## Verify Bookstore
+
+From the microgateway Container, executing the following query through the microgateway gives the right results:
+
+```bash
+curl http://localhost:9090/gateway/bookstore/books
+```
+==> returns expected JSON content
+
+From any container in the namespace, through the application/microgateway service:
+
+```bash
+curl http://sampleapis-mgw-bookstore-sample-java-apis:9090/gateway/bookstore/books
+```
+==> returns expected JSON content
+
+From any container in the namespace, through the application service, trying to reach the microservice WITHOUT going through the microgateway:
+
+```bash
+curl http://sampleapis-mgw-bookstore-sample-java-apis:7071/gateway/bookstore/books
+```
+==> returns ERROR (unreachable)

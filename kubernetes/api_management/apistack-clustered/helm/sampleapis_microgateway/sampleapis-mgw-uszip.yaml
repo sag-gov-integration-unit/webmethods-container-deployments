@@ -25,7 +25,7 @@ service:
   type: NodePort
 
 # app specifics
-appPort: 7072
+appPort: 7071
 appContextPath: /uszip
 appHealthCheckPath: /findZip/city/statecode
 appHealthCheckHeaders: []
@@ -75,7 +75,7 @@ microgateway:
     aliases:
       uszip_endpoint:
         type: simple
-        value: http://localhost:7072
+        value: http://localhost:7071
     microgatewayPool:
       microgatewayPoolName: USzip Microgateway
       microgatewayPoolDescription: The microgateway for the USzip microservices
