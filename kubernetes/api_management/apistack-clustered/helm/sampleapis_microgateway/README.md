@@ -28,6 +28,20 @@ kubectl create secret generic softwareag-apimgt-microgateway-licenses \
   --from-file=microgateway-license=./licensing/microgateway-license.xml
 ```
 
+## Add microgateway archives to config maps
+
+```bash
+kubectl create configmap mgw-bookstore-archives \
+  --from-file=../archives/apigw1011-archive-bookstore.zip \
+  --from-file=../archives/apigw1011-transaction_logging.zip
+```
+
+```bash
+kubectl create configmap mgw-uszip-archives \
+  --from-file=../archives/apigw1011-archive-uszip.zip \
+  --from-file=../archives/apigw1011-transaction_logging.zip
+```
+
 ## Deploy/Detroy stack
 ### Deploy stack
 
