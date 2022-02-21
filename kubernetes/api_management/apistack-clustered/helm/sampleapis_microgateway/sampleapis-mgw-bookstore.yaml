@@ -22,6 +22,7 @@ resources:
 ## important: here we specify the microgateway port as the external port to be reached
 service:
   port: 9090
+  type: NodePort
 
 # app specifics
 appPort: 7072
