@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: wait-for-apigw
-          image: registry.access.redhat.com/ubi8/ubi-minimal:latest
+          image: alpine/curl:3.14
           command:
             [
               "sh",
