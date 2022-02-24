@@ -36,7 +36,7 @@ microgateway:
     registry: ghcr.io/softwareag-government-solutions
     repository: webmethods-microgateway
     pullPolicy: IfNotPresent
-    tag: "dev-10.11-latest"
+    tag: "10.11-latest"
   commandArgs: 
     - --archive 
     - ./archives/apigw1011-archive-uszip.zip,./archives/apigw1011-transaction_logging.zip
