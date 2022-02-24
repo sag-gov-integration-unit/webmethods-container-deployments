@@ -33,6 +33,14 @@ settings:
   waitforelastic:
     enabled: true
 
+waitforelastic:
+  enabled: true
+  uri: http://elasticsearch-es-sag-apidatastore:9200
+  username: elastic
+  passwordSecret:
+    name: elasticsearch-es-elastic-user
+    key: elastic
+
 # UI ingress
 ingress:
   enabled: true

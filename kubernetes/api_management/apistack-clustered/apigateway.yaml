@@ -16,14 +16,6 @@ licenseSecret:
 
 replicaCount: 2
 
-waitforelastic:
-  enabled: true
-  uri: elasticsearch-es-sag-apidatastore:9200
-  username: elastic
-  passwordSecret:
-    name: elasticsearch-es-elastic-user
-    key: elastic
-
 envConfigs:
   JAVA_MIN_MEM: 1g
   JAVA_MAX_MEM: 2g
@@ -73,6 +65,14 @@ commonConfigs:
         enabled: false
         alias: somealias
       clientHttpResponseSize: 1001231
+
+waitforelastic:
+  enabled: true
+  uri: http://elasticsearch-es-sag-apidatastore:9200
+  username: elastic
+  passwordSecret:
+    name: elasticsearch-es-elastic-user
+    key: elastic
 
 autoscaling:
   enabled: false
