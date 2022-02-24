@@ -73,6 +73,26 @@ kubectl create secret generic softwareag-apimgt-licenses \
   --from-file=devportal-license=./licensing/devportal-license.xml
 ```
 
+### Add Secrets for the applications Administrator password
+
+Let's create a password file, and add it as a secret:
+
+```bash
+echo -n "Administrator password: "; read -s password; echo "$password" > $HOME/password_admin.txt
+```
+
+Create the secret:
+
+```bash
+kubectl create secret generic softwareag-apimgt-app-passwords --from-file=administrator=$HOME/password_admin.txt
+```
+
+Finally, don't forget to delet the password file:
+
+```bash
+rm -f $HOME/password_admin.txt
+```
+
 ## Deploy/Detroy stack
 ### Deploy stack
 
