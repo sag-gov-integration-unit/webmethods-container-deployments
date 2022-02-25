@@ -33,18 +33,12 @@ settings:
 
 configurator:
   enabled: true
-  envConfigs:
-    env_devportal_configure_default_ignore_errors: false
-    env_devportal_protocol: http
-    env_devportal_host: webmethods-devportal
-    env_devportal_port: 18101
-    env_devportal_no_check_certs: true
-    env_devportal_rest_user: Administrator
-    env_devportal_rest_password_old: manage
-  envSecretConfigs:
-    env_devportal_rest_password:
-      secretKeyRef: softwareag-apimgt-app-passwords
+  settings:
+    restUsername: Administrator
+    restPasswordSecret:
+      name: softwareag-apimgt-app-passwords
       key: administrator
+    restPasswordOld: "manage"
 
 waitforelastic:
   enabled: true

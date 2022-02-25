@@ -68,38 +68,31 @@ commonConfigs:
 
 configurator:
   enabled: true
-  envConfigs:
-    env_apigateway_configure_default_ignore_errors: false
-    env_apigateway_configure_lb: true
-    env_apigateway_configure_extended_settings: true
-    env_apigateway_configure_portalgateway: true
-    env_apigateway_configure_portalgateway_ignore_errors: true
-    env_apigateway_stage: test
-    env_apigateway_protocol: http
-    env_apigateway_host: webmethods-apigateway-gwruntime
-    env_apigateway_port: 5555
-    env_apigateway_no_check_certs: true
-    env_apigateway_rest_user: Administrator
-    env_apigateway_rest_password_old: manage
-    env_apigateway_portalgateway_gateway_url: https://webmethods-apigateway-gwruntime:5555
-    env_apigateway_portalgateway_gateway_username: Administrator
-    env_apigateway_portalgateway_devportal_url: https://webmethods-devportal:18101/portal/
-    env_apigateway_portalgateway_devportal_tenant: default
-    env_apigateway_portalgateway_devportal_username: Administrator
-    env_apigateway_lb_http_url: http://webmethods-apigateway.cluster-demo.apimgt.saggov
-    env_apigateway_lb_https_url: https://webmethods-apigateway.cluster-demo.apimgt.saggov
-    env_apigateway_lb_websocket_url: ""
-    env_apigateway_lb_webapp_url: http://webmethods-apigateway.cluster-demo.apimgt.saggov
-  envSecretConfigs:
-    env_apigateway_rest_password:
-      secretKeyRef: softwareag-apimgt-app-passwords
+  settings:
+    restUsername: Administrator
+    restPasswordSecret:
+      name: softwareag-apimgt-app-passwords
       key: administrator
-    env_apigateway_portalgateway_gateway_password:
-      secretKeyRef: softwareag-apimgt-app-passwords
-      key: administrator
-    env_apigateway_portalgateway_devportal_password:
-      secretKeyRef: softwareag-apimgt-app-passwords
-      key: administrator
+    restPasswordOld: "manage"
+    extendedSettings: []
+    loadBalancer:
+      http: http://webmethods-apigateway.cluster-demo.apimgt.saggov
+      https: https://webmethods-apigateway.cluster-demo.apimgt.saggov
+      webapp: http://webmethods-apigateway.cluster-demo.apimgt.saggov
+    portal:
+      apigateway:
+        protocol: http
+        username: Administrator
+        passwordSecret:
+          name: softwareag-apimgt-app-passwords
+          key: administrator
+      url: https://webmethods-devportal:18101/portal
+      tenant: default
+      stage: test
+      username: Administrator
+      passwordSecret:
+        name: softwareag-apimgt-app-passwords
+        key: administrator
 
 waitforelastic:
   enabled: true
