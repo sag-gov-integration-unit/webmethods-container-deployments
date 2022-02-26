@@ -136,7 +136,6 @@ helm upgrade -i --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigat
 
 ```bash
 helm uninstall --namespace $DEMO_NAMESPACE webmethods-apigateway
-helm uninstall --namespace $DEMO_NAMESPACE webmethods-terracotta
 helm uninstall --namespace $DEMO_NAMESPACE webmethods-devportal
 
 kubectl --namespace $DEMO_NAMESPACE delete -f elasticsearch.yaml

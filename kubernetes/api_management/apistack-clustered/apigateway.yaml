@@ -67,7 +67,7 @@ commonConfigs:
       clientHttpResponseSize: 1001231
 
 configurator:
-  enabled: true
+  enabled: false
   settings:
     restUsername: Administrator
     restPasswordSecret:

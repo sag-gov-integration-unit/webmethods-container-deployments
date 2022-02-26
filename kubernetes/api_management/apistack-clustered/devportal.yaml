@@ -32,7 +32,7 @@ settings:
       key: elastic
 
 configurator:
-  enabled: true
+  enabled: false
   settings:
     restUsername: Administrator
     restPasswordSecret:
