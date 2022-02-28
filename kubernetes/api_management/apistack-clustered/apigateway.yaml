@@ -80,24 +80,24 @@ configurator:
       name: softwareag-apimgt-apigateway-passwords
       key: AdministratorOld
     extendedSettings: []
+    stage: mytestenv
     loadBalancer:
       http: http://webmethods-apigateway.cluster-demo.apimgt.saggov
       https: https://webmethods-apigateway.cluster-demo.apimgt.saggov
       webapp: http://webmethods-apigateway.cluster-demo.apimgt.saggov
-    portal:
+    portalConnect:
+      url: http://webmethods-devportal:18101/portal
+      tenant: default
+      username: Administrator
+      passwordSecret:
+        name: softwareag-apimgt-devportal-passwords
+        key: Administrator
       apigateway:
         protocol: http
         username: Administrator
         passwordSecret:
           name: softwareag-apimgt-apigateway-passwords
           key: Administrator
-      url: https://webmethods-devportal:18101/portal
-      tenant: default
-      stage: test
-      username: Administrator
-      passwordSecret:
-        name: softwareag-apimgt-devportal-passwords
-        key: Administrator
 
 autoscaling:
   enabled: false

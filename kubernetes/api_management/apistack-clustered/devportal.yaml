@@ -40,13 +40,13 @@ waitforelastic:
     key: elastic
 
 configurator:
-  enabled: false
+  enabled: true
   settings:
     restUsername: Administrator
     restPasswordSecret:
       name: softwareag-apimgt-devportal-passwords
       key: Administrator
-    restPasswordOld:
+    restPasswordOldSecret:
       name: softwareag-apimgt-devportal-passwords
       key: AdministratorOld
 
