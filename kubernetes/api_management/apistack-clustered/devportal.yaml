@@ -31,15 +31,6 @@ settings:
       name: elasticsearch-es-elastic-user
       key: elastic
 
-configurator:
-  enabled: false
-  settings:
-    restUsername: Administrator
-    restPasswordSecret:
-      name: softwareag-apimgt-app-passwords
-      key: administrator
-    restPasswordOld: "manage"
-
 waitforelastic:
   enabled: true
   uri: http://elasticsearch-es-sag-apidatastore:9200
@@ -47,6 +38,17 @@ waitforelastic:
   passwordSecret:
     name: elasticsearch-es-elastic-user
     key: elastic
+
+configurator:
+  enabled: false
+  settings:
+    restUsername: Administrator
+    restPasswordSecret:
+      name: softwareag-apimgt-devportal-passwords
+      key: Administrator
+    restPasswordOld:
+      name: softwareag-apimgt-devportal-passwords
+      key: AdministratorOld
 
 # UI ingress
 ingress:

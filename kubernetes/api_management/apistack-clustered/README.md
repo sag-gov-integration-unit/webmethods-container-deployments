@@ -75,22 +75,22 @@ kubectl create secret generic softwareag-apimgt-licenses \
 
 ### Add Secrets for the applications Administrator password
 
-Let's create a password file, and add it as a secret:
+Let's create the secrets for the Administrator's passwords (API Gateway and Dev Portal)
+
+API Gateway:
 
 ```bash
-echo -n "Administrator password: "; read -s password; echo "$password" > $HOME/password_admin.txt
+echo -n "Desired/New Administrator password: "; read -s password; export ADMIN_PASSWORD=$password
+echo -n "Default/Old Administrator password: "; read -s passwordOld; export ADMIN_PASSWORD_OLD=$passwordOld
+kubectl create secret generic softwareag-apimgt-apigateway-passwords --from-literal=Administrator=$ADMIN_PASSWORD --from-literal=AdministratorOld=$ADMIN_PASSWORD_OLD
 ```
 
-Create the secret:
+Developer Portal:
 
 ```bash
-kubectl create secret generic softwareag-apimgt-app-passwords --from-file=administrator=$HOME/password_admin.txt
-```
-
-Finally, don't forget to delet the password file:
-
-```bash
-rm -f $HOME/password_admin.txt
+echo -n "Desired/New Administrator password: "; read -s password; export ADMIN_PASSWORD=$password
+echo -n "Default/Old Administrator password: "; read -s passwordOld; export ADMIN_PASSWORD_OLD=$passwordOld
+kubectl create secret generic softwareag-apimgt-devportal-passwords --from-literal=Administrator=$ADMIN_PASSWORD --from-literal=AdministratorOld=$ADMIN_PASSWORD_OLD
 ```
 
 ## Deploy/Detroy stack

@@ -53,11 +53,6 @@ commonConfigs:
       https:
         enabled: false
         enforceHostnameVerification: false
-        # keystoreFilepath: "{{ webmethods_apigateway_keystore_filepath }}"
-        # truststoreFilepath: "{{ webmethods_apigateway_truststore_filepath }}"
-        # keystoreAlias: "{{ webmethods_apigateway_keystore_keyalias }}"
-        # keystorePassword: "{{ webmethods_apigateway_keystore_password }}"
-        # truststorePassword: "{{ webmethods_apigateway_truststore_password }}"
       sniff:
         enable: false
         timeInterval: 1000
@@ -66,14 +61,24 @@ commonConfigs:
         alias: somealias
       clientHttpResponseSize: 1001231
 
+waitforelastic:
+  enabled: true
+  uri: http://elasticsearch-es-sag-apidatastore:9200
+  username: elastic
+  passwordSecret:
+    name: elasticsearch-es-elastic-user
+    key: elastic
+
 configurator:
-  enabled: false
+  enabled: true
   settings:
     restUsername: Administrator
     restPasswordSecret:
-      name: softwareag-apimgt-app-passwords
-      key: administrator
-    restPasswordOld: "manage"
+      name: softwareag-apimgt-apigateway-passwords
+      key: Administrator
+    restPasswordOldSecret:
+      name: softwareag-apimgt-apigateway-passwords
+      key: AdministratorOld
     extendedSettings: []
     loadBalancer:
       http: http://webmethods-apigateway.cluster-demo.apimgt.saggov
@@ -84,23 +89,15 @@ configurator:
         protocol: http
         username: Administrator
         passwordSecret:
-          name: softwareag-apimgt-app-passwords
-          key: administrator
+          name: softwareag-apimgt-apigateway-passwords
+          key: Administrator
       url: https://webmethods-devportal:18101/portal
       tenant: default
       stage: test
       username: Administrator
       passwordSecret:
-        name: softwareag-apimgt-app-passwords
-        key: administrator
-
-waitforelastic:
-  enabled: true
-  uri: http://elasticsearch-es-sag-apidatastore:9200
-  username: elastic
-  passwordSecret:
-    name: elasticsearch-es-elastic-user
-    key: elastic
+        name: softwareag-apimgt-devportal-passwords
+        key: Administrator
 
 autoscaling:
   enabled: false
