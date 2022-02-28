@@ -2,12 +2,14 @@
 
 image:
   registry: ghcr.io/softwareag-government-solutions
-  repository: webmethods-sample-apis-uszip
+  repository: webmethods-sample-apis-bookstore
   pullPolicy: IfNotPresent
   tag: dev-0.0.4
 
 imagePullSecrets:
   - name: saggov-ghcr
+
+fullnameOverride: sampleapis-bookstore-samplejavaapis
 
 replicaCount: 2
 
@@ -24,6 +26,6 @@ service:
 
 # app specifics
 appPort: 7071
-appContextPath: /uszip
-appHealthCheckPath: /findZip/city/statecode
+appContextPath: /bookstore
+appHealthCheckPath: /books/0
 appHealthCheckHeaders: []
