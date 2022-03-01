@@ -28,6 +28,11 @@ resources:
     memory: 2048Mi
     cpu: 4
 
+podAnnotations:
+  prometheus.io/scrape: 'true'
+  prometheus.io/metrics_path: '/metrics'
+  prometheus.io/port: '5555'
+
 envConfigs:
   JAVA_MIN_MEM: 512m
   JAVA_MAX_MEM: 1280m
