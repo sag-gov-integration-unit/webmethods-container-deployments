@@ -14,12 +14,7 @@ licenseSecret:
   key: devportal-license
   path: license.xml
 
-autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 20
-  targetCPUUtilizationPercentage: 70
-  targetMemoryUtilizationPercentage: 70
+replicaCount: 2
 
 resources:
   requests:
