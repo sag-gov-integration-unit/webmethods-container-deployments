@@ -12,8 +12,7 @@ autoscaling:
   enabled: true
   minReplicas: 2
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 70
-  targetMemoryUtilizationPercentage: 70
+  targetCPUUtilizationPercentage: 90
 
 fullnameOverride: sampleapis-uszip-samplejavaapis
 
