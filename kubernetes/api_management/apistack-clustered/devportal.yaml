@@ -18,17 +18,17 @@ replicaCount: 2
 
 resources:
   requests:
-    memory: 512Mi
-    cpu: 500m
-  limits:
-    memory: 1280Mi
+    memory: 1Gi
     cpu: 1
+  limits:
+    memory: 2Gi
+    cpu: 2
 
 settings:
   tenant: default
   loadbalancerUrl: http://webmethods-devportal.eksdemo.sedemos.saggs.local/portal
-  javaMemMin: 256m
-  javaMemMax: 768m
+  javaMemMin: 512m
+  javaMemMax: 1024m
   javaOpts: ""
   clustering:
     enabled: true

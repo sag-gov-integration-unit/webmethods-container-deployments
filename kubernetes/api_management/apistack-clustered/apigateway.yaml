@@ -23,10 +23,10 @@ autoscaling:
 
 resources:
   requests:
-    memory: 1024Mi
+    memory: 2Gi
     cpu: 2
   limits:
-    memory: 2048Mi
+    memory: 3Gi
     cpu: 3
 
 podAnnotations:
@@ -36,7 +36,7 @@ podAnnotations:
 
 envConfigs:
   JAVA_MIN_MEM: 1024m
-  JAVA_MAX_MEM: 1280m
+  JAVA_MAX_MEM: 2048m
   JAVA_OPTS: ""
   RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
   HEALTHCHECK_ELASTIC_USER: elastic
