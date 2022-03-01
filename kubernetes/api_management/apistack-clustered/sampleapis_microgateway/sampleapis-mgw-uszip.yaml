@@ -1,5 +1,4 @@
 ---
-
 image:
   registry: ghcr.io/softwareag-government-solutions
   repository: webmethods-sample-apis-uszip
@@ -13,10 +12,10 @@ replicaCount: 2
 
 resources:
   requests:
-    memory: 128Mi
+    memory: 256Mi
     cpu: 250m
   limits:
-    memory: 256Mi
+    memory: 512Mi
     cpu: 500m
 
 ## important: here we specify the microgateway port as the external port to be reached
@@ -37,8 +36,8 @@ microgateway:
     repository: webmethods-microgateway
     pullPolicy: IfNotPresent
     tag: "10.11-latest"
-  commandArgs: 
-    - --archive 
+  commandArgs:
+    - --archive
     - ./archives/apigw1011-archive-uszip.zip,./archives/apigw1011-transaction_logging.zip
   port: 9090
   portSSL: 9091
@@ -61,7 +60,10 @@ microgateway:
     - name: mcgw_api_gateway_user
       value: "Administrator"
     - name: mcgw_api_gateway_password
-      value: "manage"
+      valueFrom:
+        secretKeyRef:
+          name: "softwareag-apimgt-apigateway-passwords"
+          key: "Administrator"
   configs:
     api_endpoint:
       base_path: "/gateway"

@@ -1,5 +1,4 @@
 ---
-
 image:
   registry: ghcr.io/softwareag-government-solutions
   repository: webmethods-sample-apis-bookstore
@@ -15,10 +14,10 @@ replicaCount: 2
 
 resources:
   requests:
-    memory: 128Mi
+    memory: 256Mi
     cpu: 250m
   limits:
-    memory: 256Mi
+    memory: 512Mi
     cpu: 500m
 
 service:
