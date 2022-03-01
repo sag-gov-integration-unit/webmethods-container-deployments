@@ -10,15 +10,20 @@ imagePullSecrets:
 
 fullnameOverride: sampleapis-bookstore-samplejavaapis
 
-replicaCount: 2
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
 
 resources:
   requests:
-    memory: 256Mi
+    memory: 512Mi
     cpu: 250m
   limits:
-    memory: 512Mi
-    cpu: 500m
+    memory: 1024Mi
+    cpu: 1
 
 service:
   port: 7071

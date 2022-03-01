@@ -17,11 +17,11 @@ autoscaling:
 
 resources:
   requests:
-    memory: 256Mi
+    memory: 512Mi
     cpu: 250m
   limits:
-    memory: 512Mi
-    cpu: 500m
+    memory: 1024Mi
+    cpu: 1
 
 ## important: here we specify the microgateway port as the external port to be reached
 service:
@@ -33,13 +33,6 @@ appPort: 7071
 appContextPath: /bookstore
 appHealthCheckPath: /books/0
 appHealthCheckHeaders: []
-
-autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 20
-  targetCPUUtilizationPercentage: 70
-  targetMemoryUtilizationPercentage: 70
 
 microgateway:
   enabled: true
