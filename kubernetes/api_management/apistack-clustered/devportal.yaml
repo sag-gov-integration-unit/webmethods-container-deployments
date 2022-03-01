@@ -26,7 +26,7 @@ resources:
 
 settings:
   tenant: default
-  loadbalancerUrl: http://webmethods-devportal.cluster-demo.apimgt.saggov/portal
+  loadbalancerUrl: http://webmethods-devportal.eksdemo.sedemos.saggs.local/portal
   javaMemMin: 256m
   javaMemMax: 768m
   javaOpts: ""
@@ -64,7 +64,7 @@ ingress:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
   hosts:
-    - host: webmethods-devportal.cluster-demo.apimgt.saggov
+    - host: webmethods-devportal.eksdemo.sedemos.saggs.local
       paths:
         - path: /
           pathType: Prefix

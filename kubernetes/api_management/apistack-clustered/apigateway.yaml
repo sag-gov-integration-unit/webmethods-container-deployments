@@ -100,9 +100,9 @@ configurator:
     extendedSettings: []
     stage: mytestenv
     loadBalancer:
-      http: http://webmethods-apigateway.cluster-demo.apimgt.saggov
-      https: https://webmethods-apigateway.cluster-demo.apimgt.saggov
-      webapp: http://webmethods-apigateway.cluster-demo.apimgt.saggov
+      http: http://webmethods-apigateway.eksdemo.sedemos.saggs.local
+      https: https://webmethods-apigateway.eksdemo.sedemos.saggs.local
+      webapp: http://webmethods-apigateway.eksdemo.sedemos.saggs.local
     portalConnect:
       url: http://webmethods-devportal:18101/portal
       tenant: default
@@ -132,9 +132,9 @@ ingress:
     enabled: true
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: web
-    host: webmethods-apigateway.cluster-demo.apimgt.saggov
+    host: webmethods-apigateway.eksdemo.sedemos.saggs.local
   gwui:
     enabled: true
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: web
-    host: webmethods-apigateway.cluster-demo.apimgt.saggov
+    host: webmethods-apigateway.eksdemo.sedemos.saggs.local
