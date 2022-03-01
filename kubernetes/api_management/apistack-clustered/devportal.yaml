@@ -27,7 +27,7 @@ resources:
 settings:
   tenant: default
   loadbalancerUrl: http://webmethods-devportal.eksdemo.sedemos.saggs.local/portal
-  javaMemMin: 512m
+  javaMemMin: 1024m
   javaMemMax: 1024m
   javaOpts: ""
   clustering:

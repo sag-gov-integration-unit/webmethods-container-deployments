@@ -17,17 +17,17 @@ licenseSecret:
 autoscaling:
   enabled: true
   minReplicas: 2
-  maxReplicas: 8
+  maxReplicas: 10
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: 80
 
 resources:
   requests:
-    memory: 1Gi
-    cpu: 500m
+    memory: 1536Mi
+    cpu: 1
   limits:
     memory: 2Gi
-    cpu: 1
+    cpu: 2
 
 podAnnotations:
   prometheus.io/scrape: 'true'
@@ -35,7 +35,7 @@ podAnnotations:
   prometheus.io/port: '5555'
 
 envConfigs:
-  JAVA_MIN_MEM: 512m
+  JAVA_MIN_MEM: 1024m
   JAVA_MAX_MEM: 1024m
   JAVA_OPTS: ""
   RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
