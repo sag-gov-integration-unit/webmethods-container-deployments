@@ -14,12 +14,25 @@ licenseSecret:
   key: devportal-license
   path: license.xml
 
-replicaCount: 2
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
+
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 500m
+  limits:
+    memory: 1280Mi
+    cpu: 1
 
 settings:
   tenant: default
   loadbalancerUrl: http://webmethods-devportal.cluster-demo.apimgt.saggov/portal
-  javaMemMin: 1g
+  javaMemMin: 512m
   javaMemMax: 1g
   javaOpts: ""
   clustering:

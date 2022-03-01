@@ -8,7 +8,12 @@ image:
 imagePullSecrets:
   - name: saggov-ghcr
 
-replicaCount: 2
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
 
 resources:
   requests:
@@ -28,6 +33,13 @@ appPort: 7071
 appContextPath: /bookstore
 appHealthCheckPath: /books/0
 appHealthCheckHeaders: []
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
 
 microgateway:
   enabled: true

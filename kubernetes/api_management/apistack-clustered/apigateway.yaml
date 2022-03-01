@@ -14,11 +14,24 @@ licenseSecret:
   key: apigateway-license
   path: license.xml
 
-replicaCount: 2
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
+
+resources:
+  requests:
+    memory: 1024Mi
+    cpu: 1
+  limits:
+    memory: 2048Mi
+    cpu: 2
 
 envConfigs:
-  JAVA_MIN_MEM: 1g
-  JAVA_MAX_MEM: 2g
+  JAVA_MIN_MEM: 768m
+  JAVA_MAX_MEM: 1536m
   JAVA_OPTS: ""
   RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
   HEALTHCHECK_ELASTIC_USER: elastic
@@ -98,12 +111,6 @@ configurator:
         passwordSecret:
           name: softwareag-apimgt-apigateway-passwords
           key: Administrator
-
-autoscaling:
-  enabled: false
-  minReplicas: 2
-  maxReplicas: 20
-  targetCPUUtilizationPercentage: 50
 
 # apply stickiness for the UI ingress
 service:
