@@ -19,7 +19,6 @@ autoscaling:
   minReplicas: 2
   maxReplicas: 10
   targetCPUUtilizationPercentage: 60
-  targetMemoryUtilizationPercentage: 80
 
 resources:
   requests:
