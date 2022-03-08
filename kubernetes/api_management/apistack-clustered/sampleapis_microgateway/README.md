@@ -67,13 +67,13 @@ curl http://localhost:9090/gateway/bookstore/books
 From any container in the namespace, through the application/microgateway service:
 
 ```bash
-curl http://sampleapis-mgw-bookstore-sample-java-apis:9090/gateway/bookstore/books
+curl http://sampleapis-mgw-bookstore-samplejavaapis-sidecar-microgateway:9090/gateway/bookstore/books
 ```
 ==> returns expected JSON content
 
 From any container in the namespace, through the application service, trying to reach the microservice WITHOUT going through the microgateway:
 
 ```bash
-curl http://sampleapis-mgw-bookstore-sample-java-apis:7071/gateway/bookstore/books
+curl http://sampleapis-mgw-bookstore-samplejavaapis-sidecar-microgateway:7071/gateway/bookstore/books
 ```
 ==> returns ERROR (unreachable)
