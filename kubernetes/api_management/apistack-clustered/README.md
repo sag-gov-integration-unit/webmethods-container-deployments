@@ -5,13 +5,17 @@ This page will walk through the deployment of a realistic scalable API Managemen
  - 2 API Gateway runtime servers (clustered)
  - 2 Developer portal servers (clustered)
  - 3 Elastic Search servers (clustered)
- - 2 Kibana servers
+
+ ![Deployment](./images/deployment_goal.png)
 
 ## Prep steps
 
 ### Step 1) Install Helm CLI, and Add the Software AG Government Solutions HelmChart
 
-We'll be using Helm to deploy the Software AG product stacks into our cluster...
+We'll be using Helm to deploy the Software AG product stacks into our cluster.
+
+ ![Step 1 in picture - Helm Chart Details](./images/step1_helmcharts.png)
+
 So let's add the public Softwareag Government Solutions Helm-Chart repo for SoftwareAG products:
 
 ```bash
@@ -26,6 +30,9 @@ For easy deployment of Elastic Search and Kibana, we'll be using the Elastic Kub
 Elastic Cloud on Kubernetes (ECK) is a Kubernetes operator to orchestrate Elastic applications (Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent, and Elastic Maps Server) on Kubernetes. 
 See Elastic Cloud on Kubernetes (ECK) at https://www.elastic.co/guide/en/cloud-on-k8s/1.9/index.html for more details on that.
 
+ ![Step 2 in picture - Elastic Search Operator](./images/step2_elastic_operator.png)
+
+
 Installation Summary (version 1.9.1)
 ```bash
 kubectl create -f https://download.elastic.co/downloads/eck/1.9.1/crds.yaml
@@ -33,6 +40,10 @@ kubectl apply -f https://download.elastic.co/downloads/eck/1.9.1/operator.yaml
 ```
 
 ### Step 3) Create demo namespace
+
+To keep things well contained, let's create a demo namespace for our deployed artifacts:
+
+ ![Step 3 in picture - New namespace](./images/step3_demo_namespace.png)
 
 ```bash
 export DEMO_NAMESPACE=apimgt-cluster-demo
@@ -43,6 +54,8 @@ kubectl config set-context --current --namespace=$DEMO_NAMESPACE
 ### Step 4) Add pull secrets for the container images
 
 The container images in our GitHub Container Registry are not publically accessible. Upon access granted, you'll need to add your auth_token into a K8s secret entry for proper image pulling...
+
+ ![Step 4 in picture - Adding Github authentication secret](./images/step4_github_auth_secret.png)
 
 Here it the command:
 
@@ -55,7 +68,11 @@ mygithubusername = your github username
 mygithubreadtoken = your github auth token with read access to the registry
 mygithubemail = your github email
 
-### Step 5) Add license secrets for the SoftwareAG products
+### Step 5) Add secrets for the SoftwareAG products
+
+ ![Step 5 in picture - Add secrets for the SoftwareAG products](./images/step5_application_secets.png)
+
+#### Step 5a) Add the SoftwareAG products licenses as secrets
 
 Each product require a valid license to operate. We'll add the valid licenses in K8s secrets so they can be used by the deployments.
 
@@ -73,7 +90,7 @@ kubectl create secret generic softwareag-apimgt-licenses \
   --from-file=devportal-license=./licensing/devportal-license.xml
 ```
 
-### Step 6) Add Secrets for the Application passwords
+#### Step 5b) Add Secrets for the Application passwords
 
 Let's create the secrets for the Administrator's passwords (API Gateway and Dev Portal)
 
