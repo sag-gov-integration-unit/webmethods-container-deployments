@@ -8,7 +8,7 @@ By default, all deployments in this project are setup to use our enhanced-securi
 
 [ghcr.io/softwareag-government-solutions/](https://github.com/orgs/softwareag-government-solutions/packages)
 
-To request access to these enhanced-security images, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com) 
+For access and more technical details, go to [Product Containers by Software AG Government Solutions](https://softwareag-government-solutions.github.io/saggov-containers/)
 
 ## Available Cloud Deployment types
 
