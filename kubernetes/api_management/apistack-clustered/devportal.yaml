@@ -14,7 +14,7 @@ licenseSecret:
   key: devportal-license
   path: license.xml
 
-replicaCount: 2
+replicaCount: 3
 
 resources:
   requests:
