@@ -4,4 +4,4 @@
 
 - [webmethods APIGateway and APIPortal single-node in Kubernetes - using manifests](./apistack-standalone/manifests/README.md)
 - [webmethods APIGateway and APIPortal single-node in Kubernetes - Using Helm Charts](./apistack-standalone/helm/README.md)
-- [webmethods APIGateway and APIPortal Clustered in Kubernetes - Using Helm Charts](./apistack-clustered/helm/README.md)
+- [webmethods APIGateway and APIPortal Clustered in Kubernetes - Using Helm Charts](./apistack-clustered/README.md)
