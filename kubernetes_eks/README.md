@@ -6,7 +6,7 @@ It's assume that you are already familiar with Amazon EKS and have access to an 
 
 For more info, refer to [Getting started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
-## Pre-requisites 2: Move containers images to AWS ECR
+## Optional: Move containers images to AWS ECR
 
 Although not entirely required, it is "easier" for EKS to access the container images in an AWS ECR that is in the same AWS account (no need for pull secrets etc...)
 If not done already, please review: [webmethods API Management in AWS Elastic Container Registry (ECR) by Software AG Government Solutions](../../aws_ecr/api_management/README.md)
