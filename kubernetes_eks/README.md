@@ -8,11 +8,14 @@ For more info, refer to [Getting started with Amazon EKS](https://docs.aws.amazo
 
 ## Optional: Move containers images to AWS ECR
 
-Although not entirely required, it is "easier" for EKS to access the container images in an AWS ECR that is in the same AWS account (no need for pull secrets etc...)
-If not done already, please review: [webmethods API Management in AWS Elastic Container Registry (ECR) by Software AG Government Solutions](../../aws_ecr/api_management/README.md)
+It's totally fine to leverage "pull secrets" to allow kubernetes to pull images from any private registry (like the Software AG Government solutions one at which details are outlined in https://softwareag-government-solutions.github.io/saggov-containers/)
+
+But since EKS will generally be able to pull images directly from an ECR in the same account (no need for pull secrets etc...), and since you may want to modify the base images a bit based on your own requirements, an option could certainly be that you push the images (modified or not) to your own registry like ECR...
+
+If interested in doing that, please review: [webmethods in your Private Registry](../private_registries/README.md)
 
 ## Deployments
 
-Deployment in EKS mostly follow common Kubernetes deployment practices, so you'll find the sample deployments at:
+Deployment in EKS mostly follow common Kubernetes deployment practices, so you'll find the sample deployments in the common Kubernetes folder at:
 
 [webmethods Container Deployments in Kubernetes by Software AG Government Solutions](../kubernetes/README.md)
