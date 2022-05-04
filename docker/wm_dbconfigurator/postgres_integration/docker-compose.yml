@@ -1,0 +1,40 @@
+version: "3.8"
+
+networks:
+  stack:
+
+volumes:
+  postgres_data:
+    driver: local
+
+services:
+  
+  dbconfig:
+    image: ${REG}webmethods-dbconfig:${TAG_DBCONFIG}
+    environment: 
+      SCRIPTS_LOGGER_LEVEL: 1
+      DB_ACTION: create
+      DB_TYPE: POSTGRESQL
+      DB_NAME: webmisdb
+      DB_CONNECT_HOST: postgres
+      DB_CONNECT_PORT: 5432
+      PRODUCT_VERSION: 10.11
+      PRODUCT_NAME: IS
+      PRODUCT_DB_USER: webmisdb
+      PRODUCT_DB_PASSWORD: password
+      DB_CONNECT_JDBC_URL: ""
+      DB_CONNECT_JDBC_ARGS: ""
+      WAITFOR_DB_HOST: "true"
+      WAITFOR_DB_TIMEOUT_SEC: "30"
+    networks:
+      - stack
+
+  postgres:
+    image: postgres:12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: webmisdb
+      POSTGRES_PASSWORD: password
+    networks:
+      - stack
