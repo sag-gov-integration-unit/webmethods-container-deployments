@@ -1,0 +1,59 @@
+---
+
+image:
+  registry: ghcr.io/softwareag-government-solutions
+  repository: webmethods-devportal
+  pullPolicy: IfNotPresent
+  tag: 10.11-latest
+
+imagePullSecrets:
+  - name: saggov-ghcr
+
+licenseSecret:
+  name: softwareag-apimgt-licenses
+  key: devportal-license
+  path: license.xml
+
+replicaCount: 3
+
+resources:
+  requests:
+    memory: 1Gi
+    cpu: 1
+  limits:
+    memory: 2Gi
+    cpu: 2
+
+settings:
+  tenant: default
+  loadbalancerUrl: http://webmethods-devportal.eksdemo.sedemos.saggs.local/portal
+  javaMemMin: 1024m
+  javaMemMax: 1024m
+  javaOpts: ""
+  clustering:
+    enabled: true
+  elastic:
+    uris: http://elasticsearch-es-sag-apidatastore:9200
+    username: elastic
+    passwordSecret:
+      name: elasticsearch-es-elastic-user
+      key: elastic
+
+waitforelastic:
+  enabled: true
+  uri: http://elasticsearch-es-sag-apidatastore:9200
+  username: elastic
+  passwordSecret:
+    name: elasticsearch-es-elastic-user
+    key: elastic
+
+# UI ingress
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  hosts:
+    - host: webmethods-devportal.eksdemo.sedemos.saggs.local
+      paths:
+        - path: /
+          pathType: Prefix

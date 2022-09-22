@@ -28,11 +28,6 @@ resources:
     memory: 2Gi
     cpu: 2
 
-podAnnotations:
-  prometheus.io/scrape: 'true'
-  prometheus.io/metrics_path: '/metrics'
-  prometheus.io/port: '5555'
-
 envConfigs:
   JAVA_MIN_MEM: 1024m
   JAVA_MAX_MEM: 1024m
@@ -40,12 +35,12 @@ envConfigs:
   RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
   HEALTHCHECK_ELASTIC_USER: elastic
   apigw_elasticsearch_tenantId: default
-  apigw_elasticsearch_hosts: elasticsearch-es-sag-apidatastore:9200
+  apigw_elasticsearch_hosts: elasticsearch-master-sag-apidatastore:9200
   apigw_elasticsearch_autostart: "false"
   apigw_elasticsearch_http_username: elastic
   apigw_elasticsearch_https_enabled: "false"
   apigw_kibana_autostart: "false"
-  apigw_kibana_dashboardInstance: http://kibana-kb-http:5601
+  apigw_kibana_dashboardInstance: http://kibana-kibana:5601
 
 envSecretConfigs:
   apigw_elasticsearch_http_password:
@@ -57,64 +52,13 @@ envSecretConfigs:
 
 clusteringType: ignite
 
-commonConfigs:
-  apigw:
-    elasticsearch:
-      http:
-        keepAlive: true
-        keepAliveMaxConnections: 10
-        keepAliveMaxConnectionsPerRoute: 100
-        connectionTimeout: 1000
-        socketTimeout: 10000
-        maxRetryTimeout: 100000
-      https:
-        enabled: false
-        enforceHostnameVerification: false
-      sniff:
-        enable: false
-        timeInterval: 1000
-      outboundProxy:
-        enabled: false
-        alias: somealias
-      clientHttpResponseSize: 1001231
-
 waitforelastic:
   enabled: true
-  uri: http://elasticsearch-es-sag-apidatastore:9200
+  uri: http://elasticsearch-master-sag-apidatastore:9200
   username: elastic
   passwordSecret:
     name: elasticsearch-es-elastic-user
     key: elastic
-
-configurator:
-  enabled: true
-  settings:
-    restUsername: Administrator
-    restPasswordSecret:
-      name: softwareag-apimgt-apigateway-passwords
-      key: Administrator
-    restPasswordOldSecret:
-      name: softwareag-apimgt-apigateway-passwords
-      key: AdministratorOld
-    extendedSettings: []
-    stage: mytestenv
-    loadBalancer:
-      http: http://webmethods-apigateway.eksdemo.sedemos.saggs.local
-      https: https://webmethods-apigateway.eksdemo.sedemos.saggs.local
-      webapp: http://webmethods-apigateway.eksdemo.sedemos.saggs.local
-    portalConnect:
-      url: http://webmethods-devportal:18101/portal
-      tenant: default
-      username: Administrator
-      passwordSecret:
-        name: softwareag-apimgt-devportal-passwords
-        key: Administrator
-      apigateway:
-        protocol: http
-        username: Administrator
-        passwordSecret:
-          name: softwareag-apimgt-apigateway-passwords
-          key: Administrator
 
 # apply stickiness for the UI ingress
 service:

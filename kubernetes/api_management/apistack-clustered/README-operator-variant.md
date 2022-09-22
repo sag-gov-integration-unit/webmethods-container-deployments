@@ -57,9 +57,9 @@ To keep things well contained, let's create a demo namespace for our deployed ar
  ![Step 3 in picture - New namespace](./images/step3_demo_namespace.png)
 
 ```bash
-export NAMESPACE=apimgt-cluster-demo
-kubectl create ns $NAMESPACE
-kubectl config set-context --current --namespace=$NAMESPACE
+export DEMO_NAMESPACE=apimgt-cluster-demo
+kubectl create ns $DEMO_NAMESPACE
+kubectl config set-context --current --namespace=$DEMO_NAMESPACE
 ```
 
 ### Step 4) Add pull secrets for the container images
@@ -123,88 +123,50 @@ kubectl create secret generic softwareag-apimgt-devportal-passwords --from-liter
 
 ## Deploy/Detroy stack
 
-### 1a) Deploy stack -- IF using Helm charts
+### Deploy stack
 
 ```bash
-/bin/sh deploy.sh $NAMESPACE
+/bin/sh deploy.sh $DEMO_NAMESPACE
 ```
 
-### 1b) Deploy stack -- IF using Elastic Operator
+### Delete stack
 
 ```bash
-/bin/sh deploy_with_elastic_operator.sh $NAMESPACE
+/bin/sh destroy.sh $DEMO_NAMESPACE
 ```
 
-### 2a) Delete stack -- IF using Helm charts
+## Manual steps
 
-```bash
-/bin/sh destroy.sh $NAMESPACE
-```
-
-### 2b) Delete stack -- IF using Elastic Operator
-
-```bash
-/bin/sh destroy_with_elastic_operator.sh $NAMESPACE
-```
-
-## Deploy/Detroy stack - manual step-by-step
-
-### 1a) Add ElasticSearch stack -- IF using Elastic Operator
+### Add ElasticSearch stack
 
 NOTE: The command below rely on Elastic Cloud on Kubernetes (ECK) available and installed in the cluster. See section "Add Elastic Operator to Kubernetes cluster (if not there alteady)" for details on that.
 
 Once ECK is installed, simply run the following 2 commands to install the elastic stack:
 
 ```bash
-kubectl --namespace $NAMESPACE apply -f ./descriptors/elastic_operator/elasticsearch.yaml
-kubectl --namespace $NAMESPACE apply -f ./descriptors/elastic_operator/kibana.yaml
+kubectl --namespace $DEMO_NAMESPACE apply -f elasticsearch.yaml
+kubectl --namespace $DEMO_NAMESPACE apply -f kibana.yaml
 ```
 
-### 1b) Add ElasticSearch stack -- IF using Helm charts
+### Add Developer Portal stack
+
 
 ```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/elasticseach.yaml --version 7.14.0 elasticsearch elastic/elasticsearch
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/kibana.yaml --version 7.14.0 kibana elastic/kibana
+helm upgrade -i --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
 ```
 
-### 2) Add Developer Portal stack (using helm)
+### Add API Gateway stack
 
 ```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
-```
-
-### 3) Add API Gateway stack (using helm)
-
-```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
-```
-
-### 4) Add Configurator stacks (using helm)
-
-```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway-configurator.yaml webmethods-apigateway-configurator saggov-helm-charts/webmethods-apigateway-configurator
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal-configurator.yaml webmethods-devportal-configurator saggov-helm-charts/webmethods-devportal-configurator
+helm upgrade -i --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
 ```
 
 ### Uninstall Steps
 
-#### 1) Uninstall APIMGT stack
-
 ```bash
-helm uninstall --namespace $NAMESPACE webmethods-apigateway
-helm uninstall --namespace $NAMESPACE webmethods-devportal
-```
+helm uninstall --namespace $DEMO_NAMESPACE webmethods-apigateway
+helm uninstall --namespace $DEMO_NAMESPACE webmethods-devportal
 
-#### 2a) Uninstall ElasticSearch stack -- IF using Elastic Operator
-
-```bash
-kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/elasticsearch.yaml
-kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/kibana.yaml
-```
-
-#### 2b) Uninstall ElasticSearch stack -- IF using Helm charts
-
-```bash
-helm uninstall --namespace $NAMESPACE kibana
-helm uninstall --namespace $NAMESPACE elasticsearch
+kubectl --namespace $DEMO_NAMESPACE delete -f elasticsearch.yaml
+kubectl --namespace $DEMO_NAMESPACE delete -f kibana.yaml
 ```

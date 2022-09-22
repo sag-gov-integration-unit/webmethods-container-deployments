@@ -8,7 +8,14 @@ if [ "x$NAMESPACE" == "x" ]; then
     exit 2;
 fi
 
+## destroy apigateway/devportal configurators
+helm uninstall --namespace $NAMESPACE webmethods-apigateway-configurator
+helm uninstall --namespace $NAMESPACE webmethods-devportal-configurator
+
+## destroy apigateway/devportal
 helm uninstall --namespace $NAMESPACE webmethods-apigateway
 helm uninstall --namespace $NAMESPACE webmethods-devportal
-kubectl --namespace $NAMESPACE delete -f elasticsearch.yaml
-kubectl --namespace $NAMESPACE delete -f kibana.yaml
+
+## destroy elastic / kibana
+helm uninstall --namespace $NAMESPACE elasticsearch
+helm uninstall --namespace $NAMESPACE kibana

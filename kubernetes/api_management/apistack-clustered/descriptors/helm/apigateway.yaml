@@ -1,0 +1,67 @@
+---
+
+image:
+  registry: ghcr.io/softwareag-government-solutions
+  repository: webmethods-apigateway
+  pullPolicy: IfNotPresent
+  tag: 10.11-latest
+
+imagePullSecrets:
+  - name: saggov-ghcr
+
+licenseSecret:
+  name: softwareag-apimgt-licenses
+  key: apigateway-license
+  path: license.xml
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
+
+resources:
+  requests:
+    memory: 2Gi
+    cpu: 1
+  limits:
+    memory: 2Gi
+    cpu: 2
+
+envConfigs:
+  JAVA_MIN_MEM: 1g
+  JAVA_MAX_MEM: 1g
+  JAVA_OPTS: ""
+  RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
+  apigw_elasticsearch_hosts: elasticsearch-master-sag-apidatastore:9200
+  apigw_elasticsearch_autostart: "false"
+  apigw_kibana_autostart: "false"
+  apigw_kibana_dashboardInstance: http://kibana-kibana:5601
+
+clusteringType: ignite
+
+waitforelastic:
+  enabled: true
+  uri: http://elasticsearch-master-sag-apidatastore:9200
+
+# apply stickiness for the UI ingress
+service:
+  gwruntime:
+    port: 5555
+  gwui:
+    annotations:
+      traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+    port: 9072
+
+# ingress
+ingress:
+  gwruntime:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    host: webmethods-apigateway.eksdemo.sedemos.saggs.local
+  gwui:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    host: webmethods-apigateway.eksdemo.sedemos.saggs.local

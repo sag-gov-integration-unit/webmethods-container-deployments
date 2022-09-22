@@ -10,7 +10,7 @@ spec:
       selfSignedCertificate:
         disabled: true
   nodeSets:
-    - name: sag-apidatastore
+    - name: master-sag-apidatastore
       count: 3
       config:
         # This setting could have performance implications for production clusters.

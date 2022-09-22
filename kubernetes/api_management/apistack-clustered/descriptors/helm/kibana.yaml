@@ -1,0 +1,29 @@
+---
+
+extraInitContainers:
+  - name: wait-for-apigw
+    image: curlimages/curl:7.81.0
+    command:
+      [
+        "sh",
+        "-c",
+        "until curl -k -f -s -H 'Accept:application/json' --connect-timeout 2 --max-time 5 http://webmethods-apigateway-gwruntime:5555/rest/apigateway/health; do echo waiting for apigateway to start...; sleep 10; done; echo apigateway started!",
+      ]
+
+elasticsearchHosts: "http://elasticsearch-master-sag-apidatastore:9200"
+
+kibanaConfig:
+  kibana.yml: |
+    server.basePath: /apigatewayui/dashboardproxy
+    server.rewriteBasePath: false
+    kibana.index: gateway_default_dashboard
+    server.host: "0.0.0.0"
+    elasticsearch.hosts: [ "http://elasticsearch-master-sag-apidatastore:9200" ]
+
+resources:
+  requests:
+    cpu: 1000m
+    memory: 1Gi
+  limits:
+    cpu: 1000m
+    memory: 2Gi

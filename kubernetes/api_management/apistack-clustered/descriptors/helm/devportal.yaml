@@ -14,49 +14,29 @@ licenseSecret:
   key: devportal-license
   path: license.xml
 
-replicaCount: 3
+replicaCount: 2
 
 resources:
   requests:
     memory: 1Gi
-    cpu: 1
+    cpu: 100m
   limits:
-    memory: 2Gi
-    cpu: 2
+    memory: 1Gi
+    cpu: 1
 
 settings:
-  tenant: default
   loadbalancerUrl: http://webmethods-devportal.eksdemo.sedemos.saggs.local/portal
-  javaMemMin: 1024m
-  javaMemMax: 1024m
+  javaMemMin: 256m
+  javaMemMax: 512m
   javaOpts: ""
   clustering:
     enabled: true
   elastic:
-    uris: http://elasticsearch-es-sag-apidatastore:9200
-    username: elastic
-    passwordSecret:
-      name: elasticsearch-es-elastic-user
-      key: elastic
+    uris: http://elasticsearch-master-sag-apidatastore:9200
 
 waitforelastic:
   enabled: true
-  uri: http://elasticsearch-es-sag-apidatastore:9200
-  username: elastic
-  passwordSecret:
-    name: elasticsearch-es-elastic-user
-    key: elastic
-
-configurator:
-  enabled: true
-  settings:
-    restUsername: Administrator
-    restPasswordSecret:
-      name: softwareag-apimgt-devportal-passwords
-      key: Administrator
-    restPasswordOldSecret:
-      name: softwareag-apimgt-devportal-passwords
-      key: AdministratorOld
+  uri: http://elasticsearch-master-sag-apidatastore:9200
 
 # UI ingress
 ingress:
