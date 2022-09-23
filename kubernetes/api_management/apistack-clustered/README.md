@@ -48,7 +48,9 @@ This page will walk through the deployment of a realistic scalable API Managemen
 
 We'll be using Helm to deploy the Software AG product stacks into our cluster.
 
-<img src="./images/step1_helmcharts.png" alt="Step 1 in picture - Helm Chart Details" width="50%" />
+<p align="center">
+  <img src="./images/step1_helmcharts.png" alt="Step 1 in picture - Helm Chart Details" width="50%" />
+</p>
 
 So let's add the public Softwareag Government Solutions Helm-Chart repo for SoftwareAG products:
 
