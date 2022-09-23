@@ -49,7 +49,7 @@ This page will walk through the deployment of a realistic scalable API Managemen
 We'll be using Helm to deploy the Software AG product stacks into our cluster.
 
 <p align="center">
-  <img src="./images/step1_helmcharts.png" alt="Step 1 in picture - Helm Chart Details" width="50%" />
+  <img src="./images/step1_helmcharts.png" alt="Step 1 in picture - Helm Chart Details" width="75%" />
 </p>
 
 So let's add the public Softwareag Government Solutions Helm-Chart repo for SoftwareAG products:
@@ -69,7 +69,7 @@ Elastic Cloud on Kubernetes (ECK) is a Kubernetes operator to orchestrate Elasti
 See Elastic Cloud on Kubernetes (ECK) at https://www.elastic.co/guide/en/cloud-on-k8s/1.9/index.html for more details on that.
 
 <p align="center">
-  <img src="./images/step2_elastic_operator.png" alt="Step 2 in picture - Elastic Search Operator" width="50%" />
+  <img src="./images/step2_elastic_operator.png" alt="Step 2 in picture - Elastic Search Operator" width="75%" />
 </p>
 
 Installation Summary (version 1.9.1)
@@ -108,7 +108,7 @@ kubectl config set-context --current --namespace=$NAMESPACE
 The container images in our GitHub Container Registry are not publically accessible. Upon access granted, you'll need to add your auth_token into a K8s secret entry for proper image pulling...
 
 <p align="center">
-  <img src="./images/step4_github_auth_secret.png" alt="Step 4 in picture - Adding Github authentication secret" width="50%" />
+  <img src="./images/step4_github_auth_secret.png" alt="Step 4 in picture - Adding Github authentication secret" width="60%" />
 </p>
 
 Here it the command:
@@ -125,7 +125,7 @@ mygithubemail = your github email
 ### 5) Add secrets for the SoftwareAG products
 
 <p align="center">
-  <img src="./images/step5_application_secets.png" alt="Step 5 in picture - Add secrets for the SoftwareAG products" width="50%" />
+  <img src="./images/step5_application_secets.png" alt="Step 5 in picture - Add secrets for the SoftwareAG products" width="60%" />
 </p>
 
 #### 5a) Add the SoftwareAG products licenses as secrets
