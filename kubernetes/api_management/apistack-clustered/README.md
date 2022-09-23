@@ -8,6 +8,38 @@ This page will walk through the deployment of a realistic scalable API Managemen
 
  ![Deployment](./images/deployment_goal.png)
 
+# Table of contents
+
+- [Prep steps](#prep-steps)
+  - [1) Install Helm CLI, and Add the Software AG Government Solutions HelmChart](#1-install-helm-cli-and-add-the-software-ag-government-solutions-helmchart)
+  - [2) Preps for Install of ElasticSearch/Kibana](#2-preps-for-install-of-elasticsearchkibana)
+    - [2a) IF using Elastic Operator](#2a-if-using-elastic-operator)
+    - [2b) IF using Elastic/Kibana Helm charts](#2b-if-using-elastickibana-helm-charts)
+  - [3) Create demo namespace](#3-create-demo-namespace)
+  - [4) Add pull secrets for the container images](#4-add-pull-secrets-for-the-container-images)
+  - [5) Add secrets for the SoftwareAG products](#5-add-secrets-for-the-softwareag-products)
+    - [5a) Add the SoftwareAG products licenses as secrets](#5a-add-the-softwareag-products-licenses-as-secrets)
+    - [5b) Add Secrets for the API Gateway / Dev Portal admin passwords](#5b-add-secrets-for-the-api-gateway--dev-portal-admin-passwords)
+- [Deploy/Detroy the full SoftwareAG API Management stack - Manual step-by-step](#deploydetroy-the-full-softwareag-api-management-stack---manual-step-by-step)
+  - [1) Deploy ElasticSearch stack](#1-deploy-elasticsearch-stack)
+    - [1a) IF using Elastic Operator](#1a-if-using-elastic-operator)
+    - [1b) IF using Helm charts](#1b-if-using-helm-charts)
+  - [2) Deploy Developer Portal stack (using helm)](#2-deploy-developer-portal-stack-using-helm)
+  - [3) Deploy API Gateway stack (using helm)](#3-deploy-api-gateway-stack-using-helm)
+  - [4) Deploy Configurator stacks (using helm)](#4-deploy-configurator-stacks-using-helm)
+  - [Uninstall Steps](#uninstall-steps)
+    - [1) Destroy APIMGT stack (API Gateway, Developer portal, and the configurators)](#1-destroy-apimgt-stack-api-gateway-developer-portal-and-the-configurators)
+    - [2) Destroy ElasticSearch stack](#2-destroy-elasticsearch-stack)
+      - [2a) IF using Elastic Operator](#2a-if-using-elastic-operator)
+      - [2b) IF using Helm charts](#2b-if-using-helm-charts)
+- [Deploy/Detroy the full SoftwareAG API Management stack - All-in-one Script](#deploydetroy-the-full-softwareag-api-management-stack---all-in-one-script)
+  - [1) Deploy stack](#1-deploy-stack)
+    - [1a) IF using Helm charts](#1a-if-using-helm-charts)
+    - [1b) IF using Elastic Operator](#1b-if-using-elastic-operator)
+  - [2) Destroy stack](#2-destroy-stack)
+    - [2a) IF using Helm charts](#2a-if-using-helm-charts)
+    - [2b) IF using Elastic Operator](#2b-if-using-elastic-operator)
+
 ---
 
 ## Prep steps
