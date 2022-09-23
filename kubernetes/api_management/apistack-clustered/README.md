@@ -47,12 +47,13 @@ This page will walk through the deployment of a realistic scalable API Managemen
 ### 1) Install Helm CLI, and Add the Software AG Government Solutions HelmChart
 
 We'll be using Helm to deploy the Software AG product stacks into our cluster.
+The public *Softwareag Government Solutions Helm-Chart repo* is at: https://softwareag-government-solutions.github.io/saggov-helm-charts
 
 <p align="center">
   <img src="./images/step1_helmcharts.png" alt="Step 1 in picture - Helm Chart Details" width="75%" />
 </p>
 
-So let's add the public Softwareag Government Solutions Helm-Chart repo for SoftwareAG products:
+So let's add the repo:
 
 ```bash
 helm repo add saggov-helm-charts https://softwareag-government-solutions.github.io/saggov-helm-charts
