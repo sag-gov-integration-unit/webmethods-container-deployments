@@ -101,7 +101,7 @@ kubectl create secret generic softwareag-apimgt-licenses \
   --from-file=devportal-license=./licensing/devportal-license.xml
 ```
 
-#### Step 5b) Add Secrets for the Application passwords
+#### Step 5b) Add Secrets for the API Gateway / Dev Portal admin passwords
 
 Let's create the secrets for the Administrator's passwords (API Gateway and Dev Portal)
 
@@ -121,7 +121,72 @@ echo -n "Default/Old Administrator password: "; read -s passwordOld; export ADMI
 kubectl create secret generic softwareag-apimgt-devportal-passwords --from-literal=Administrator=$ADMIN_PASSWORD --from-literal=AdministratorOld=$ADMIN_PASSWORD_OLD
 ```
 
-## Deploy/Detroy stack
+## Deploy/Detroy the full SoftwareAG API Management stack - Manual step-by-step
+
+### 1a) Deploy ElasticSearch stack -- IF using Elastic Operator
+
+NOTE: The command below rely on Elastic Cloud on Kubernetes (ECK) available and installed in the cluster. See section "Add Elastic Operator to Kubernetes cluster (if not there alteady)" for details on that.
+
+Once ECK is installed, simply run the following 2 commands to install the elastic stack:
+
+```bash
+kubectl --namespace $NAMESPACE apply -f ./descriptors/elastic_operator/elasticsearch.yaml
+kubectl --namespace $NAMESPACE apply -f ./descriptors/elastic_operator/kibana.yaml
+```
+
+### 1b) Deploy ElasticSearch stack -- IF using Helm charts
+
+```bash
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/elasticseach.yaml --version 7.14.0 elasticsearch elastic/elasticsearch
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/kibana.yaml --version 7.14.0 kibana elastic/kibana
+```
+
+### 2) Deploy Developer Portal stack (using helm)
+
+```bash
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
+```
+
+### 3) Deploy API Gateway stack (using helm)
+
+```bash
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
+```
+
+### 4) Deploy Configurator stacks (using helm)
+
+```bash
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway-configurator.yaml webmethods-apigateway-configurator saggov-helm-charts/webmethods-apigateway-configurator
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal-configurator.yaml webmethods-devportal-configurator saggov-helm-charts/webmethods-devportal-configurator
+```
+
+### Uninstall Steps
+
+#### 1) Destroy APIMGT stack (API Gateway, Developer portal, and the configurators)
+
+```bash
+helm uninstall --namespace $NAMESPACE webmethods-apigateway-configurator
+helm uninstall --namespace $NAMESPACE webmethods-devportal-configurator
+
+helm uninstall --namespace $NAMESPACE webmethods-apigateway
+helm uninstall --namespace $NAMESPACE webmethods-devportal
+```
+
+#### 2a) Destroy ElasticSearch stack -- IF using Elastic Operator
+
+```bash
+kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/elasticsearch.yaml
+kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/kibana.yaml
+```
+
+#### 2b) Destroy ElasticSearch stack -- IF using Helm charts
+
+```bash
+helm uninstall --namespace $NAMESPACE kibana
+helm uninstall --namespace $NAMESPACE elasticsearch
+```
+
+## Deploy/Detroy the full SoftwareAG API Management stack - All-in-one Script
 
 ### 1a) Deploy stack -- IF using Helm charts
 
@@ -135,76 +200,14 @@ kubectl create secret generic softwareag-apimgt-devportal-passwords --from-liter
 /bin/sh deploy_with_elastic_operator.sh $NAMESPACE
 ```
 
-### 2a) Delete stack -- IF using Helm charts
+### 2a) Destroy stack -- IF using Helm charts
 
 ```bash
 /bin/sh destroy.sh $NAMESPACE
 ```
 
-### 2b) Delete stack -- IF using Elastic Operator
+### 2b) Destroy stack -- IF using Elastic Operator
 
 ```bash
 /bin/sh destroy_with_elastic_operator.sh $NAMESPACE
-```
-
-## Deploy/Detroy stack - manual step-by-step
-
-### 1a) Add ElasticSearch stack -- IF using Elastic Operator
-
-NOTE: The command below rely on Elastic Cloud on Kubernetes (ECK) available and installed in the cluster. See section "Add Elastic Operator to Kubernetes cluster (if not there alteady)" for details on that.
-
-Once ECK is installed, simply run the following 2 commands to install the elastic stack:
-
-```bash
-kubectl --namespace $NAMESPACE apply -f ./descriptors/elastic_operator/elasticsearch.yaml
-kubectl --namespace $NAMESPACE apply -f ./descriptors/elastic_operator/kibana.yaml
-```
-
-### 1b) Add ElasticSearch stack -- IF using Helm charts
-
-```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/elasticseach.yaml --version 7.14.0 elasticsearch elastic/elasticsearch
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/kibana.yaml --version 7.14.0 kibana elastic/kibana
-```
-
-### 2) Add Developer Portal stack (using helm)
-
-```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
-```
-
-### 3) Add API Gateway stack (using helm)
-
-```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
-```
-
-### 4) Add Configurator stacks (using helm)
-
-```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway-configurator.yaml webmethods-apigateway-configurator saggov-helm-charts/webmethods-apigateway-configurator
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal-configurator.yaml webmethods-devportal-configurator saggov-helm-charts/webmethods-devportal-configurator
-```
-
-### Uninstall Steps
-
-#### 1) Uninstall APIMGT stack
-
-```bash
-helm uninstall --namespace $NAMESPACE webmethods-apigateway
-helm uninstall --namespace $NAMESPACE webmethods-devportal
-```
-
-#### 2a) Uninstall ElasticSearch stack -- IF using Elastic Operator
-
-```bash
-kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/elasticsearch.yaml
-kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/kibana.yaml
-```
-
-#### 2b) Uninstall ElasticSearch stack -- IF using Helm charts
-
-```bash
-helm uninstall --namespace $NAMESPACE kibana
-helm uninstall --namespace $NAMESPACE elasticsearch
 ```
