@@ -68,8 +68,9 @@ For easy deployment of Elastic Search and Kibana, we'll be using the Elastic Kub
 Elastic Cloud on Kubernetes (ECK) is a Kubernetes operator to orchestrate Elastic applications (Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent, and Elastic Maps Server) on Kubernetes. 
 See Elastic Cloud on Kubernetes (ECK) at https://www.elastic.co/guide/en/cloud-on-k8s/1.9/index.html for more details on that.
 
- ![Step 2 in picture - Elastic Search Operator](./images/step2_elastic_operator.png)
-
+<p align="center">
+  <img src="./images/step2_elastic_operator.png" alt="Step 2 in picture - Elastic Search Operator" width="50%" />
+</p>
 
 Installation Summary (version 1.9.1)
 ```bash
@@ -92,7 +93,9 @@ helm repo update
 
 To keep things well contained, let's create a demo namespace for our deployed artifacts:
 
- ![Step 3 in picture - New namespace](./images/step3_demo_namespace.png)
+<p align="center">
+  <img src="./images/step3_demo_namespace.png" alt="Step 3 in picture - New namespace" width="50%" />
+</p>
 
 ```bash
 export NAMESPACE=apimgt-cluster-demo
@@ -104,7 +107,9 @@ kubectl config set-context --current --namespace=$NAMESPACE
 
 The container images in our GitHub Container Registry are not publically accessible. Upon access granted, you'll need to add your auth_token into a K8s secret entry for proper image pulling...
 
- ![Step 4 in picture - Adding Github authentication secret](./images/step4_github_auth_secret.png)
+<p align="center">
+  <img src="./images/step4_github_auth_secret.png" alt="Step 4 in picture - Adding Github authentication secret" width="50%" />
+</p>
 
 Here it the command:
 
@@ -119,7 +124,9 @@ mygithubemail = your github email
 
 ### 5) Add secrets for the SoftwareAG products
 
- ![Step 5 in picture - Add secrets for the SoftwareAG products](./images/step5_application_secets.png)
+<p align="center">
+  <img src="./images/step5_application_secets.png" alt="Step 5 in picture - Add secrets for the SoftwareAG products" width="50%" />
+</p>
 
 #### 5a) Add the SoftwareAG products licenses as secrets
 
