@@ -94,7 +94,7 @@ helm repo update
 To keep things well contained, let's create a demo namespace for our deployed artifacts:
 
 <p align="center">
-  <img src="./images/step3_demo_namespace.png" alt="Step 3 in picture - New namespace" width="50%" />
+  <img src="./images/step3_demo_namespace.png" alt="Step 3 in picture - New namespace" width="30%" />
 </p>
 
 ```bash
