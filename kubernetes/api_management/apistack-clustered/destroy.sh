@@ -8,10 +8,6 @@ if [ "x$NAMESPACE" == "x" ]; then
     exit 2;
 fi
 
-## destroy apigateway/devportal configurators
-helm uninstall --namespace $NAMESPACE webmethods-apigateway-configurator
-helm uninstall --namespace $NAMESPACE webmethods-devportal-configurator
-
 ## destroy apigateway/devportal
 helm uninstall --namespace $NAMESPACE webmethods-apigateway
 helm uninstall --namespace $NAMESPACE webmethods-devportal

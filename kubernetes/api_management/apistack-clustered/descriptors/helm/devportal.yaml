@@ -1,10 +1,18 @@
 ---
 
+# ## SAG GS image
+# image:
+#   registry: ghcr.io/softwareag-government-solutions
+#   repository: webmethods-devportal
+#   pullPolicy: IfNotPresent
+#   tag: 10.11-latest
+
+## SAG Trial image
 image:
-  registry: ghcr.io/softwareag-government-solutions
-  repository: webmethods-devportal
+  registry: ""
+  repository: softwareag/devportal
   pullPolicy: IfNotPresent
-  tag: 10.11-latest
+  tag: "10.11.0.14"
 
 imagePullSecrets:
   - name: saggov-ghcr

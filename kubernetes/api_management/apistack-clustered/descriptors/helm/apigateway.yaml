@@ -1,10 +1,18 @@
 ---
 
+# ## SAG GS image
+# image:
+#   registry: ghcr.io/softwareag-government-solutions
+#   repository: webmethods-apigateway
+#   pullPolicy: IfNotPresent
+#   tag: 10.11-latest
+
+## SAG Trial image
 image:
-  registry: ghcr.io/softwareag-government-solutions
-  repository: webmethods-apigateway
+  registry: ""
+  repository: softwareag/apigateway-trial
   pullPolicy: IfNotPresent
-  tag: 10.11-latest
+  tag: "10.11"
 
 imagePullSecrets:
   - name: saggov-ghcr
@@ -22,7 +30,7 @@ autoscaling:
 
 resources:
   requests:
-    memory: 2Gi
+    memory: 1Gi
     cpu: 1
   limits:
     memory: 2Gi
@@ -33,16 +41,25 @@ envConfigs:
   JAVA_MAX_MEM: 1g
   JAVA_OPTS: ""
   RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
-  apigw_elasticsearch_hosts: elasticsearch-master-sag-apidatastore:9200
-  apigw_elasticsearch_autostart: "false"
-  apigw_kibana_autostart: "false"
-  apigw_kibana_dashboardInstance: http://kibana-kibana:5601
 
-clusteringType: ignite
+## type of clustering - possible values: none (default), terracotta, ignite
+clustering:
+  type: ignite
 
+## connectivity to external elastic search
+connectElasticSearch:
+  enabled: true
+  hosts: elasticsearch-master-sag-apidatastore:9200
+
+## wait for elastic search to become available
 waitforelastic:
   enabled: true
   uri: http://elasticsearch-master-sag-apidatastore:9200
+
+## connectivity to external kibana
+connectKibana:
+  enabled: true
+  uri: http://kibana-kibana:5601
 
 # apply stickiness for the UI ingress
 service:
