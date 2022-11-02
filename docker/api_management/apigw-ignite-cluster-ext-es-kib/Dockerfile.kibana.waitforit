@@ -6,7 +6,7 @@ ARG BASE_BUILDER_IMAGE
 
 FROM $BASE_BUILDER_IMAGE as builder
 
-RUN yum update -y && yum install -y wget
+RUN microdnf update -y && microdnf install -y wget tar gzip
 
 ENV DOCKERIZE_VERSION="v0.6.1"
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \

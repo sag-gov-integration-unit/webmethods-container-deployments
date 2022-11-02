@@ -14,7 +14,7 @@ services:
       JAVA_MIN_MEM: 1g
       JAVA_MAX_MEM: 2g
       JAVA_OPTS: ""
-      apigw_elasticsearch_tenantId: ${APIGATEWAY_TENANTID}
+      apigw_elasticsearch_tenantId: ${TENANTID}
       apigw_elasticsearch_hosts: elasticsearch:9200
       apigw_elasticsearch_autostart: "false"
       # apigw_elasticsearch_http_username: elastic
@@ -41,7 +41,7 @@ services:
       JAVA_MIN_MEM: 1g
       JAVA_MAX_MEM: 2g
       JAVA_OPTS: ""
-      apigw_elasticsearch_tenantId: ${APIGATEWAY_TENANTID}
+      apigw_elasticsearch_tenantId: ${TENANTID}
       apigw_elasticsearch_hosts: elasticsearch:9200
       apigw_elasticsearch_autostart: "false"
       # apigw_elasticsearch_http_username: elastic
@@ -61,7 +61,7 @@ services:
 
   # Elasticsearch Docker Images: https://www.docker.elastic.co/
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:$TAG_ELASTIC_VERSION
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION}
     # image: docker.elastic.co/elasticsearch/elasticsearch-oss:$TAG_ELASTIC_VERSION
     hostname: elasticsearch
     environment:
@@ -88,19 +88,19 @@ services:
       - stack
 
   kibana:
-    image: kibana/kibana_waitforit:$TAG_ELASTIC_VERSION
+    image: kibana/kibana_waitforit:${TAG_ELASTIC_VERSION}
     build:
       context: .
       dockerfile: Dockerfile.kibana.waitforit
       args:
-        BASE_BUILDER_IMAGE: ubi8-minimal
+        BASE_BUILDER_IMAGE: redhat/ubi8-minimal
         BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
         # BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana-oss:$TAG_ELASTIC_VERSION
     hostname: kibana
     environment:
       WAIT_FOR_ENABLED: "true"
       WAIT_FOR_HOST: "apigateway1"
-      WAIT_FOR_PORT: "9072"
+      WAIT_FOR_PORT: "5555"
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       # ELASTICSEARCH_USERNAME: elastic
@@ -108,7 +108,7 @@ services:
       # XPACK_SECURITY_ENABLED: "true"
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
-      # KIBANA_INDEX: gateway_${APIGATEWAY_TENANTID}_dashboard
+      KIBANA_INDEX: gateway_${TENANTID}_dashboard
       NODE_OPTIONS: --max_old_space_size=2048
     ports:
       - 5601:5601
