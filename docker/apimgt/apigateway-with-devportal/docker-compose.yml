@@ -133,13 +133,14 @@ services:
   ## (otherwise kibana will create empty analytics indices which gateway will not be able to overwrite)
   ## WAIT_FOR_HOST and WAIT_FOR_PORT are added env vars to create that waiting condition
   kibana:
-    image: ${REG}webmethods-kibana:${TAG_APIGATEWAY}
+    image: kibana/kibana_waitforit:$TAG_ELASTIC_VERSION
     build:
       context: .
-      dockerfile: Dockerfile.kibana
+      dockerfile: Dockerfile.kibana.waitforit
       args:
-        BASE_BUILDER_IMAGE: centos:8
+        BASE_BUILDER_IMAGE: ubi8-minimal
         BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
+        # BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana-oss:$TAG_ELASTIC_VERSION
     hostname: kibana
     environment:
       WAIT_FOR_ENABLED: "true"

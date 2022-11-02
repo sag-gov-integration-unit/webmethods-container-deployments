@@ -1,0 +1,10 @@
+REG=ghcr.io/softwareag-government-solutions/
+TAG_APIGATEWAY=dev-10.11-latest
+TAG_PORTAL=dev-10.11-latest
+TAG_ELASTIC_VERSION=7.13.4
+SAG_PASSWORD=somethingnew
+ELASTIC_PASSWORD=password
+TAG_TERRACOTTA=dev-4.3.9-latest
+TAG_SAMPLE_APIS=dev-0.0.4
+TAG_APIGATEWAY_CONFIGURATOR=configurator-10.11-latest
+TAG_PORTAL_CONFIGURATOR=configurator-10.11-latest
