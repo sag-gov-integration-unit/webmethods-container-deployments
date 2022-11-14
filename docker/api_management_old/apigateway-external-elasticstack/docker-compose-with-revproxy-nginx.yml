@@ -1,0 +1,124 @@
+version: "3.2"
+
+networks:
+  stack:
+
+services:
+
+  reverseproxy_nginx:
+    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY}
+    build:
+      context: ../../common/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ../apigateway-external-elasticstack/nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
+    networks:
+      - stack
+  
+  apigateway:
+    image: ${REG}webmethods-apigateway:${TAG_APIGATEWAY}
+    environment: 
+      JAVA_MIN_MEM: 512m
+      JAVA_MAX_MEM: 512m
+      JAVA_OPTS: ""
+      APIGW_ELASTICSEARCH_TENANTID: apigateway
+      APIGW_ELASTICSEARCH_HOSTS: elasticsearch:9200
+      APIGW_ELASTICSEARCH_AUTOSTART: "false"
+      APIGW_ELASTICSEARCH_HTTP_USERNAME: elastic
+      APIGW_ELASTICSEARCH_HTTP_PASSWORD: SomeStrongPassword!
+      APIGW_ELASTICSEARCH_HTTPS_ENABLED: "false"
+      APIGW_KIBANA_DASHBOARDINSTANCE: http://kibana:5601
+      APIGW_KIBANA_AUTOSTART: "false"
+      CLUSTER_AWARE: "true"
+      CLUSTER_NAME: APIGatewayTSAcluster
+      CLUSTER_TSAURLS: terracotta:9510
+      CLUSTER_SESSTIMEOUT: 20
+      CLUSTER_ACTIONONSTARTUPERROR: shutdown
+      CLUSTER_CONNECTTIMEOUT: 30000
+      SCRIPTS_LOGGER_LEVEL: 0
+    volumes:
+      - ../configs:/configs:rw
+      - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ../licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
+    hostname: apigateway
+    networks:
+      - stack
+    depends_on: 
+      - elasticsearch
+      - terracotta
+      - kibana
+
+  # Elasticsearch Docker Images: https://www.docker.elastic.co/
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION}
+    # image: docker.elastic.co/elasticsearch/elasticsearch-oss:${TAG_ELASTIC_VERSION}
+    hostname: elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - ELASTIC_PASSWORD=SomeStrongPassword!
+      - http.port=9200
+      - transport.port=9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - stack
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
+    # image: docker.elastic.co/kibana/kibana-oss:${TAG_ELASTIC_VERSION}
+    hostname: kibana
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: SomeStrongPassword!
+      XPACK_SECURITY_ENABLED: "true"
+      SERVER_HOST: 0.0.0.0
+      SERVER_BASEPATH: /apigatewayui/dashboardproxy
+      KIBANA_INDEX: gateway_apigateway_dashboard
+      NODE_OPTIONS: --max_old_space_size=2048
+    links:
+      - elasticsearch
+    networks:
+      - stack
+    depends_on: 
+      - elasticsearch
+    
+  terracotta:
+    image: ${REG}webmethods-terracotta:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    hostname: terracotta
+    environment:
+      - TSA_PORT=9510
+      - JMX_PORT=9520
+      - GROUP_PORT=9530
+      - MGT_PORT=9540
+      - HEAP_SIZE_MB_MIN=2g
+      - HEAP_SIZE_MB_MAX=2g
+      - DATA_STORAGE_SIZE=20g
+      - DATA_OFFHEAP_SIZE=1g
+      - RESTARTABLE_ENABLED=false
+    volumes:
+      - ../licensing/terracotta-license.key:/opt/softwareag/Terracotta/terracotta-license.key:ro
+    networks:
+      - stack
+
+  tmc:
+    image: ${REG}webmethods-terracotta-tmc:${TAG_TERRACOTTA:-dev-4.3.9-latest}
+    ports:
+      - 9889:9889
+      - 9443:9443
+    hostname: tmc
+    networks:
+      - stack

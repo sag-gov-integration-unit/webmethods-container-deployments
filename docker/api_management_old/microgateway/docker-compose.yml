@@ -1,0 +1,53 @@
+version: "3.2"
+
+networks:
+  stack:
+
+services:
+
+  apigateway:
+    image: ${REG}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+    ports:
+      - "5555:5555"
+      - "9072:9072"
+    environment: 
+      APIGW_ELASTICSEARCH_TENANTID: apigateway
+      JAVA_MIN_MEM: 512m
+      JAVA_MAX_MEM: 512m
+      JAVA_OPTS: ""
+      RUNTIME_WATT_PROPERTIES: "watt.net.timeout=400 watt.server.threadPool=800 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10 test.test=something=2"
+    volumes:
+      - ./licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+    hostname: apigateway
+    networks:
+      - stack
+  
+  webmethods-microgateway-uszip:
+    # image: webmethods-microgateway:10.7.2-1
+    image: ${REG}webmethods-microgateway:${TAG_APIGATEWAY}
+    environment:
+      PORT_RUNTIME: "9090"
+      PORT_RUNTIME_SSL: "9091"
+      mcgw_api_gateway_url: apigateway:5555
+      mcgw_api_gateway_user: Administrator
+      mcgw_api_gateway_password: manage
+      mcgw_downloads_apis: uszip
+      mcgw_downloads_applications: ""
+      mcgw_downloads_policies: ""
+      mcgw_aliases_uszip_endpoint_type: "simple"
+      mcgw_aliases_uszip_endpoint_value: "http://webmethods-sample-apis-uszip:7071"
+    volumes:
+      - ./licensing/microgateway-licenseKey.xml:/opt/softwareag/config/license.xml:ro
+      - ./microgateway/custom-settings.yml:/opt/softwareag/config/custom-settings.yml:ro
+    networks:
+      - stack
+
+  webmethods-sample-apis-uszip:
+    image: ${REG}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
+    networks:
+      - stack
+
+  webmethods-sample-apis-bookstore:
+    image: ${REG}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
+    networks:
+      - stack

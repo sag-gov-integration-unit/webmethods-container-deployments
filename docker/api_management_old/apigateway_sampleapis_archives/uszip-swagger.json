@@ -1,0 +1,64 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "US Zip APIs",
+    "version" : "1.0",
+    "title" : "uszip"
+  },
+  "host" : "apigateway:5555",
+  "basePath" : "/gateway/uszip/1.0",
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/findZip/{city}/{state}" : {
+      "get" : {
+        "operationId" : "findZipByCityState",
+        "consumes" : [ ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "city",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "state",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "default response",
+            "schema" : {
+              "$ref" : "#/definitions/ZipCode"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "ZipCode" : {
+      "type" : "object",
+      "properties" : {
+        "city" : {
+          "type" : "string"
+        },
+        "county" : {
+          "type" : "string"
+        },
+        "latitude" : {
+          "type" : "string"
+        },
+        "longitude" : {
+          "type" : "string"
+        },
+        "state" : {
+          "type" : "string"
+        },
+        "zip" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
