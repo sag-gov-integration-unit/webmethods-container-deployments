@@ -6,7 +6,7 @@ networks:
 services:
   
   apigateway1:
-    image: ${REG}apigateway-minimal:${TAG_APIGATEWAY}
+    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 5555:5555
       - 9072:9072
@@ -33,7 +33,7 @@ services:
       - elasticsearch
 
   apigateway2:
-    image: ${REG}apigateway-minimal:${TAG_APIGATEWAY}
+    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 6555:5555
       - 10072:9072
@@ -62,14 +62,12 @@ services:
   # Elasticsearch Docker Images: https://www.docker.elastic.co/
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION}
-    # image: docker.elastic.co/elasticsearch/elasticsearch-oss:$TAG_ELASTIC_VERSION
     hostname: elasticsearch
     environment:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
-      # - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
       - http.port=9200
       - transport.port=9300
     ulimits:
@@ -95,7 +93,6 @@ services:
       args:
         BASE_BUILDER_IMAGE: redhat/ubi8-minimal
         BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
-        # BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana-oss:$TAG_ELASTIC_VERSION
     hostname: kibana
     environment:
       WAIT_FOR_ENABLED: "true"
@@ -103,9 +100,6 @@ services:
       WAIT_FOR_PORT: "5555"
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
-      # ELASTICSEARCH_USERNAME: elastic
-      # ELASTICSEARCH_PASSWORD: $ELASTIC_PASSWORD
-      # XPACK_SECURITY_ENABLED: "true"
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
       KIBANA_INDEX: gateway_${TENANTID}_dashboard

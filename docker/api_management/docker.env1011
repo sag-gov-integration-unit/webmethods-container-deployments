@@ -9,12 +9,15 @@ REPO_DEVPORTAL=webmethods-devportal
 TAG_ELASTIC_VERSION=7.13.4
 
 TAG_TERRACOTTA=dev-4.3.9-latest
-REPO_TERRACOTTA=dev-4.3.9-latest
+REPO_TERRACOTTA=webmethods-terracotta
 
 TAG_SAMPLE_APIS=dev-0.0.4
 
-TAG_APIGATEWAY_CONFIGURATOR=configurator-10.11-latest
-TAG_PORTAL_CONFIGURATOR=configurator-10.11-latest
+REPO_APIGATEWAY_CONFIGURATOR=saggs/webmethods-apigateway-configurator
+TAG_APIGATEWAY_CONFIGURATOR=10.11
+
+REPO_DEVPORTAL_CONFIGURATOR=saggs/webmethods-devportal-configurator
+TAG_DEVPORTAL_CONFIGURATOR=10.11
 
 TENANTID=tenant1
 SAG_PASSWORD=somethingnew

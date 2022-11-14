@@ -10,7 +10,7 @@ volumes:
 services:
 
   devportal1:
-    image: ${REG}devportal:${TAG_DEVPORTAL}
+    image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
     ports:
       - 8083:8083
       - 8084:8084
@@ -33,7 +33,7 @@ services:
       - elasticsearch
 
   devportal2:
-    image: ${REG}devportal:${TAG_DEVPORTAL}
+    image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
     ports:
       - 18083:8083
       - 18084:8084
@@ -58,7 +58,6 @@ services:
   # Elasticsearch Docker Images: https://www.docker.elastic.co/
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:$TAG_ELASTIC_VERSION
-    # image: docker.elastic.co/elasticsearch/elasticsearch-oss:$TAG_ELASTIC_VERSION
     hostname: elasticsearch
     environment:
       - bootstrap.memory_lock=true
