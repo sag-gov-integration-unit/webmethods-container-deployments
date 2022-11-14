@@ -1,0 +1,109 @@
+version: "3.2"
+
+networks:
+  stack:
+
+services:
+  
+  apigateway1:
+    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    ports:
+      - 5555:5555
+      - 9072:9072
+    environment: 
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 2g
+      JAVA_OPTS: ""
+      apigw_elasticsearch_tenantId: ${TENANTID}
+      apigw_elasticsearch_hosts: elasticsearch:9200
+      apigw_elasticsearch_autostart: "false"
+      apigw_elasticsearch_https_enabled: "false"
+      apigw_kibana_dashboardInstance: http://kibana:5601
+      apigw_kibana_autostart: "false"
+      apigw_cluster_ignite_hostnames: apigateway1,apigateway2
+    volumes:
+      - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
+      - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+    hostname: apigateway1
+    networks:
+      - stack
+    depends_on: 
+      - elasticsearch
+
+  apigateway2:
+    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    ports:
+      - 6555:5555
+      - 10072:9072
+    environment: 
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 2g
+      JAVA_OPTS: ""
+      apigw_elasticsearch_tenantId: ${TENANTID}
+      apigw_elasticsearch_hosts: elasticsearch:9200
+      apigw_elasticsearch_autostart: "false"
+      apigw_elasticsearch_https_enabled: "false"
+      apigw_kibana_dashboardInstance: http://kibana:5601
+      apigw_kibana_autostart: "false"
+      apigw_cluster_ignite_hostnames: apigateway1,apigateway2
+    volumes:
+      - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
+      - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+    hostname: apigateway2
+    networks:
+      - stack
+    depends_on: 
+      - elasticsearch
+
+  # Elasticsearch Docker Images: https://www.docker.elastic.co/
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC_VERSION}
+    hostname: elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - http.port=9200
+      - transport.port=9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - stack
+
+  kibana:
+    image: kibana/kibana_waitforit:${TAG_ELASTIC_VERSION}
+    build:
+      context: .
+      dockerfile: Dockerfile.kibana.waitforit
+      args:
+        BASE_BUILDER_IMAGE: redhat/ubi8-minimal
+        BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana:${TAG_ELASTIC_VERSION}
+    hostname: kibana
+    environment:
+      WAIT_FOR_ENABLED: "true"
+      WAIT_FOR_HOST: "apigateway1"
+      WAIT_FOR_PORT: "5555"
+      SERVER_NAME: kibana
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+      SERVER_HOST: 0.0.0.0
+      SERVER_BASEPATH: /apigatewayui/dashboardproxy
+      NODE_OPTIONS: --max_old_space_size=2048
+    ports:
+      - 5601:5601
+    links:
+      - elasticsearch
+    networks:
+      - stack
+    depends_on: 
+      - elasticsearch
