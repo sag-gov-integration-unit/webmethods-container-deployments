@@ -21,7 +21,7 @@ To chose what version to load, you simply need to load the right environment fil
 To help with that, you can set the following Environment variable, which will then be used in the docker-compose commands on this page:
 
 ```bash
-export SAG_RELEASE=1011
+export SAG_RELEASE=1015
 ```
 
 ## Deployment 1: API Gateway 2-nodes Cluster connected to external ElasticSearch/Kibana 
