@@ -102,7 +102,7 @@ services:
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
-      KIBANA_INDEX: gateway_${TENANTID}_dashboard
+      # KIBANA_INDEX: gateway_${TENANTID}_dashboard
       NODE_OPTIONS: --max_old_space_size=2048
     ports:
       - 5601:5601
