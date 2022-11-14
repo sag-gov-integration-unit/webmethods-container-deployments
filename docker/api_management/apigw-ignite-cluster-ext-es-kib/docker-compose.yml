@@ -17,8 +17,6 @@ services:
       apigw_elasticsearch_tenantId: ${TENANTID}
       apigw_elasticsearch_hosts: elasticsearch:9200
       apigw_elasticsearch_autostart: "false"
-      # apigw_elasticsearch_http_username: elastic
-      # apigw_elasticsearch_http_password: ${ELASTIC_PASSWORD}
       apigw_elasticsearch_https_enabled: "false"
       apigw_kibana_dashboardInstance: http://kibana:5601
       apigw_kibana_autostart: "false"
@@ -44,8 +42,6 @@ services:
       apigw_elasticsearch_tenantId: ${TENANTID}
       apigw_elasticsearch_hosts: elasticsearch:9200
       apigw_elasticsearch_autostart: "false"
-      # apigw_elasticsearch_http_username: elastic
-      # apigw_elasticsearch_http_password: ${ELASTIC_PASSWORD}
       apigw_elasticsearch_https_enabled: "false"
       apigw_kibana_dashboardInstance: http://kibana:5601
       apigw_kibana_autostart: "false"
@@ -102,7 +98,7 @@ services:
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
-      # KIBANA_INDEX: gateway_${TENANTID}_dashboard
+      KIBANA_INDEX: gateway_${TENANTID}_dashboard
       NODE_OPTIONS: --max_old_space_size=2048
     ports:
       - 5601:5601
