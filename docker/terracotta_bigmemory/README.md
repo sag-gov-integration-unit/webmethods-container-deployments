@@ -5,17 +5,7 @@ Requirements:
 1) Run all commands from this directory (due to volumes path mapping)
 2) Make sure you save a *valid licenses* with expected name (for proper volume mapping in docker) in the "./licensing" directory:
    
- - for "Terracotta" (used for APIGateway clustering), and name the file as "./licensing/terracotta-license.key"
-
-## Optional: Overwriting Docker Configs
-
-If you need to overwrite certain docker deployment vars like TAG or REG, simply add them to your shell ENV variables...
-
-ie. to use a different registry:
-
-```bash
-export REG=different.registry.com/library/ 
-```
+ - for "Terracotta" (used for APIGateway clustering), and name the file as "../licensing/terracotta-license.key"
 
 ## Terracotta Standalone
 

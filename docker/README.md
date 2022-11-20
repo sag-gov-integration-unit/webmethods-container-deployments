@@ -11,8 +11,7 @@ If you need help, contact [Software AG Government Solutions](https://www.softwar
 
 ## Currently available Docker Desktop deployments
 
-- [webMethods API Gateway](./docker/apigateway/README.md)
-- [webMethods API Portal](./docker/apiportal/README.md)
+- [webMethods API Management (gateway, portal)](./docker/api_management/README.md)
 - [webMethods Microservice Runtime](./docker/msr/README.md)
 - [webMethods Terracotta BigMemory](./docker/terracotta_bigmemory/README.md)
-
+- [webMethods DB Configurator](./docker/terracotta_bigmemory/README.md)

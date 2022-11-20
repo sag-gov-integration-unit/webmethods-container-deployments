@@ -6,39 +6,39 @@ networks:
 services:
 
   caching_client:
-    image: ${REG}webmethods-terracotta/sample-caching-client:${TAG_TERRACOTTA}
+    image: ${REG}sample-caching-client:${TAG_BIGMEMORY}
     build:
       context: ../sample-ehcache-client
       dockerfile: Dockerfile
       args:
-        BUILDER_IMAGE: ${REG}webmethods-terracotta:${TAG_TERRACOTTA}
+        BUILDER_IMAGE: ${REG}${REPO_BIGMEMORY}:${TAG_BIGMEMORY}
     environment:
       - LICENSE_FILE=/var/run/terracotta-license.key
       - TERRACOTTA_SERVER_URL=terracotta:9510
     volumes:
-      - ./licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     networks:
       - stack
 
   terracotta:
-    image: ${REG}webmethods-terracotta:${TAG_TERRACOTTA}
+    image: ${REG}${REPO_BIGMEMORY}:${TAG_BIGMEMORY}
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
     volumes:
-      - ./licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     hostname: terracotta
     networks:
       - stack
 
   tmc:
-    image: ${REG}webmethods-terracotta-tmc:${TAG_TERRACOTTA}
+    image: ${REG}${REPO_BIGMEMORY_MGTSERVER}:${TAG_BIGMEMORY}
     ports:
       - 9889:9889
       - 9443:9443
     environment: 
       - LICENSE_FILE=/var/run/terracotta-license.key
     volumes:
-      - ./licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
+      - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     hostname: tmc
     networks:
       - stack
