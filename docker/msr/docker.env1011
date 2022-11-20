@@ -1,0 +1,8 @@
+REG=ghcr.io/softwareag-government-solutions/
+
+REPO_MSR_CORE=webmethods-microservicesruntime
+REPO_MSR_JDBC=webmethods-microservicesruntime-jdbc
+REPO_MSR_CLOUDSTREAMS=webmethods-microservicesruntime-cloudstreams
+REPO_MSR_DEPLOYER=webmethods-microservicesruntime-deployer
+
+TAG_MSR=10.11

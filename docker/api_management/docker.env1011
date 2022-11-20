@@ -1,12 +1,12 @@
 REG=ghcr.io/softwareag-government-solutions/
 
-TAG_APIGATEWAY=10.11-latest
+TAG_APIGATEWAY=10.11
 REPO_APIGATEWAY=webmethods-apigateway
 
-TAG_DEVPORTAL=10.11-latest
+TAG_DEVPORTAL=10.11
 REPO_DEVPORTAL=webmethods-devportal
 
-TAG_ELASTIC_VERSION=7.13.4
+TAG_ELASTIC=7.13.4
 
 TAG_TERRACOTTA=dev-4.3.9-latest
 REPO_TERRACOTTA=webmethods-terracotta
