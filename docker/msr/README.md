@@ -6,10 +6,10 @@ Sample deployments of webMethods Microservice Runtime using Docker / Docker-comp
 
 1) Run all commands from this directory (due to volumes path mapping)
    
-2) Make sure you save a *valid licenses* with expected name (for proper volume mapping in docker) in the "./licensing" directory:
+2) Make sure you save a *valid licenses* with expected name (for proper volume mapping in docker) in the "../licensing" directory:
 
  - "Microservice Runtime"
-   - Expected filename: "./licensing/msr-licenseKey.xml"
+   - Expected filename: "../licensing/msr-licenseKey.xml"
 
 ## webMethods Major Versions
 
