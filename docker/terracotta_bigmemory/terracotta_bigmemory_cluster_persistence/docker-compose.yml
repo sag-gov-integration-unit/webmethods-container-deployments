@@ -36,17 +36,17 @@ services:
       - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     environment:
       - LICENSE_FILE=/var/run/terracotta-license.key
-      - TSA_PORT="9510"
-      - JMX_PORT="9520"
-      - GROUP_PORT="9530"
-      - MGT_PORT="9540"
-      - HEAP_SIZE_MB_MIN="512m"
-      - HEAP_SIZE_MB_MAX="1024m"
-      - DATA_STORAGE_SIZE="20g"
-      - DATA_OFFHEAP_SIZE="1g"
-      - RESTARTABLE_ENABLED="false"
-      - TC_SERVER_HOST1="terracotta1"
-      - TC_SERVER_HOST2="terracotta2"
+      - TSA_PORT=9510
+      - JMX_PORT=9520
+      - GROUP_PORT=9530
+      - MGT_PORT=9540
+      - HEAP_SIZE_MB_MIN=512m
+      - HEAP_SIZE_MB_MAX=1024m
+      - DATA_STORAGE_SIZE=20g
+      - DATA_OFFHEAP_SIZE=1g
+      - RESTARTABLE_ENABLED=false
+      - TC_SERVER_HOST1=terracotta1
+      - TC_SERVER_HOST2=terracotta2
     volumes:
       - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
       - data1:/opt/softwareag/Terracotta/data/diskstore:rw
@@ -62,17 +62,17 @@ services:
       - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     environment:
       - LICENSE_FILE=/var/run/terracotta-license.key
-      - TSA_PORT="9510"
-      - JMX_PORT="9520"
-      - GROUP_PORT="9530"
-      - MGT_PORT="9540"
-      - HEAP_SIZE_MB_MIN="512m"
-      - HEAP_SIZE_MB_MAX="1024m"
-      - DATA_STORAGE_SIZE="20g"
-      - DATA_OFFHEAP_SIZE="1g"
-      - RESTARTABLE_ENABLED="false"
-      - TC_SERVER_HOST1="terracotta1"
-      - TC_SERVER_HOST2="terracotta2"
+      - TSA_PORT=9510
+      - JMX_PORT=9520
+      - GROUP_PORT=9530
+      - MGT_PORT=9540
+      - HEAP_SIZE_MB_MIN=512m
+      - HEAP_SIZE_MB_MAX=1024m
+      - DATA_STORAGE_SIZE=20g
+      - DATA_OFFHEAP_SIZE=1g
+      - RESTARTABLE_ENABLED=false
+      - TC_SERVER_HOST1=terracotta1
+      - TC_SERVER_HOST2=terracotta2
     volumes:
       - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
       - data2:/opt/softwareag/Terracotta/data/diskstore:rw
