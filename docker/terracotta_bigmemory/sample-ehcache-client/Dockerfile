@@ -1,4 +1,5 @@
-ARG BUILDER_IMAGE
+ARG BIGMEMORY_KIT_URL
+ARG BIGMEMORY_KIT_BASEDIR
 
 # 1. define the base image to create this image from
 ######################################################################################################
@@ -8,7 +9,22 @@ FROM openjdk:8-jdk-alpine as base
 # 2. Define the builder, where we'll execute Product Installation and patching
 ######################################################################################################
 
-FROM $BUILDER_IMAGE as builder
+FROM redhat/ubi8-minimal as bigmemory_kit
+
+ARG BIGMEMORY_KIT_URL
+
+RUN true \
+    && microdnf install \
+         tar \
+         gzip \
+    && microdnf clean all \
+    && true
+
+## jdbc drivers - should put in S3 for better consistency 
+RUN mkdir -p /libs && cd /libs \
+    && curl $BIGMEMORY_KIT_URL --output bigmemorykit.tar.gz \ 
+    && tar xvf bigmemorykit.tar.gz \
+    && rm -f bigmemorykit.tar.gz
 
 # 3. Finalize the image
 ######################################################################################################
@@ -17,6 +33,7 @@ FROM base as final
 
 LABEL maintainer="fabien.sanglier@softwareaggov.com"
 
+ARG BIGMEMORY_KIT_BASEDIR
 ARG SAG_HOME=/opt/softwareag
 ENV SAG_HOME ${SAG_HOME}
 
@@ -33,10 +50,11 @@ ENV JAVA_OPTS=""
 # adding the user terracotta, to not run the server as root
 RUN addgroup -S terracotta && adduser -h /terracotta -s /bin/bash -G terracotta -S -D terracotta
 RUN chown -R terracotta:terracotta /terracotta
+RUN mkdir -p /terracotta/extralibs /terracotta/apis
 
-# copy files from builder
-COPY --from=builder --chown=terracotta:terracotta $SAG_HOME/Terracotta/apis/ /terracotta/apis/
-COPY --from=builder --chown=terracotta:terracotta $SAG_HOME/Terracotta/code-samples/ /terracotta/code-samples/
+# copy files from libs
+COPY --from=bigmemory_kit --chown=terracotta:terracotta $BIGMEMORY_KIT_BASEDIR/apis/ /terracotta/apis/
+COPY --from=bigmemory_kit --chown=terracotta:terracotta $BIGMEMORY_KIT_BASEDIR/code-samples/lib/slf4j* /terracotta/extralibs/
 
 # copy code
 COPY --chown=terracotta:terracotta ./src/ /terracotta/
@@ -49,7 +67,7 @@ WORKDIR /terracotta/
 ENV CLASSPATH ".:/terracotta/apis/ehcache-ee-terracotta-client-all.jar\
 :/terracotta/apis/ehcache/lib/\
 :/terracotta/apis/toolkit/lib/\
-:/terracotta/code-samples/lib/slf4j-jdk14-1.7.25.jar"
+:/terracotta/extralibs/"
 
 ENV TERRACOTTA_SERVER_URL=""
 

@@ -19,7 +19,8 @@ services:
       context: ../sample-ehcache-client
       dockerfile: Dockerfile
       args:
-        BUILDER_IMAGE: ${REG}${REPO_BIGMEMORY}:${TAG_BIGMEMORY}
+        BIGMEMORY_KIT_URL: ${BIGMEMORY_KIT_URL}
+        BIGMEMORY_KIT_BASEDIR: ${BIGMEMORY_KIT_BASEDIR}
     volumes:
       - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
     environment: 

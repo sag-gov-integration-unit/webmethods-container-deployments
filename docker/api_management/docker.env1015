@@ -8,6 +8,9 @@ REPO_DEVPORTAL=devportal
 
 TAG_ELASTIC=8.2.3
 
+TAG_TERRACOTTA=4.4
+REPO_TERRACOTTA=bigmemorymax-server
+
 TAG_SAMPLE_APIS=dev-0.0.4
 
 REPO_APIGATEWAY_CONFIGURATOR=saggs/webmethods-apigateway-configurator

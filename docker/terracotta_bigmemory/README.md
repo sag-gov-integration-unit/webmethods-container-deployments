@@ -12,13 +12,13 @@ Requirements:
 Start stack:
 
 ```
-docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_standalone/docker-compose.yml up -d
+docker-compose --env-file ./docker.env -f terracotta_bigmemory_standalone/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_standalone/docker-compose.yml down
+docker-compose --env-file ./docker.env -f terracotta_bigmemory_standalone/docker-compose.yml down
 ```
 
 ## Terracotta Standalone with Volume Persistence
@@ -26,13 +26,13 @@ docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_standalon
 Start stack:
 
 ```
-docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_standalone_persistence/docker-compose.yml up -d
+docker-compose --env-file ./docker.env -f terracotta_bigmemory_standalone_persistence/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_standalone_persistence/docker-compose.yml down --volumes
+docker-compose --env-file ./docker.env -f terracotta_bigmemory_standalone_persistence/docker-compose.yml down --volumes
 ```
 
 ## Terracotta cluster
@@ -40,13 +40,13 @@ docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_standalon
 Start stack:
 
 ```
-docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_cluster/docker-compose.yml up -d
+docker-compose --env-file ./docker.env -f terracotta_bigmemory_cluster/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_cluster/docker-compose.yml down
+docker-compose --env-file ./docker.env -f terracotta_bigmemory_cluster/docker-compose.yml down
 ```
 
 ## Terracotta cluster with Volume Persistence
@@ -54,11 +54,11 @@ docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_cluster/d
 Start stack:
 
 ```
-docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_cluster_persistence/docker-compose.yml up -d
+docker-compose --env-file ./docker.env -f terracotta_bigmemory_cluster_persistence/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./configs/docker.env -f terracotta_bigmemory_cluster_persistence/docker-compose.yml down --volumes
+docker-compose --env-file ./docker.env -f terracotta_bigmemory_cluster_persistence/docker-compose.yml down --volumes
 ```

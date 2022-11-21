@@ -1,0 +1,9 @@
+REG=ghcr.io/softwareag-government-solutions/
+
+REPO_BIGMEMORY=bigmemorymax-server
+REPO_BIGMEMORY_MGTSERVER=bigmemorymax-management-server
+
+TAG_BIGMEMORY=4.4
+
+BIGMEMORY_KIT_URL: https://d2zwv9pap9ylyd.cloudfront.net/bigmemory-max-4.4.0.0.0.tar.gz
+BIGMEMORY_KIT_BASEDIR: /libs/bigmemory-max-4.4.0.0.0
