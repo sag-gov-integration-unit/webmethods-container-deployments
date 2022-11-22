@@ -51,3 +51,17 @@ Cleanup:
 ```
 docker-compose --env-file ./docker.env${SAG_RELEASE} -f devportal-ignite-cluster-ext-es/docker-compose.yml down -v
 ```
+
+## Deployment 3: Complete API MGT Cluster (api gateway + devportal) connected to external ElasticSearch/Kibana 
+
+Start stack:
+
+```
+docker-compose --env-file ./docker.env${SAG_RELEASE} -f apimgt-cluster-complete/docker-compose-${SAG_RELEASE}.yml up -d
+```
+
+Cleanup:
+
+```
+docker-compose --env-file ./docker.env${SAG_RELEASE} -f apimgt-cluster-complete/docker-compose-${SAG_RELEASE}.yml down -v
+```
