@@ -22,29 +22,19 @@ echo "Building new licensed images for SAG_RELEASE=${SAG_RELEASE}"
 source ./configs/docker.env${SAG_RELEASE}
 
 echo "Pushing newly created APIGateway images"
-docker push ${REG_TARGET}/webmethods-apigateway-standalone:${TAG_APIGATEWAY}
-docker push ${REG_TARGET}/webmethods-apigateway:${TAG_APIGATEWAY}
-docker push ${REG_TARGET}/webmethods-microgateway:${TAG_APIGATEWAY}
-docker push ${REG_TARGET}/webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
-docker push ${REG_TARGET}/webmethods-apigateway-deployer-sampleapis:${TAG_APIGATEWAY_CONFIGURATOR}
+docker push ${REG_TARGET}/apigateway-minimal:${TAG_APIGATEWAY}
+docker push ${REG_TARGET}/microgateway:${TAG_APIGATEWAY}
+# docker push ${REG_TARGET}/webmethods-apigateway-configurator:${TAG_APIGATEWAY_CONFIGURATOR}
+# docker push ${REG_TARGET}/webmethods-apigateway-deployer-sampleapis:${TAG_APIGATEWAY_CONFIGURATOR}
 
 echo "Pushing newly created Terracotta images"
-docker push ${REG_TARGET}/webmethods-terracotta:${TAG_TERRACOTTA}
-docker push ${REG_TARGET}/webmethods-terracotta-tmc:${TAG_TERRACOTTA}
-
-## API Portal
-if [[ "$SAG_RELEASE" == "105" || "$SAG_RELEASE" == "107" ]]; then
-    echo "Pushing newly created API Portal images"
-    docker push ${REG_TARGET}/webmethods-apiportal:${TAG_APIPORTAL}
-fi
+docker push ${REG_TARGET}/bigmemorymax-server:${TAG_TERRACOTTA}
+docker push ${REG_TARGET}/bigmemorymax-management-server:${TAG_TERRACOTTA}
 
 ## Developer Portal:
-if [ "$SAG_RELEASE" == "1011" ]; then
-    echo "Pushing newly created Developer Portal images"
-    docker push ${REG_TARGET}/webmethods-devportal:${TAG_DEVPORTAL}
-    docker push ${REG_TARGET}/webmethods-devportal-standalone:${TAG_DEVPORTAL}
-    docker push ${REG_TARGET}/webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
-fi
+echo "Pushing newly created Developer Portal images"
+docker push ${REG_TARGET}/devportal:${TAG_DEVPORTAL}
+# docker push ${REG_TARGET}/webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
 
 echo "Pushing newly created Sample API images"
 docker push ${REG_TARGET}/webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
