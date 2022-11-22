@@ -24,10 +24,11 @@ services:
       apigw_elasticsearch_https_enabled: "false"
       apigw_kibana_dashboardInstance: http://kibana:5601
       apigw_kibana_autostart: "false"
-      apigw_cluster_ignite_hostnames: apigateway1,apigateway2
+      apigw_cluster_tsaUrls: terracotta1:9510,terracotta2:9510
     volumes:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ../licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
     hostname: apigateway1
     networks:
       - stack
@@ -49,10 +50,11 @@ services:
       apigw_elasticsearch_https_enabled: "false"
       apigw_kibana_dashboardInstance: http://kibana:5601
       apigw_kibana_autostart: "false"
-      apigw_cluster_ignite_hostnames: apigateway1,apigateway2
+      apigw_cluster_tsaUrls: terracotta1:9510,terracotta2:9510
     volumes:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ../licensing/terracotta-license.key:/opt/softwareag/common/conf/terracotta-license.key:ro
     hostname: apigateway2
     networks:
       - stack
@@ -113,3 +115,45 @@ services:
       - stack
     depends_on: 
       - elasticsearch
+
+  terracotta1:
+    image: ${REG}${REPO_BIGMEMORY}:${TAG_BIGMEMORY}
+    hostname: terracotta1
+    volumes:
+      - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
+    environment: 
+      - LICENSE_FILE=/var/run/terracotta-license.key
+      - TSA_PORT=9510
+      - JMX_PORT=9520
+      - GROUP_PORT=9530
+      - MGT_PORT=9540
+      - HEAP_SIZE_MB_MIN=512m
+      - HEAP_SIZE_MB_MAX=1024m
+      - DATA_STORAGE_SIZE=2g
+      - DATA_OFFHEAP_SIZE=512m
+      - RESTARTABLE_ENABLED=false
+      - TC_SERVER_HOST1=terracotta1
+      - TC_SERVER_HOST2=terracotta2
+    networks:
+      - stack
+
+  terracotta2:
+    image: ${REG}${REPO_BIGMEMORY}:${TAG_BIGMEMORY}
+    hostname: terracotta2
+    volumes:
+      - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
+    environment: 
+      - LICENSE_FILE=/var/run/terracotta-license.key
+      - TSA_PORT=9510
+      - JMX_PORT=9520
+      - GROUP_PORT=9530
+      - MGT_PORT=9540
+      - HEAP_SIZE_MB_MIN=512m
+      - HEAP_SIZE_MB_MAX=1024m
+      - DATA_STORAGE_SIZE=2g
+      - DATA_OFFHEAP_SIZE=512m
+      - RESTARTABLE_ENABLED=false
+      - TC_SERVER_HOST1=terracotta1
+      - TC_SERVER_HOST2=terracotta2
+    networks:
+      - stack

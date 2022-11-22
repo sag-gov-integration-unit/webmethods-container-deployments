@@ -24,7 +24,7 @@ To help with that, you can set the following Environment variable, which will th
 export SAG_RELEASE=1015
 ```
 
-## Deployment 1: API Gateway 2-nodes Cluster connected to external ElasticSearch/Kibana 
+## Deployment 1a: API Gateway 2-nodes Cluster (with ignite) connected to external ElasticSearch/Kibana 
 
 Start stack:
 
@@ -36,6 +36,20 @@ Cleanup:
 
 ```
 docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-ignite-ext-es-kib/docker-compose-${SAG_RELEASE}.yml down -v
+```
+
+## Deployment 1b: API Gateway 2-nodes Cluster (with Terracotta Bigmemory) connected to external ElasticSearch/Kibana 
+
+Start stack:
+
+```
+docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-terracotta-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
+```
+
+Cleanup:
+
+```
+docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-terracotta-ext-es-kib/docker-compose-${SAG_RELEASE}.yml down -v
 ```
 
 ## Deployment 2: Developer Portal 2-nodes Cluster connected to external ElasticSearch

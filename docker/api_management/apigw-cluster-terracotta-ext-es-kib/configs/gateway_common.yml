@@ -22,7 +22,3 @@ apigw:
     name: APIGatewayCluster
     sessTimeout: 60
     actionOnStartupError: shutdown
-    ignite:
-      discoveryPort: 47100
-      communicationPort: 47500
-      portRange: 0

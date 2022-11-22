@@ -8,8 +8,8 @@ REPO_DEVPORTAL=devportal
 
 TAG_ELASTIC=7.13.4
 
-TAG_TERRACOTTA=4.3
-REPO_TERRACOTTA=bigmemorymax-server
+REPO_BIGMEMORY=bigmemorymax-server
+TAG_BIGMEMORY=4.3
 
 TAG_SAMPLE_APIS=dev-0.0.4
 
