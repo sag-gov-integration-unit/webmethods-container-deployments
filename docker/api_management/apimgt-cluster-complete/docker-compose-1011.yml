@@ -4,7 +4,21 @@ networks:
   stack:
 
 services:
-  
+
+  reverseproxy_nginx:
+    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY}
+    build:
+      context: ../../common/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "81:81"
+    volumes:
+      - ./nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
+      - ./nginx/devportal.conf:/etc/nginx/sites-enabled/devportal.conf:ro
+    networks:
+      - stack
+
   apigateway1:
     image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
@@ -55,6 +69,52 @@ services:
     depends_on: 
       - elasticsearch
 
+  devportal1:
+    image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
+    ports:
+      - 8083:8083
+      - 8084:8084
+    environment: 
+      JAVA_MIN_MEM: 256m
+      JAVA_MAX_MEM: 256m
+      JAVA_OPTS: "-XX:MaxDirectMemorySize=10g -XX:+DisableExplicitGC"
+      SPRING_ELASTICSEARCH_REST_URIS: "http://elasticsearch:9200"
+      PORTAL_SERVER_CONFIG_LICENSE: "/opt/softwareag/licenseKey.xml"
+      PORTAL_SERVER_CACHE_DISTRIBUTED_ENABLED: "true"
+      PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_0: "devportal1:47500..47509"
+      PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_1: "devportal2:47500..47509"
+      PORTAL_SERVER_CONFIG_TENANT: "${TENANTID}"
+    volumes:
+      -  ../licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:ro
+    hostname: devportal
+    networks:
+      - stack
+    depends_on: 
+      - elasticsearch
+
+  devportal2:
+    image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
+    ports:
+      - 18083:8083
+      - 18084:8084
+    environment: 
+      JAVA_MIN_MEM: 256m
+      JAVA_MAX_MEM: 256m
+      JAVA_OPTS: "-XX:MaxDirectMemorySize=10g -XX:+DisableExplicitGC"
+      SPRING_ELASTICSEARCH_REST_URIS: "http://elasticsearch:9200"
+      PORTAL_SERVER_CONFIG_LICENSE: "/opt/softwareag/licenseKey.xml"
+      PORTAL_SERVER_CACHE_DISTRIBUTED_ENABLED: "true"
+      PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_0: "devportal1:47500..47509"
+      PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_1: "devportal2:47500..47509"
+      PORTAL_SERVER_CONFIG_TENANT: "${TENANTID}"
+    volumes:
+      - ../licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:rw
+    hostname: devportal
+    networks:
+      - stack
+    depends_on: 
+      - elasticsearch
+  
   # Elasticsearch Docker Images: https://www.docker.elastic.co/
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC}

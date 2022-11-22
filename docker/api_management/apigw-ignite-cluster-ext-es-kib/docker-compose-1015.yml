@@ -12,7 +12,7 @@ services:
       - 9072:9072
     environment: 
       JAVA_MIN_MEM: 1g
-      JAVA_MAX_MEM: 2g
+      JAVA_MAX_MEM: 1g
       JAVA_OPTS: ""
       apigw_elasticsearch_tenantId: ${TENANTID}
       apigw_elasticsearch_hosts: elasticsearch:9200
@@ -37,7 +37,7 @@ services:
       - 10072:9072
     environment: 
       JAVA_MIN_MEM: 1g
-      JAVA_MAX_MEM: 2g
+      JAVA_MAX_MEM: 1g
       JAVA_OPTS: ""
       apigw_elasticsearch_tenantId: ${TENANTID}
       apigw_elasticsearch_hosts: elasticsearch:9200
@@ -63,7 +63,7 @@ services:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - http.port=9200
       - transport.port=9300
     ulimits:
