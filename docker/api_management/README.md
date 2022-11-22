@@ -52,7 +52,25 @@ Cleanup:
 docker-compose --env-file ./docker.env${SAG_RELEASE} -f devportal-ignite-cluster-ext-es/docker-compose.yml down -v
 ```
 
-## Deployment 3: Complete API MGT Cluster (api gateway + devportal) connected to external ElasticSearch/Kibana 
+## Deployment 3: Complete API MGT Cluster (api gateway + devportal) connected to shared external ElasticSearch/Kibana 
+
+This deployment includes a front load balancer (NGINX) to allow single point of access to the clustered APIGateway and Devportal components.
+
+URLs through NGINX load balancer:
+ - API Gateway UI: http://localhost/apigatewayui/
+ - API Gateway Engine Runtime: http://localhost/
+ - Developer Portal UI: http://localhost:81
+
+URLs to the components directly (bypassing NGINX load balancer):
+ - API Gateway UIs: 
+    - http://localhost:9072/apigatewayui/
+    - http://localhost:10072/apigatewayui/
+ - API Gateway Engine Runtime: 
+    - http://localhost:5555/
+    - http://localhost:6555/
+ - Developer Portal UI: 
+    - http://localhost:8083/portal/
+    - http://localhost:18083/portal/
 
 Start stack:
 
