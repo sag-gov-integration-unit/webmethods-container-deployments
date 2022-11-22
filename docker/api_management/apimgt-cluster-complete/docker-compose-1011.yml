@@ -178,7 +178,7 @@ services:
       - elasticsearch
 
   configurator_apigateway:
-    image: ${REG_APIGATEWAY_CONFIGURATOR}${REPO_APIGATEWAY_CONFIGURATOR}:${TAG_APIGATEWAY_CONFIGURATOR}
+    image: ${REG}${REPO_APIGATEWAY_CONFIGURATOR}:${TAG_APIGATEWAY_CONFIGURATOR}
     environment: 
       connect_host: reverseproxy_nginx
       connect_port: "80"
@@ -211,7 +211,7 @@ services:
       - stack
 
   configurator_devportal:
-    image: ${REG_DEVPORTAL_CONFIGURATOR}${REPO_DEVPORTAL_CONFIGURATOR}:${TAG_DEVPORTAL_CONFIGURATOR}
+    image: ${REG}${REPO_DEVPORTAL_CONFIGURATOR}:${TAG_DEVPORTAL_CONFIGURATOR}
     environment: 
       connect_host: reverseproxy_nginx
       connect_port: "81"
