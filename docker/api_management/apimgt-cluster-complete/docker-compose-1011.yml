@@ -3,6 +3,10 @@ version: "3.2"
 networks:
   stack:
 
+volumes:
+  esdata:
+    driver: local
+
 services:
 
   reverseproxy_nginx:
@@ -126,6 +130,8 @@ services:
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - http.port=9200
       - transport.port=9300
+    volumes:
+      - esdata:/data
     ulimits:
       memlock:
         soft: -1
