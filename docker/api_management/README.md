@@ -29,13 +29,13 @@ export SAG_RELEASE=1015
 Start stack:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-ignite-cluster-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
+docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-ignite-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-ignite-cluster-ext-es-kib/docker-compose-${SAG_RELEASE}.yml down -v
+docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-ignite-ext-es-kib/docker-compose-${SAG_RELEASE}.yml down -v
 ```
 
 ## Deployment 2: Developer Portal 2-nodes Cluster connected to external ElasticSearch
@@ -43,13 +43,13 @@ docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-ignite-cluster-ext
 Start stack:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f devportal-ignite-cluster-ext-es/docker-compose.yml up -d
+docker-compose --env-file ./docker.env${SAG_RELEASE} -f devportal-cluster-ext-es/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f devportal-ignite-cluster-ext-es/docker-compose.yml down -v
+docker-compose --env-file ./docker.env${SAG_RELEASE} -f devportal-cluster-ext-es/docker-compose.yml down -v
 ```
 
 ## Deployment 3: Complete API MGT Cluster (api gateway + devportal) connected to shared external ElasticSearch/Kibana 

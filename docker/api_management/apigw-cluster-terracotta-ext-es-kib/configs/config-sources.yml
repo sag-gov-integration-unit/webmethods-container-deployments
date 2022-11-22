@@ -1,0 +1,6 @@
+---
+sources:
+  - type: YAML
+    allowEdit: false
+    properties:
+      location: gateway_common.yml

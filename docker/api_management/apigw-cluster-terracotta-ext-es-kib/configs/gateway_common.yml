@@ -1,0 +1,28 @@
+---
+apigw:
+  elasticsearch:
+    http:
+      keepAlive: true
+      keepAliveMaxConnections: 10
+      keepAliveMaxConnectionsPerRoute: 100
+      connectionTimeout: 1000
+      socketTimeout: 10000
+      maxRetryTimeout: 100000
+    https:
+      enabled: false
+    sniff:
+      enable: false
+      timeInterval: 1000
+    outboundProxy:
+      enabled: false
+      alias: somealias
+    clientHttpResponseSize: 1001231
+  cluster:
+    aware: true
+    name: APIGatewayCluster
+    sessTimeout: 60
+    actionOnStartupError: shutdown
+    ignite:
+      discoveryPort: 47100
+      communicationPort: 47500
+      portRange: 0

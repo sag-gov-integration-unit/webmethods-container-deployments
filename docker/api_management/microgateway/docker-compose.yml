@@ -46,8 +46,3 @@ services:
     image: ${REG}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
     networks:
       - stack
-
-  webmethods-sample-apis-bookstore:
-    image: ${REG}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
-    networks:
-      - stack
