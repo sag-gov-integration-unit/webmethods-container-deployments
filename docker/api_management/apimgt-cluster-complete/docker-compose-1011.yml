@@ -203,7 +203,21 @@ services:
       settings_portalgateway_devportal_tenant: "${TENANTID}"
       settings_portalgateway_devportal_url: "http://reverseproxy_nginx:81/portal"
       settings_portalgateway_devportal_username: "Administrator"
-      settings_portalgateway_devportal_password: "manage"
+      settings_portalgateway_devportal_password: "somethingnew"
       settings_core_configure: "true"
       settings_core_watts: watt.server.cachemanager.connectTimeout=300000 watt.net.timeout=600 watt.net.clientKeepaliveUsageLimit=10000000 watt.server.threadPoolMin=50 watt.server.threadPool=1000 watt.server.control.serverThreadThreshold=50 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=500 watt.security.ssl.resumeClientSessions=true
       settings_core_extended: "events.reportingQueue.size=5000 events.collectionPool.minThreads=2 events.collectionPool.maxThreads=32 events.reportingPool.minThreads=4 events.reportingPool.maxThreads=16 eventsRefreshInterval=60s events.collectionQueue.size=10000000"
+
+  configurator_devportal:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}${REPO_DEVPORTAL_CONFIGURATOR}:${TAG_DEVPORTAL_CONFIGURATOR}
+    environment: 
+      connect_host: reverseproxy_nginx
+      connect_port: "81"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      changepassword_enabled: "true"
+      changepassword_old: "manage"
+      settings_loadbalancerurl_configure: "true"
+      settings_loadbalancerurl_value: "http://reverseproxy_nginx:81/portal"
+    networks:
+      - stack
