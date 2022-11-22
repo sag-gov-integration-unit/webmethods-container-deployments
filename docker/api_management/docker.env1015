@@ -13,10 +13,12 @@ REPO_TERRACOTTA=bigmemorymax-server
 
 TAG_SAMPLE_APIS=dev-0.0.4
 
-REPO_APIGATEWAY_CONFIGURATOR=saggs/webmethods-apigateway-configurator
+REG_APIGATEWAY_CONFIGURATOR=saggs/
+REPO_APIGATEWAY_CONFIGURATOR=webmethods-apigateway-configurator
 TAG_APIGATEWAY_CONFIGURATOR=10.15
 
-REPO_DEVPORTAL_CONFIGURATOR=saggs/webmethods-devportal-configurator
+REG_DEVPORTAL_CONFIGURATOR=saggs/
+REPO_DEVPORTAL_CONFIGURATOR=webmethods-devportal-configurator
 TAG_DEVPORTAL_CONFIGURATOR=10.15
 
 TENANTID=tenant1
