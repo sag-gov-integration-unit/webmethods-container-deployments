@@ -50,19 +50,13 @@ To help with that, you can set the following Environment variable, which will th
 If the variable is not defined, the commands will then automatically load the ./configs/docker.env file which is always set to the latest SAG RELEASE.
 
 ```bash
-export SAG_RELEASE=1011
+export SAG_RELEASE=1015
 ```
 
 or
 
 ```bash
-export SAG_RELEASE=107
-```
-
-or 
-
-```bash
-export SAG_RELEASE=105
+export SAG_RELEASE=1011
 ```
 
 ## Step 3: Login to Software Gov Solutions Github Registry 
