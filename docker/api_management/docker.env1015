@@ -7,6 +7,10 @@ TAG_DEVPORTAL=10.15
 REPO_DEVPORTAL=devportal
 
 TAG_ELASTIC=8.4.3
+IMAGE_ELASTIC=docker.elastic.co/elasticsearch/elasticsearch
+
+IMAGE_KIBANA=docker.elastic.co/kibana/kibana
+IMAGE_KIBANA_BASE=redhat/ubi8-minimal
 
 REPO_BIGMEMORY=bigmemorymax-server
 TAG_BIGMEMORY=4.4
