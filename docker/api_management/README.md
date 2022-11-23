@@ -32,6 +32,12 @@ Start stack:
 docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-ignite-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
 ```
 
+Start stack for Iron Bank sourced images:
+
+```
+docker-compose --env-file ./docker.env.ironbank.${SAG_RELEASE} -f apigw-ignite-cluster-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
+```
+
 Cleanup:
 
 ```

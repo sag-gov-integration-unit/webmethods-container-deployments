@@ -61,7 +61,7 @@ services:
 
   # Elasticsearch Docker Images: https://www.docker.elastic.co/
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC}
+    image: ${IMAGE_ELASTIC}:${TAG_ELASTIC}
     hostname: elasticsearch
     environment:
       - bootstrap.memory_lock=true
@@ -93,8 +93,8 @@ services:
       context: .
       dockerfile: Dockerfile.kibana.waitforit
       args:
-        BASE_BUILDER_IMAGE: redhat/ubi8-minimal
-        BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana:${TAG_ELASTIC}
+        BASE_BUILDER_IMAGE: ${IMAGE_KIBANA_BASE}
+        BASE_KIBANA_IMAGE: ${IMAGE_KIBANA}:${TAG_ELASTIC}
     hostname: kibana
     environment:
       WAIT_FOR_ENABLED: "true"
