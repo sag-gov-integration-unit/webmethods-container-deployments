@@ -7,6 +7,10 @@ TAG_DEVPORTAL=10.11
 REPO_DEVPORTAL=devportal
 
 TAG_ELASTIC=7.13.4
+IMAGE_ELASTIC=registry1.dso.mil/ironbank/elastic/elasticsearch/elasticsearch
+
+IMAGE_KIBANA=registry1.dso.mil/ironbank/elastic/kibana/kibana
+IMAGE_KIBANA_BASE=registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
 
 REPO_BIGMEMORY=bigmemorymax-server
 TAG_BIGMEMORY=4.3
