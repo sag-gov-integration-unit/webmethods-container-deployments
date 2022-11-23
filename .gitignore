@@ -6,3 +6,4 @@ nohup.out
 *.key
 *.xml
 licensing/
+docker.env.tests
