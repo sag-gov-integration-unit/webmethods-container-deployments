@@ -69,7 +69,7 @@ kubectl apply --namespace=apimgt-demo1 -f ./deploy/apiportal-standalone.yaml
 
 Due to the values used in the Ingress, the following 2 hostname MUST be used to access the deployment:
 
-API Gateway: http://webmethods-apigateway.demo1.apimgt.cloud/apigatewayui
+API Gateway: http://apigateway.demo1.apimgt.cloud/apigatewayui
 User: Administrator
 Password: <the one added to the secret in initial step>
 
@@ -111,11 +111,11 @@ kubectl --namespace=apimgt-demo1 exec --stdin --tty $POD_NAME -- /bin/bash
 ### Check the logs
 
 ```
-kubectl logs -l app.kubernetes.io/name=webmethods-apigateway-standalone
+kubectl logs -l app.kubernetes.io/name=apigateway
 ```
 
 or tail it:
 
 ```
-kubectl logs -f --tail=-1 -l app.kubernetes.io/name=webmethods-apigateway-standalone
+kubectl logs -f --tail=-1 -l app.kubernetes.io/name=apigateway
 ```

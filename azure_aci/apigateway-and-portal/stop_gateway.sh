@@ -7,7 +7,7 @@
 source ../configs/docker.env$SAG_RELEASE
 
 echo Stopping API Gateway...
-az container stop -n webmethods-apigateway -g $RESOURCEGROUP
+az container stop -n apigateway -g $RESOURCEGROUP
 
 echo Stopping API Configurator...
 az container stop -n webmethods-gw-config -g $RESOURCEGROUP

@@ -22,8 +22,8 @@ aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS 
 
 Docker will not create the AWS ECR repository when you push...so we need to pre-create these repository in AWS ECR first (one-time setup)
 
-- webmethods-apigateway-standalone
-- webmethods-apigateway
+- apigateway
+- apigateway-minimal
 - webmethods-microgateway
 - webmethods-apigateway-configurator
 - webmethods-apigateway-deployer-sampleapis

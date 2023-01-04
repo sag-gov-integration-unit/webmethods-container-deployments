@@ -6,7 +6,7 @@ networks:
 services:
 
   reverseproxy_nginx:
-    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY}
+    image: apigateway-reverseproxy:${TAG_APIGATEWAY}
     build:
       context: ../../common/nginx
       dockerfile: Dockerfile
@@ -18,7 +18,7 @@ services:
       - stack
   
   apigateway:
-    image: ${REG}webmethods-apigateway:${TAG_APIGATEWAY}
+    image: ${REG}apigateway-minimal:${TAG_APIGATEWAY}
     environment: 
       JAVA_MIN_MEM: 512m
       JAVA_MAX_MEM: 512m

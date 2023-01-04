@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: webmethods-apigateway-standalone
+  name: apigateway
   annotations:
     traefik.ingress.kubernetes.io/service.serversscheme: https
 spec:
@@ -23,31 +23,31 @@ spec:
       protocol: TCP
       name: https-gwruntime
   selector:
-    app.kubernetes.io/name: webmethods-apigateway-standalone
+    app.kubernetes.io/name: apigateway
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webmethods-apigateway-standalone
+  name: apigateway
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: webmethods-apigateway-standalone
+      app.kubernetes.io/name: apigateway
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: webmethods-apigateway-standalone
+        app.kubernetes.io/name: apigateway
     spec:
       securityContext:
         runAsUser: 1724
         runAsGroup: 1724
         fsGroup: 1724
       containers:
-        - name: webmethods-apigateway-standalone
+        - name: apigateway
           securityContext:
             allowPrivilegeEscalation: false
-          image: ${AWS_ECR}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+          image: ${AWS_ECR}apigateway:${TAG_APIGATEWAY}
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5555
@@ -97,21 +97,21 @@ spec:
             - name: wm-derbydb-volume
               mountPath: /opt/softwareag/IntegrationServer/instances/default/db
               subPath: wmderbydb
-            - name: webmethods-apigateway-standalone
+            - name: apigateway
               mountPath: /opt/softwareag/InternalDataStore/data
               subPath: elastic
       volumes:
         - name: wm-derbydb-volume
           emptyDir:
             sizeLimit: 5Gi
-        - name: webmethods-apigateway-standalone
+        - name: apigateway
           persistentVolumeClaim:
-            claimName: webmethods-apigateway-standalone
+            claimName: apigateway
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: webmethods-apigateway-standalone
+  name: apigateway
 spec:
   accessModes:
     - "ReadWriteOnce"
@@ -123,27 +123,27 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: webmethods-apigateway-standalone
+  name: apigateway
   labels:
-    app.kubernetes.io/name: webmethods-apigateway-standalone
+    app.kubernetes.io/name: apigateway
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-    - host: webmethods-apigateway.demo1.apimgt.cloud
+    - host: apigateway.demo1.apimgt.cloud
       http:
         paths:
           - path: /apigatewayui
             pathType: Prefix
             backend:
               service:
-                name: webmethods-apigateway-standalone
+                name: apigateway
                 port:
                   number: 9073
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: webmethods-apigateway-standalone
+                name: apigateway
                 port:
                   number: 5543

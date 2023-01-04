@@ -8,7 +8,7 @@ source ../configs/docker.env$SAG_RELEASE
 
 #perform the stop actions
 echo Deleting API Gateway...
-az container delete -y -n webmethods-apigateway -g $RESOURCEGROUP
+az container delete -y -n apigateway -g $RESOURCEGROUP
 
 echo Deleting API Configurator...
 az container delete -y -n webmethods-gw-config -g $RESOURCEGROUP

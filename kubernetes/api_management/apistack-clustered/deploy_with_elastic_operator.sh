@@ -17,4 +17,4 @@ helm repo update
 
 ## deploy apigateway/devportal with the helm charts from helm chart public repo
 helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml apigateway saggov-helm-charts/webmethods-apigateway

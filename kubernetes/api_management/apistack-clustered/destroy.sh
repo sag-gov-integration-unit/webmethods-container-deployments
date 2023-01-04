@@ -9,7 +9,7 @@ if [ "x$NAMESPACE" == "x" ]; then
 fi
 
 ## destroy apigateway/devportal
-helm uninstall --namespace $NAMESPACE webmethods-apigateway
+helm uninstall --namespace $NAMESPACE apigateway
 helm uninstall --namespace $NAMESPACE webmethods-devportal
 
 ## destroy elastic / kibana

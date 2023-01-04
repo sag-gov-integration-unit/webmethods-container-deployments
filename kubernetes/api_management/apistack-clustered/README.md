@@ -200,7 +200,7 @@ helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml webm
 ### 3) Deploy API Gateway stack (using helm)
 
 ```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml apigateway saggov-helm-charts/webmethods-apigateway
 ```
 
 ### 4) Deploy Configurator stacks (using helm)
@@ -218,7 +218,7 @@ helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal-configura
 helm uninstall --namespace $NAMESPACE webmethods-apigateway-configurator
 helm uninstall --namespace $NAMESPACE webmethods-devportal-configurator
 
-helm uninstall --namespace $NAMESPACE webmethods-apigateway
+helm uninstall --namespace $NAMESPACE apigateway
 helm uninstall --namespace $NAMESPACE webmethods-devportal
 ```
 

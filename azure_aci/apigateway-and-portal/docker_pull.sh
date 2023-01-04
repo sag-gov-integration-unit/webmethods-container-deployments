@@ -9,6 +9,6 @@ source ../configs/docker.env$SAG_RELEASE
 
 docker pull ${REG}webmethods-sample-apis-bookstore:$TAG_SAMPLE_APIS
 docker pull ${REG}webmethods-sample-apis-uszip:$TAG_SAMPLE_APIS
-docker pull ${REG}webmethods-apigateway-standalone:$TAG_APIGATEWAY
+docker pull ${REG}apigateway:$TAG_APIGATEWAY
 docker pull ${REG}webmethods-apigateway-configurator:$TAG_APIGATEWAY_CONFIGURATOR
 docker pull ${REG}webmethods-apiportal:$TAG_APIPORTAL

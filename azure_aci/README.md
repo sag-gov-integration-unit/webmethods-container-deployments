@@ -26,7 +26,7 @@ If you need help, contact [Software AG Government Solutions](https://www.softwar
     
     `docker tag {IMAGE ID} {Your ACR REGISTRYLOGINSERVER}/webmethods-sample-apis-uszip:dev-0.0.4`
 
-    `docker tag {IMAGE ID} {Your ACR REGISTRYLOGINSERVER}/webmethods-apigateway-standalone:dev-10.7-latest`
+    `docker tag {IMAGE ID} {Your ACR REGISTRYLOGINSERVER}/apigateway:dev-10.7-latest`
 
     `docker tag {IMAGE ID} {Your ACR REGISTRYLOGINSERVER}/webmethods-apigateway-configurator:configurator-10.7-latest`
 

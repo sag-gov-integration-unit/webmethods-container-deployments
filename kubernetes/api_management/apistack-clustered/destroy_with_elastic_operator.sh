@@ -9,7 +9,7 @@ if [ "x$NAMESPACE" == "x" ]; then
 fi
 
 ## destroy apigateway/devportal with the helm chart uninstall
-helm uninstall --namespace $NAMESPACE webmethods-apigateway
+helm uninstall --namespace $NAMESPACE apigateway
 helm uninstall --namespace $NAMESPACE webmethods-devportal
 
 ## destroy elastic using the elastic operator descriptors

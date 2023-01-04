@@ -27,7 +27,7 @@ spec:
             - name: env_apigateway_configure_portalgateway_ignore_errors
               value: "true"
             - name: env_apigateway_host
-              value: "webmethods-apigateway-standalone"
+              value: "apigateway"
             - name: env_apigateway_port
               value: "5555"
             - name: env_apigateway_rest_user
@@ -40,7 +40,7 @@ spec:
                   name: apimgt-admin-secret
                   key: password
             - name: env_apigateway_portalgateway_gateway_url
-              value: "http://webmethods-apigateway-standalone:5555"
+              value: "http://apigateway:5555"
             - name: env_apigateway_portalgateway_gateway_username
               value: "Administrator"
             - name: env_apigateway_portalgateway_gateway_password
@@ -62,16 +62,16 @@ spec:
                   name: apimgt-admin-secret
                   key: password
             - name: env_apigateway_lb_http_url
-              value: http://webmethods-apigateway.demo1.apimgt.cloud
+              value: http://apigateway.demo1.apimgt.cloud
             - name: env_apigateway_lb_https_url
-              value: https://webmethods-apigateway.demo1.apimgt.cloud
+              value: https://apigateway.demo1.apimgt.cloud
             - name: env_apigateway_lb_websocket_url
-              value: "ws://webmethods-apigateway.demo1.apimgt.cloud"
+              value: "ws://apigateway.demo1.apimgt.cloud"
             - name: env_apigateway_lb_http_url_alt1
-              value: http://webmethods-apigateway-standalone:5555
+              value: http://apigateway:5555
             - name: env_apigateway_lb_https_url_alt1
-              value: https://webmethods-apigateway-standalone:5443
+              value: https://apigateway:5443
             - name: env_apigateway_lb_websocket_url_alt1
-              value: "ws://webmethods-apigateway-standalone:5555"
+              value: "ws://apigateway:5555"
             - name: env_apigateway_lb_webapp_url
-              value: http://webmethods-apigateway.demo1.apimgt.cloud
+              value: http://apigateway.demo1.apimgt.cloud

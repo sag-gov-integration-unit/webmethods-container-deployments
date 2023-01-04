@@ -59,7 +59,7 @@ microgateway:
       cpu: 500m
   env:
     - name: mcgw_api_gateway_url
-      value: "webmethods-apigateway-gwruntime:5555"
+      value: "apigateway-gwruntime:5555"
     - name: mcgw_api_gateway_user
       value: "Administrator"
     - name: mcgw_api_gateway_password

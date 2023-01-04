@@ -158,13 +158,13 @@ helm upgrade -i --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devport
 ### Add API Gateway stack
 
 ```bash
-helm upgrade -i --namespace $DEMO_NAMESPACE -f apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
+helm upgrade -i --namespace $DEMO_NAMESPACE -f apigateway.yaml apigateway saggov-helm-charts/webmethods-apigateway
 ```
 
 ### Uninstall Steps
 
 ```bash
-helm uninstall --namespace $DEMO_NAMESPACE webmethods-apigateway
+helm uninstall --namespace $DEMO_NAMESPACE apigateway
 helm uninstall --namespace $DEMO_NAMESPACE webmethods-devportal
 
 kubectl --namespace $DEMO_NAMESPACE delete -f elasticsearch.yaml

@@ -13,7 +13,7 @@ echo Deploying Containers from $REGISTRYLOGINSERVER
 echo Deploying API Gateway...
 az container create --no-wait --resource-group "$RESOURCEGROUP" --registry-login-server "$REGISTRYLOGINSERVER" \
 --registry-password "$REGISTRYPASSWORD" --registry-username "$REGISTRYUSERNAME" \
---image "${REGISTRYSERVERNAME}webmethods-apigateway-standalone:$TAG_APIGATEWAY" -n webmethods-apigateway \
+--image "${REGISTRYSERVERNAME}apigateway:$TAG_APIGATEWAY" -n apigateway \
 --dns-name-label ${DNS_PREFIX}apigateway --cpu 2 --memory 4 --restart-policy Always --ports 9072 5555 5543 \
 -e APIGW_ELASTICSEARCH_TENANTID=apigateway JAVA_MIN_MEM=512m JAVA_MAX_MEM=512m IDS_HEAP_SIZE=512m RUNTIME_WATT_PROPERTIES="watt.net.timeout=400 watt.server.threadPool=50 watt.server.threadPoolMin=25 watt.net.maxClientKeepaliveConns=10"
 

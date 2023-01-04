@@ -2,7 +2,7 @@
 
 env:
   connect_protocol: http
-  connect_host: webmethods-apigateway-gwruntime
+  connect_host: apigateway-gwruntime
   connect_port: "5555"
   connect_user: Administrator
   connect_no_check_certs: "true"
@@ -10,10 +10,10 @@ env:
   changepassword_ignore_errors: "true"
 
   settings_lburls_configure: "true"
-  settings_lburls_http_urls: http://webmethods-apigateway.eksdemo.sedemos.saggs.local
-  settings_lburls_https_urls: https://webmethods-apigateway.eksdemo.sedemos.saggs.local
-  settings_lburls_websocket_url: ws://webmethods-apigateway.eksdemo.sedemos.saggs.local
-  settings_lburls_webapp_url: http://webmethods-apigateway.eksdemo.sedemos.saggs.local
+  settings_lburls_http_urls: http://apigateway.eksdemo.sedemos.saggs.local
+  settings_lburls_https_urls: https://apigateway.eksdemo.sedemos.saggs.local
+  settings_lburls_websocket_url: ws://apigateway.eksdemo.sedemos.saggs.local
+  settings_lburls_webapp_url: http://apigateway.eksdemo.sedemos.saggs.local
 
   settings_portalgateway_configure: "true"
   settings_portalgateway_configure_ignore_errors: "true"
@@ -21,7 +21,7 @@ env:
   settings_portalgateway_description: API PortalGateway Configuration
   settings_portalgateway_version: "1.0"
   settings_portalgateway_stagename: "TEST"
-  settings_portalgateway_gateway_url: http://webmethods-apigateway-gwruntime:5555
+  settings_portalgateway_gateway_url: http://apigateway-gwruntime:5555
   settings_portalgateway_gateway_username: Administrator
   settings_portalgateway_portaltype: devportal
   settings_portalgateway_devportal_tenant: default

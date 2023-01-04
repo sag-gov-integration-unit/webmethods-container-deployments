@@ -17,8 +17,8 @@ helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/kibana.yaml --versi
 
 ## deploy apigateway/devportal with the helm charts
 helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml webmethods-apigateway saggov-helm-charts/webmethods-apigateway
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml apigateway saggov-helm-charts/webmethods-apigateway
 
 ## from local helm charts (ie. for development)
 # helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml webmethods-devportal ${SAGGOV_HELMCHART_HOME}/webmethods-devportal
-# helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml webmethods-apigateway ${SAGGOV_HELMCHART_HOME}/webmethods-apigateway
+# helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml apigateway ${SAGGOV_HELMCHART_HOME}/webmethods-apigateway

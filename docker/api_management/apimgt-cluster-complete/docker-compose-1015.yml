@@ -10,7 +10,7 @@ volumes:
 services:
 
   reverseproxy_nginx:
-    image: webmethods-apigateway-reverseproxy:${TAG_APIGATEWAY}
+    image: apigateway-reverseproxy:${TAG_APIGATEWAY}
     build:
       context: ../../common/nginx
       dockerfile: Dockerfile

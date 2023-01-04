@@ -9,8 +9,8 @@ We will go over the general steps:
 
 Here are all the images that will get processed/created here:
 
-- webmethods-apigateway-standalone
-- webmethods-apigateway
+- apigateway
+- apigateway-minimal
 - webmethods-microgateway
 - webmethods-apigateway-configurator
 - webmethods-apigateway-deployer-sampleapis

@@ -6,7 +6,7 @@ networks:
 services:
 
   apigateway:
-    image: ${REG}webmethods-apigateway-standalone:${TAG_APIGATEWAY}
+    image: ${REG}apigateway:${TAG_APIGATEWAY}
     ports:
       - "5555:5555"
       - "9072:9072"

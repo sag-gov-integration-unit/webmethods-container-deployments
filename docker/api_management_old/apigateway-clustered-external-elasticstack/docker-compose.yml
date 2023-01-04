@@ -6,7 +6,7 @@ networks:
 services:
   
   apigateway1:
-    image: ${REG}webmethods-apigateway:${TAG_APIGATEWAY}
+    image: ${REG}apigateway-minimal:${TAG_APIGATEWAY}
     ports:
       - 5555:5555
       - 9072:9072
@@ -44,7 +44,7 @@ services:
       - kibana
 
   apigateway2:
-    image: ${REG}webmethods-apigateway:${TAG_APIGATEWAY}
+    image: ${REG}apigateway-minimal:${TAG_APIGATEWAY}
     ports:
       - 6555:5555
       - 10072:9072
