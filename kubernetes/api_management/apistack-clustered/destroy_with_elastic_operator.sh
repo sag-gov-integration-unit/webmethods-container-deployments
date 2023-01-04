@@ -10,7 +10,7 @@ fi
 
 ## destroy apigateway/devportal with the helm chart uninstall
 helm uninstall --namespace $NAMESPACE apigateway
-helm uninstall --namespace $NAMESPACE webmethods-devportal
+helm uninstall --namespace $NAMESPACE devportal
 
 ## destroy elastic using the elastic operator descriptors
 kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/elasticsearch.yaml

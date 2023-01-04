@@ -194,7 +194,7 @@ helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/kibana.yaml --versi
 ### 2) Deploy Developer Portal stack (using helm)
 
 ```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml devportal saggov-helm-charts/webmethods-devportal
 ```
 
 ### 3) Deploy API Gateway stack (using helm)
@@ -207,7 +207,7 @@ helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml api
 
 ```bash
 helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway-configurator.yaml webmethods-apigateway-configurator saggov-helm-charts/webmethods-apigateway-configurator
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal-configurator.yaml webmethods-devportal-configurator saggov-helm-charts/webmethods-devportal-configurator
+helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal-configurator.yaml webmethods-devportal-configurator saggov-helm-charts/webmethods-devportalconfigurator
 ```
 
 ### Uninstall Steps
@@ -219,7 +219,7 @@ helm uninstall --namespace $NAMESPACE webmethods-apigateway-configurator
 helm uninstall --namespace $NAMESPACE webmethods-devportal-configurator
 
 helm uninstall --namespace $NAMESPACE apigateway
-helm uninstall --namespace $NAMESPACE webmethods-devportal
+helm uninstall --namespace $NAMESPACE devportal
 ```
 
 #### 2) Destroy ElasticSearch stack

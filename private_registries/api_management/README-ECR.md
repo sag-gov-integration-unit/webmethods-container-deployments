@@ -27,9 +27,7 @@ Docker will not create the AWS ECR repository when you push...so we need to pre-
 - webmethods-microgateway
 - webmethods-apigateway-configurator
 - webmethods-apigateway-deployer-sampleapis
-- webmethods-apiportal (only for 10.5/10.7 releases)
-- webmethods-devportal (only for 10.11 and above releases)
-- webmethods-devportal-standalone (only for 10.11 and above releases)
+- devportal (only for 10.11 and above releases)
 - webmethods-devportal-configurator (only for 10.11 and above releases)
 - webmethods-sample-apis-bookstore
 - webmethods-sample-apis-uszip

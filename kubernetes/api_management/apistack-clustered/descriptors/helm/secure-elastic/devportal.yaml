@@ -2,7 +2,7 @@
 
 image:
   registry: ghcr.io/softwareag-government-solutions
-  repository: webmethods-devportal
+  repository: devportal
   pullPolicy: IfNotPresent
   tag: 10.11-latest
 
@@ -26,7 +26,7 @@ resources:
 
 settings:
   tenant: default
-  loadbalancerUrl: http://webmethods-devportal.eksdemo.sedemos.saggs.local/portal
+  loadbalancerUrl: http://devportal.eksdemo.sedemos.saggs.local/portal
   javaMemMin: 1024m
   javaMemMax: 1024m
   javaOpts: ""
@@ -53,7 +53,7 @@ ingress:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
   hosts:
-    - host: webmethods-devportal.eksdemo.sedemos.saggs.local
+    - host: devportal.eksdemo.sedemos.saggs.local
       paths:
         - path: /
           pathType: Prefix

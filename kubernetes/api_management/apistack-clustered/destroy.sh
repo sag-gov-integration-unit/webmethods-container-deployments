@@ -10,7 +10,7 @@ fi
 
 ## destroy apigateway/devportal
 helm uninstall --namespace $NAMESPACE apigateway
-helm uninstall --namespace $NAMESPACE webmethods-devportal
+helm uninstall --namespace $NAMESPACE devportal
 
 ## destroy elastic / kibana
 helm uninstall --namespace $NAMESPACE elasticsearch

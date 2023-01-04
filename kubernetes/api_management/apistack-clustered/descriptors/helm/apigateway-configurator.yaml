@@ -25,7 +25,7 @@ env:
   settings_portalgateway_gateway_username: Administrator
   settings_portalgateway_portaltype: devportal
   settings_portalgateway_devportal_tenant: default
-  settings_portalgateway_devportal_url: http://webmethods-devportal:8083/portal
+  settings_portalgateway_devportal_url: http://devportal:8083/portal
   settings_portalgateway_devportal_username: Administrator
 
 envExistingSecrets:

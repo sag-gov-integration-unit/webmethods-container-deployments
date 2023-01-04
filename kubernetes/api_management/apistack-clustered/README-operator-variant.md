@@ -152,7 +152,7 @@ kubectl --namespace $DEMO_NAMESPACE apply -f kibana.yaml
 
 
 ```bash
-helm upgrade -i --namespace $DEMO_NAMESPACE -f devportal.yaml webmethods-devportal saggov-helm-charts/webmethods-devportal
+helm upgrade -i --namespace $DEMO_NAMESPACE -f devportal.yaml devportal saggov-helm-charts/webmethods-devportal
 ```
 
 ### Add API Gateway stack
@@ -165,7 +165,7 @@ helm upgrade -i --namespace $DEMO_NAMESPACE -f apigateway.yaml apigateway saggov
 
 ```bash
 helm uninstall --namespace $DEMO_NAMESPACE apigateway
-helm uninstall --namespace $DEMO_NAMESPACE webmethods-devportal
+helm uninstall --namespace $DEMO_NAMESPACE devportal
 
 kubectl --namespace $DEMO_NAMESPACE delete -f elasticsearch.yaml
 kubectl --namespace $DEMO_NAMESPACE delete -f kibana.yaml

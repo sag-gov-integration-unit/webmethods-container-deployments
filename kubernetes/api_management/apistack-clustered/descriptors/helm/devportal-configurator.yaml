@@ -2,7 +2,7 @@
 
 env:
   connect_protocol: http
-  connect_host: webmethods-devportal
+  connect_host: devportal
   connect_port: "8083"
   connect_user: Administrator
   connect_no_check_certs: "true"
