@@ -2,7 +2,7 @@
 
 image:
   registry: ghcr.io/softwareag-government-solutions
-  repository: apigateway
+  repository: apigateway-minimal
   pullPolicy: IfNotPresent
   tag: 10.11-latest
 

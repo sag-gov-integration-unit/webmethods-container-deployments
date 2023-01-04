@@ -9,8 +9,8 @@
 
 ## SAG Trial image
 image:
-  registry: ""
-  repository: softwareag/apigateway-trial
+  registry: ghcr.io/softwareag-government-solutions
+  repository: apigateway-minimal
   pullPolicy: IfNotPresent
   tag: "10.11"
 

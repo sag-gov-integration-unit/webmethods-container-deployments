@@ -9,8 +9,8 @@
 
 ## SAG Trial image
 image:
-  registry: ""
-  repository: softwareag/devportal
+  registry: ghcr.io/softwareag-government-solutions
+  repository: devportal
   pullPolicy: IfNotPresent
   tag: "10.11.0.14"
 
