@@ -10,7 +10,8 @@ volumes:
 services:
   
   apigateway1:
-    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    # image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${SAGCR}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 5555:5555
       - 9072:9072
@@ -35,7 +36,8 @@ services:
       - elasticsearch
 
   apigateway2:
-    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    # image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${SAGCR}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 6555:5555
       - 10072:9072

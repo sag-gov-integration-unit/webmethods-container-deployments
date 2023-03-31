@@ -20,11 +20,18 @@ services:
     volumes:
       - ./nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
       - ./nginx/devportal.conf:/etc/nginx/sites-enabled/devportal.conf:ro
+    hostname: reverseproxy_nginx
     networks:
       - stack
+    depends_on: 
+      - apigateway1
+      - apigateway2
+      - devportal1
+      - devportal2
 
   apigateway1:
-    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    #image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${SAGCR}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 5555:5555
       - 9072:9072
@@ -49,7 +56,8 @@ services:
       - elasticsearch
 
   apigateway2:
-    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    #image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${SAGCR}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 6555:5555
       - 10072:9072
@@ -74,7 +82,8 @@ services:
       - elasticsearch
 
   devportal1:
-    image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
+    #image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
+    image: ${SAGCR}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
     ports:
       - 8083:8083
       - 8084:8084
@@ -91,14 +100,15 @@ services:
       PORTAL_SERVER_UMC_LB_URL: http://localhost:81/portal/
     volumes:
       -  ../licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:ro
-    hostname: devportal
+    hostname: devportal1
     networks:
       - stack
     depends_on: 
       - elasticsearch
 
   devportal2:
-    image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
+    #image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
+    image: ${SAGCR}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
     ports:
       - 18083:8083
       - 18084:8084
@@ -115,7 +125,7 @@ services:
       PORTAL_SERVER_UMC_LB_URL: http://localhost:81/portal/
     volumes:
       - ../licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:rw
-    hostname: devportal
+    hostname: devportal2
     networks:
       - stack
     depends_on: 

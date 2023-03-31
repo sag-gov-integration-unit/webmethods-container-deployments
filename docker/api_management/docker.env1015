@@ -1,4 +1,5 @@
 REG=ghcr.io/softwareag-government-solutions/
+SAGCR=sagcr.azurecr.io/
 
 TAG_APIGATEWAY=10.15
 REPO_APIGATEWAY=apigateway-minimal
