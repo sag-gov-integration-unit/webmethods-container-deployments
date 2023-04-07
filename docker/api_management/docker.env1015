@@ -1,13 +1,15 @@
-REG=ghcr.io/softwareag-government-solutions/
+SAGGOVCR=ghcr.io/softwareag-government-solutions/
 SAGCR=sagcr.azurecr.io/
 
+REG_APIGATEWAY=${SAGCR}
 TAG_APIGATEWAY=10.15
 REPO_APIGATEWAY=apigateway-minimal
 
+REG_DEVPORTAL=${SAGCR}
 TAG_DEVPORTAL=10.15
 REPO_DEVPORTAL=devportal
 
-TAG_ELASTIC=8.4.3
+TAG_ELASTIC=8.2.3
 IMAGE_ELASTIC=docker.elastic.co/elasticsearch/elasticsearch
 
 IMAGE_KIBANA=docker.elastic.co/kibana/kibana
@@ -18,10 +20,12 @@ TAG_BIGMEMORY=4.4
 
 TAG_SAMPLE_APIS=dev-0.0.4
 
-REPO_APIGATEWAY_CONFIGURATOR=webmethods-apigateway-configurator
+REG_APIGATEWAY_CONFIGURATOR=
+REPO_APIGATEWAY_CONFIGURATOR=saggs/webmethods-apigateway-configurator
 TAG_APIGATEWAY_CONFIGURATOR=10.15
 
-REPO_DEVPORTAL_CONFIGURATOR=webmethods-devportal-configurator
+REG_DEVPORTAL_CONFIGURATOR=
+REPO_DEVPORTAL_CONFIGURATOR=saggs/webmethods-devportal-configurator
 TAG_DEVPORTAL_CONFIGURATOR=10.15
 
 TENANTID=tenant1

@@ -20,7 +20,6 @@ services:
     volumes:
       - ./nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
       - ./nginx/devportal.conf:/etc/nginx/sites-enabled/devportal.conf:ro
-    hostname: reverseproxy_nginx
     networks:
       - stack
     depends_on: 
@@ -30,8 +29,7 @@ services:
       - devportal2
 
   apigateway1:
-    #image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
-    image: ${SAGCR}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${REG_APIGATEWAY}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 5555:5555
       - 9072:9072
@@ -49,15 +47,13 @@ services:
     volumes:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
-    hostname: apigateway1
     networks:
       - stack
     depends_on: 
       - elasticsearch
 
   apigateway2:
-    #image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
-    image: ${SAGCR}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${REG_APIGATEWAY}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 6555:5555
       - 10072:9072
@@ -75,15 +71,13 @@ services:
     volumes:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
-    hostname: apigateway2
     networks:
       - stack
     depends_on: 
       - elasticsearch
 
   devportal1:
-    #image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
-    image: ${SAGCR}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
+    image: ${REG_DEVPORTAL}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
     ports:
       - 8083:8083
       - 8084:8084
@@ -96,19 +90,16 @@ services:
       PORTAL_SERVER_CACHE_DISTRIBUTED_ENABLED: "true"
       PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_0: "devportal1:47500..47509"
       PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_1: "devportal2:47500..47509"
-      PORTAL_SERVER_CONFIG_TENANT: "${TENANTID}"
       PORTAL_SERVER_UMC_LB_URL: http://localhost:81/portal/
     volumes:
       -  ../licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:ro
-    hostname: devportal1
     networks:
       - stack
     depends_on: 
       - elasticsearch
 
   devportal2:
-    #image: ${REG}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
-    image: ${SAGCR}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
+    image: ${REG_DEVPORTAL}${REPO_DEVPORTAL}:${TAG_DEVPORTAL}
     ports:
       - 18083:8083
       - 18084:8084
@@ -121,11 +112,9 @@ services:
       PORTAL_SERVER_CACHE_DISTRIBUTED_ENABLED: "true"
       PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_0: "devportal1:47500..47509"
       PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_1: "devportal2:47500..47509"
-      PORTAL_SERVER_CONFIG_TENANT: "${TENANTID}"
       PORTAL_SERVER_UMC_LB_URL: http://localhost:81/portal/
     volumes:
       - ../licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:rw
-    hostname: devportal2
     networks:
       - stack
     depends_on: 
@@ -134,7 +123,6 @@ services:
   # Elasticsearch Docker Images: https://www.docker.elastic.co/
   elasticsearch:
     image: ${IMAGE_ELASTIC}:${TAG_ELASTIC}
-    hostname: elasticsearch
     environment:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
@@ -153,9 +141,6 @@ services:
         hard: 65536
     cap_add:
       - IPC_LOCK
-    ports:
-      - 9200:9200
-      - 9300:9300
     networks:
       - stack
 
@@ -167,18 +152,15 @@ services:
       args:
         BASE_BUILDER_IMAGE: ${IMAGE_KIBANA_BASE}
         BASE_KIBANA_IMAGE: ${IMAGE_KIBANA}:${TAG_ELASTIC}
-    hostname: kibana
     environment:
-      WAIT_FOR_ENABLED: "true"
-      WAIT_FOR_HOST: "apigateway1"
-      WAIT_FOR_PORT: "5555"
+      # WAIT_FOR_ENABLED: "true"
+      # WAIT_FOR_HOST: "apigateway1"
+      # WAIT_FOR_PORT: "5555"
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
       NODE_OPTIONS: --max_old_space_size=2048
-    ports:
-      - 5601:5601
     links:
       - elasticsearch
     networks:
@@ -187,7 +169,7 @@ services:
       - elasticsearch
 
   configurator_apigateway:
-    image: ${REG}${REPO_APIGATEWAY_CONFIGURATOR}:${TAG_APIGATEWAY_CONFIGURATOR}
+    image: ${REG_APIGATEWAY_CONFIGURATOR}${REPO_APIGATEWAY_CONFIGURATOR}:${TAG_APIGATEWAY_CONFIGURATOR}
     environment: 
       connect_host: reverseproxy_nginx
       connect_port: "80"
@@ -220,7 +202,7 @@ services:
       - stack
 
   configurator_devportal:
-    image: ${REG}${REPO_DEVPORTAL_CONFIGURATOR}:${TAG_DEVPORTAL_CONFIGURATOR}
+    image: ${REG_DEVPORTAL_CONFIGURATOR}${REPO_DEVPORTAL_CONFIGURATOR}:${TAG_DEVPORTAL_CONFIGURATOR}
     environment: 
       connect_host: reverseproxy_nginx
       connect_port: "81"
