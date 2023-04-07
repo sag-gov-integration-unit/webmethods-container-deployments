@@ -145,17 +145,8 @@ services:
       - stack
 
   kibana:
-    image: kibana/kibana_waitforit:${TAG_ELASTIC}
-    build:
-      context: .
-      dockerfile: Dockerfile.kibana.waitforit
-      args:
-        BASE_BUILDER_IMAGE: ${IMAGE_KIBANA_BASE}
-        BASE_KIBANA_IMAGE: ${IMAGE_KIBANA}:${TAG_ELASTIC}
+    image: ${IMAGE_KIBANA}:${TAG_ELASTIC}
     environment:
-      # WAIT_FOR_ENABLED: "true"
-      # WAIT_FOR_HOST: "apigateway1"
-      # WAIT_FOR_PORT: "5555"
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
