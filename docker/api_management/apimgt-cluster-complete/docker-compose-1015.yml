@@ -162,8 +162,8 @@ services:
   configurator_apigateway:
     image: ${REG_APIGATEWAY_CONFIGURATOR}${REPO_APIGATEWAY_CONFIGURATOR}:${TAG_APIGATEWAY_CONFIGURATOR}
     environment: 
-      connect_host: reverseproxy_nginx
-      connect_port: "80"
+      connect_host: apigateway1
+      connect_port: "5555"
       connect_user: Administrator
       connect_password: "somethingnew"
       changepassword_enabled: "true"
@@ -171,7 +171,7 @@ services:
       settings_lburls_configure: "true"
       settings_lburls_http_urls: "http://localhost;http://reverseproxy_nginx"
       settings_lburls_https_urls: "https://localhost;https://reverseproxy_nginx"
-      settings_lburls_websocket_url: "ws://reverseproxy_nginx"
+      settings_lburls_websocket_url: "ws://localhost"
       settings_lburls_webapp_url: "http://localhost"
       settings_portalgateway_configure: "true"
       settings_portalgateway_name: API PortalGateway Config
@@ -195,13 +195,13 @@ services:
   configurator_devportal:
     image: ${REG_DEVPORTAL_CONFIGURATOR}${REPO_DEVPORTAL_CONFIGURATOR}:${TAG_DEVPORTAL_CONFIGURATOR}
     environment: 
-      connect_host: reverseproxy_nginx
-      connect_port: "81"
+      connect_host: devportal1
+      connect_port: "8083"
       connect_user: Administrator
       connect_password: "somethingnew"
       changepassword_enabled: "true"
       changepassword_old: "manage"
       settings_loadbalancerurl_configure: "true"
-      settings_loadbalancerurl_value: "http://reverseproxy_nginx:81/portal"
+      settings_loadbalancerurl_value: "http://localhost:81/portal/"
     networks:
       - stack
