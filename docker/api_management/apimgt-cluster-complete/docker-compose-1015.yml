@@ -9,7 +9,7 @@ volumes:
 
 services:
 
-  reverseproxy_nginx:
+  reverseproxynginx:
     image: apigateway-reverseproxy:${TAG_APIGATEWAY}
     build:
       context: ../../common/nginx
@@ -169,8 +169,8 @@ services:
       changepassword_enabled: "true"
       changepassword_old: "manage"
       settings_lburls_configure: "true"
-      settings_lburls_http_urls: "http://localhost;http://reverseproxy_nginx"
-      settings_lburls_https_urls: "https://localhost;https://reverseproxy_nginx"
+      settings_lburls_http_urls: "http://localhost;http://reverseproxynginx"
+      settings_lburls_https_urls: "https://localhost;https://reverseproxynginx"
       settings_lburls_websocket_url: "ws://localhost"
       settings_lburls_webapp_url: "http://localhost"
       settings_portalgateway_configure: "true"
@@ -178,12 +178,12 @@ services:
       settings_portalgateway_description: API PortalGateway Configuration
       settings_portalgateway_version: "1.0"
       settings_portalgateway_stagename: "DEV"
-      settings_portalgateway_gateway_url: "http://reverseproxy_nginx"
+      settings_portalgateway_gateway_url: "http://reverseproxynginx"
       settings_portalgateway_gateway_username: "Administrator"
       settings_portalgateway_gateway_password: "somethingnew"
       settings_portalgateway_portaltype: devportal
       settings_portalgateway_devportal_tenant: "${TENANTID}"
-      settings_portalgateway_devportal_url: "http://reverseproxy_nginx:81/portal"
+      settings_portalgateway_devportal_url: "http://reverseproxynginx:81/portal"
       settings_portalgateway_devportal_username: "Administrator"
       settings_portalgateway_devportal_password: "somethingnew"
       settings_core_configure: "true"
