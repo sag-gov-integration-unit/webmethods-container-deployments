@@ -180,7 +180,7 @@ services:
       changepassword_old: "manage"
       settings_lburls_configure: "true"
       settings_lburls_http_urls: "http://localhost;http://lbnginx"
-      settings_lburls_https_urls: "https://localhost;https://lbnginx"
+      settings_lburls_https_urls: ""
       settings_lburls_websocket_url: "ws://lbnginx"
       settings_lburls_webapp_url: "http://localhost"
       settings_portalgateway_configure: "true"
