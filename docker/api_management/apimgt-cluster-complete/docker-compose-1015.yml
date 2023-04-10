@@ -183,7 +183,7 @@ services:
       settings_portalgateway_gateway_password: "somethingnew"
       settings_portalgateway_portaltype: devportal
       settings_portalgateway_devportal_tenant: "${TENANTID}"
-      settings_portalgateway_devportal_url: "http://reverseproxynginx:81/portal"
+      settings_portalgateway_devportal_url: "http://reverseproxy_nginx:81/portal"
       settings_portalgateway_devportal_username: "Administrator"
       settings_portalgateway_devportal_password: "somethingnew"
       settings_core_configure: "true"
