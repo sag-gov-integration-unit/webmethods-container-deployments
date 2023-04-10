@@ -9,7 +9,7 @@ volumes:
 
 services:
 
-  reverseproxy_nginx:
+  lbnginx:
     image: apigateway-reverseproxy:${TAG_APIGATEWAY}
     build:
       context: ../../common/nginx
@@ -172,28 +172,28 @@ services:
   configurator_apigateway:
     image: ${REG}${REPO_APIGATEWAY_CONFIGURATOR}:${TAG_APIGATEWAY_CONFIGURATOR}
     environment: 
-      connect_host: reverseproxy_nginx
+      connect_host: lbnginx
       connect_port: "80"
       connect_user: Administrator
       connect_password: "somethingnew"
       changepassword_enabled: "true"
       changepassword_old: "manage"
       settings_lburls_configure: "true"
-      settings_lburls_http_urls: "http://localhost;http://reverseproxy_nginx"
-      settings_lburls_https_urls: "https://localhost;https://reverseproxy_nginx"
-      settings_lburls_websocket_url: "ws://reverseproxy_nginx"
+      settings_lburls_http_urls: "http://localhost;http://lbnginx"
+      settings_lburls_https_urls: "https://localhost;https://lbnginx"
+      settings_lburls_websocket_url: "ws://lbnginx"
       settings_lburls_webapp_url: "http://localhost"
       settings_portalgateway_configure: "true"
       settings_portalgateway_name: API PortalGateway Config
       settings_portalgateway_description: API PortalGateway Configuration
       settings_portalgateway_version: "1.0"
       settings_portalgateway_stagename: "DEV"
-      settings_portalgateway_gateway_url: "http://reverseproxy_nginx"
+      settings_portalgateway_gateway_url: "http://lbnginx"
       settings_portalgateway_gateway_username: "Administrator"
       settings_portalgateway_gateway_password: "somethingnew"
       settings_portalgateway_portaltype: devportal
       settings_portalgateway_devportal_tenant: "${TENANTID}"
-      settings_portalgateway_devportal_url: "http://reverseproxy_nginx:81/portal"
+      settings_portalgateway_devportal_url: "http://lbnginx:81/portal"
       settings_portalgateway_devportal_username: "Administrator"
       settings_portalgateway_devportal_password: "somethingnew"
       settings_core_configure: "true"
@@ -205,13 +205,13 @@ services:
   configurator_devportal:
     image: ${REG}${REPO_DEVPORTAL_CONFIGURATOR}:${TAG_DEVPORTAL_CONFIGURATOR}
     environment: 
-      connect_host: reverseproxy_nginx
+      connect_host: lbnginx
       connect_port: "81"
       connect_user: Administrator
       connect_password: "somethingnew"
       changepassword_enabled: "true"
       changepassword_old: "manage"
       settings_loadbalancerurl_configure: "true"
-      settings_loadbalancerurl_value: "http://reverseproxy_nginx:81/portal"
+      settings_loadbalancerurl_value: "http://lbnginx:81/portal"
     networks:
       - stack
