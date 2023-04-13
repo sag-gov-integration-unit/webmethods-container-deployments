@@ -202,6 +202,6 @@ services:
       changepassword_enabled: "true"
       changepassword_old: "manage"
       settings_loadbalancerurl_configure: "true"
-      settings_loadbalancerurl_value: "http://localhost:81/portal/"
+      settings_loadbalancerurl_value: "http://lbnginx:81/portal/"
     networks:
       - stack
