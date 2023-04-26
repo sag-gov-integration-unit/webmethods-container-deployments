@@ -21,7 +21,9 @@ services:
       - ./nginx/apigateway.conf:/etc/nginx/sites-enabled/apigateway.conf:ro
       - ./nginx/devportal.conf:/etc/nginx/sites-enabled/devportal.conf:ro
     networks:
-      - stack
+        stack:
+          aliases:
+            - dosapigateway
     depends_on: 
       - apigateway1
       - apigateway2
@@ -33,6 +35,7 @@ services:
     ports:
       - 5555:5555
       - 9072:9072
+      - 7788:7788
     environment: 
       JAVA_MIN_MEM: 1g
       JAVA_MAX_MEM: 1g
@@ -57,6 +60,7 @@ services:
     ports:
       - 6555:5555
       - 10072:9072
+      - 7888:7788
     environment: 
       JAVA_MIN_MEM: 1g
       JAVA_MAX_MEM: 1g
