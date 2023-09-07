@@ -17,6 +17,9 @@ image:
 imagePullSecrets:
   - name: saggov-ghcr
 
+## the apigateway tenant id
+tenantId: apigateway
+
 licenseSecret:
   name: softwareag-apimgt-licenses
   key: apigateway-license
