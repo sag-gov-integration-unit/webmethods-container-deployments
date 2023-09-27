@@ -1,0 +1,45 @@
+---
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch
+spec:
+  version: 8.2.3
+  
+  # Disabling the security features for simplicity sake - DO NOT USE THIS IN PRODUCTION!
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  nodeSets:
+    - name: master-sag-apidatastore
+      count: 3
+      config:
+        node.roles: ["master", "data", "ingest", "transform"]
+        
+        # This setting could have performance implications for production clusters.
+        # See: https://www.elastic.co/guide/en/cloud-on-k8s/master/k8s-virtual-memory.html
+        node.store.allow_mmap: false
+        
+        # Disabling the security features for simplicity sake - DO NOT USE THIS IN PRODUCTION!
+        xpack.security.enabled: false
+        xpack.security.transport.ssl.enabled: false
+        xpack.security.http.ssl.enabled: false
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 2Gi
+      podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              resources:
+                requests:
+                  memory: 2Gi
+                limits:
+                  memory: 3Gi

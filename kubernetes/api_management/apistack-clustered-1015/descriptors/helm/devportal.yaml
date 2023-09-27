@@ -1,0 +1,58 @@
+---
+
+# ## SAG GS image
+# image:
+#   registry: ghcr.io/softwareag-government-solutions
+#   repository: devportal
+#   pullPolicy: IfNotPresent
+#   tag: 10.11-latest
+
+## SAG Trial image
+image:
+  registry: ghcr.io/softwareag-government-solutions
+  repository: devportal
+  pullPolicy: IfNotPresent
+  tag: "10.11.0.14"
+
+imagePullSecrets:
+  - name: saggov-ghcr
+
+licenseSecret:
+  name: softwareag-apimgt-licenses
+  key: devportal-license
+  path: license.xml
+
+replicaCount: 2
+
+resources:
+  requests:
+    memory: 1Gi
+    cpu: 100m
+  limits:
+    memory: 1Gi
+    cpu: 1
+
+settings:
+  loadbalancerUrl: http://devportal.eksdemo.sedemos.saggs.local/portal
+  javaMemMin: 256m
+  javaMemMax: 512m
+  javaOpts: ""
+  clustering:
+    enabled: true
+  elastic:
+    uris: http://elasticsearch-master-sag-apidatastore:9200
+
+waitforelastic:
+  enabled: true
+  uri: http://elasticsearch-master-sag-apidatastore:9200
+
+# UI ingress
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  hosts:
+    - host: devportal.eksdemo.sedemos.saggs.local
+      paths:
+        - path: /
+          pathType: Prefix

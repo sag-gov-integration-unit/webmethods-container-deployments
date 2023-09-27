@@ -1,0 +1,18 @@
+---
+
+env:
+  connect_protocol: http
+  connect_host: devportal
+  connect_port: "8083"
+  connect_user: Administrator
+  connect_no_check_certs: "true"
+  changepassword_enabled: "true"
+  changepassword_ignore_errors: "true"
+
+envExistingSecrets:
+  connect_password:
+    secretName: softwareag-apimgt-devportal-passwords
+    secretKey: Administrator
+  changepassword_old:
+    secretName: softwareag-apimgt-devportal-passwords
+    secretKey: AdministratorOld

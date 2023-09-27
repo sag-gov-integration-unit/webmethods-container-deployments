@@ -1,0 +1,87 @@
+---
+
+# ## SAG GS image
+# image:
+#   registry: ghcr.io/softwareag-government-solutions
+#   repository: apigateway
+#   pullPolicy: IfNotPresent
+#   tag: 10.11-latest
+
+## SAG Trial image
+image:
+  registry: ghcr.io/softwareag-government-solutions
+  repository: apigateway-minimal
+  pullPolicy: IfNotPresent
+  tag: "10.11"
+
+imagePullSecrets:
+  - name: saggov-ghcr
+
+## the apigateway tenant id
+tenantId: apigateway
+
+licenseSecret:
+  name: softwareag-apimgt-licenses
+  key: apigateway-license
+  path: license.xml
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
+
+resources:
+  requests:
+    memory: 1Gi
+    cpu: 1
+  limits:
+    memory: 2Gi
+    cpu: 2
+
+envConfigs:
+  JAVA_MIN_MEM: 1g
+  JAVA_MAX_MEM: 1g
+  JAVA_OPTS: ""
+  RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
+
+## type of clustering - possible values: none (default), terracotta, ignite
+clustering:
+  type: ignite
+
+## connectivity to external elastic search
+connectElasticSearch:
+  enabled: true
+  hosts: elasticsearch-master-sag-apidatastore:9200
+
+## wait for elastic search to become available
+waitforelastic:
+  enabled: true
+  uri: http://elasticsearch-master-sag-apidatastore:9200
+
+## connectivity to external kibana
+connectKibana:
+  enabled: true
+  uri: http://kibana-kibana:5601
+
+# apply stickiness for the UI ingress
+service:
+  gwruntime:
+    port: 5555
+  gwui:
+    annotations:
+      traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+    port: 9072
+
+# ingress
+ingress:
+  gwruntime:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    host: apigateway.eksdemo.sedemos.saggs.local
+  gwui:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    host: apigateway.eksdemo.sedemos.saggs.local

@@ -1,0 +1,44 @@
+---
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana
+spec:
+  version: 8.2.3
+  count: 1
+  
+  elasticsearchRef:
+    name: elasticsearch
+  
+  config:
+    server.basePath: /apigatewayui/dashboardproxy
+    server.rewriteBasePath: false
+  
+  # Disabling the security features for simplicity sake - DO NOT USE THIS IN PRODUCTION!
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  
+  podTemplate:
+    spec:
+      containers:
+        - name: kibana
+          readinessProbe:
+            tcpSocket:
+              port: 5601
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 12
+            successThreshold: 1
+            timeoutSeconds: 12
+          env:
+            - name: NODE_OPTIONS
+              value: "--max-old-space-size=2048"
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 0.5
+            limits:
+              memory: 2Gi
+              cpu: 2
