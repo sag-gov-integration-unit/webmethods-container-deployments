@@ -104,7 +104,7 @@ waitforelastic:
 
 envConfigs:
   apigw_wrapper_java_initmemory: "512"
-  apigw_wrapper_java_maxmemory: "1024"
+  apigw_wrapper_java_maxmemory: "768"
   JAVA_OPTS: "-server -XX:+UseG1GC -XX:+DisableExplicitGC"
 
 ## ports exposed by the container
