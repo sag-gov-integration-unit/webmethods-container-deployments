@@ -33,13 +33,16 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: 2Gi
+                storage: 5Gi
       podTemplate:
         spec:
+          ## this disable the podAntiAffinity policy which would disallow the scheduling of several Elasticsearch nodes from the same cluster on the same host
+          ## essentially, with this disabled, multiple elastic nodes can be on the same host
+          affinity: {}
           containers:
             - name: elasticsearch
               resources:
                 requests:
                   memory: 2Gi
                 limits:
-                  memory: 3Gi
+                  memory: 2Gi
