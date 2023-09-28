@@ -1,21 +1,21 @@
 ---
 
-# ## SAG GS image
+# ## SAG GOV image
 # image:
 #   registry: ghcr.io/softwareag-government-solutions
 #   repository: devportal
 #   pullPolicy: IfNotPresent
-#   tag: 10.11-latest
+#   tag: 10.15
 
-## SAG Trial image
+## SAG image
 image:
-  registry: ghcr.io/softwareag-government-solutions
+  registry: sagcr.azurecr.io
   repository: devportal
   pullPolicy: IfNotPresent
-  tag: "10.11.0.14"
+  tag: "10.15"
 
 imagePullSecrets:
-  - name: saggov-ghcr
+  - name: sag-containers-repo
 
 licenseSecret:
   name: softwareag-apimgt-licenses
@@ -32,27 +32,35 @@ resources:
     memory: 1Gi
     cpu: 1
 
+service:
+  port: 8084
+  annotations:
+    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+
 settings:
-  loadbalancerUrl: http://devportal.eksdemo.sedemos.saggs.local/portal
+  tenant: default
+  profile: dev
+  loadbalancerUrl: http://devportal.domain.local/portal/
   javaMemMin: 256m
   javaMemMax: 512m
-  javaOpts: ""
+  javaOpts: "-XX:+DisableExplicitGC"
   clustering:
     enabled: true
   elastic:
-    uris: http://elasticsearch-master-sag-apidatastore:9200
+    uris: http://elasticsearch-es-http:9200
 
 waitforelastic:
   enabled: true
-  uri: http://elasticsearch-master-sag-apidatastore:9200
+  uri: http://elasticsearch-es-http:9200
 
 # UI ingress
 ingress:
   enabled: true
+  className: traefik-external
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
   hosts:
-    - host: devportal.eksdemo.sedemos.saggs.local
+    - host: webmethods-devportal.domain.local
       paths:
         - path: /
           pathType: Prefix

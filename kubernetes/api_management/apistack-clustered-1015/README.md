@@ -1,6 +1,6 @@
-# webmethods APIGateway and Developer 10.11, Clustered in Kubernetes - Using Helm Charts 
+# webmethods APIGateway and Developer 10.15, Clustered, in Kubernetes
 
-This page will walk through the deployment of a realistic scalable API Management 10.11 cluster in your kubernetes environment:
+This page will walk through the deployment of a scalable API Management 10.15 cluster in your kubernetes environment:
 
  - 2 API Gateway runtime servers (clustered)
  - 2 Developer portal servers (clustered)
@@ -62,8 +62,6 @@ helm repo update
 
 ### 2) Preps for Install of ElasticSearch/Kibana
 
-#### 2a) IF using Elastic Operator
-
 The sample deployment described in this page leverage the Elastic stack from Elastic.
 For easy deployment of Elastic Search and Kibana, we'll be using the Elastic Kubernetes Operator called Elastic Cloud on Kubernetes (ECK).
 Elastic Cloud on Kubernetes (ECK) is a Kubernetes operator to orchestrate Elastic applications (Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent, and Elastic Maps Server) on Kubernetes. 
@@ -77,17 +75,6 @@ Installation Summary (version 1.9.1)
 ```bash
 kubectl create -f https://download.elastic.co/downloads/eck/1.9.1/crds.yaml
 kubectl apply -f https://download.elastic.co/downloads/eck/1.9.1/operator.yaml
-```
-
-#### 2b) IF using Elastic/Kibana Helm charts
-
-All the elastic helm charts are at https://github.com/elastic/helm-charts
-
-Add the helm chart repo for Elastic search:
-
-```bash
-helm repo add elastic https://helm.elastic.co
-helm repo update
 ```
 
 ### 3) Create demo namespace
@@ -106,7 +93,10 @@ kubectl config set-context --current --namespace=$NAMESPACE
 
 ### 4) Add pull secrets for the container images
 
-The container images in our GitHub Container Registry are not publically accessible. Upon access granted, you'll need to add your auth_token into a K8s secret entry for proper image pulling...
+#### 4a) The Software AG Container Registry
+
+The container images in Software AG Container Repository are not publicly accessible. 
+Upon access granted to the Software AG Container Repository, you'll need to add your auth_token into a K8s secret for proper image pulling...
 
 <p align="center">
   <img src="./images/step4_github_auth_secret.png" alt="Step 4 in picture - Adding Github authentication secret" width="60%" />
@@ -115,7 +105,25 @@ The container images in our GitHub Container Registry are not publically accessi
 Here it the command:
 
 ```bash
-kubectl create secret docker-registry saggov-ghcr --docker-server=ghcr.io/softwareag-government-solutions --docker-username=mygithubusername --docker-password=mygithubreadtoken --docker-email=mygithubemail
+kubectl create secret docker-registry sag-containers-repo --docker-server=sagcr.azurecr.io --docker-username=<my-sag-repo-username> --docker-password=<my-sag-repo-password>
+```
+
+where: 
+my-sag-repo-username = your SAG Containers repo pull user (this is NOT your empower account)
+my-sag-repo-password = your SAG Containers repo pull password (this is NOT your empower password)
+
+#### 4b) The Software AG Government Solutions Container Registry
+
+The container images in our Software AG Government Solutions Container Registry are not publicly accessible. Upon access granted, you'll need to add your auth_token into a K8s secret entry for proper image pulling...
+
+<p align="center">
+  <img src="./images/step4_github_auth_secret.png" alt="Step 4 in picture - Adding Github authentication secret" width="60%" />
+</p>
+
+Here it the command:
+
+```bash
+kubectl create secret docker-registry sag-containers-repo --docker-server=ghcr.io/softwareag-government-solutions --docker-username=mygithubusername --docker-password=mygithubreadtoken --docker-email=mygithubemail
 ```
 
 where: 
@@ -169,11 +177,9 @@ kubectl create secret generic softwareag-apimgt-devportal-passwords --from-liter
 
 ---
 
-## Deploy/Detroy the full SoftwareAG API Management stack - Manual step-by-step
+## Deploy/Detroy the full SoftwareAG API Management stack
 
 ### 1) Deploy ElasticSearch stack
-
-#### 1a) IF using Elastic Operator
 
 NOTE: The command below rely on Elastic Cloud on Kubernetes (ECK) available and installed in the cluster. See section "Add Elastic Operator to Kubernetes cluster (if not there alteady)" for details on that.
 
@@ -182,13 +188,6 @@ Once ECK is installed, simply run the following 2 commands to install the elasti
 ```bash
 kubectl --namespace $NAMESPACE apply -f ./descriptors/elastic_operator/elasticsearch.yaml
 kubectl --namespace $NAMESPACE apply -f ./descriptors/elastic_operator/kibana.yaml
-```
-
-#### 1b) IF using Helm charts
-
-```bash
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/elasticseach.yaml --version 7.14.0 elasticsearch elastic/elasticsearch
-helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/kibana.yaml --version 7.14.0 kibana elastic/kibana
 ```
 
 ### 2) Deploy Developer Portal stack (using helm)
@@ -203,69 +202,29 @@ helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal.yaml devp
 helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway.yaml apigateway saggov-helm-charts/webmethods-apigateway
 ```
 
-### 4) Deploy Configurator stacks (using helm)
+## Optional: Deploy the Auto-Configurators
+
+This containers will auto-configure a few important settings on both APIGateway and Dev Portal. 
 
 ```bash
 helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/apigateway-configurator.yaml webmethods-apigateway-configurator saggov-helm-charts/webmethods-apigateway-configurator
+
 helm upgrade -i --namespace $NAMESPACE -f ./descriptors/helm/devportal-configurator.yaml webmethods-devportal-configurator saggov-helm-charts/webmethods-devportalconfigurator
 ```
 
+
 ### Uninstall Steps
 
-#### 1) Destroy APIMGT stack (API Gateway, Developer portal, and the configurators)
+#### 1) Destroy APIMGT stack (API Gateway, Developer portal)
 
 ```bash
-helm uninstall --namespace $NAMESPACE webmethods-apigateway-configurator
-helm uninstall --namespace $NAMESPACE webmethods-devportal-configurator
-
 helm uninstall --namespace $NAMESPACE apigateway
 helm uninstall --namespace $NAMESPACE devportal
 ```
 
 #### 2) Destroy ElasticSearch stack
 
-##### 2a) IF using Elastic Operator
-
 ```bash
 kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/elasticsearch.yaml
 kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/kibana.yaml
-```
-
-##### 2b) IF using Helm charts
-
-```bash
-helm uninstall --namespace $NAMESPACE kibana
-helm uninstall --namespace $NAMESPACE elasticsearch
-```
-
----
-
-## Deploy/Detroy the full SoftwareAG API Management stack - All-in-one Script
-
-### 1) Deploy stack
-
-#### 1a) IF using Helm charts
-
-```bash
-/bin/sh deploy.sh $NAMESPACE
-```
-
-#### 1b) IF using Elastic Operator
-
-```bash
-/bin/sh deploy_with_elastic_operator.sh $NAMESPACE
-```
-
-### 2) Destroy stack
-
-#### 2a) IF using Helm charts
-
-```bash
-/bin/sh destroy.sh $NAMESPACE
-```
-
-#### 2b) IF using Elastic Operator
-
-```bash
-/bin/sh destroy_with_elastic_operator.sh $NAMESPACE
 ```

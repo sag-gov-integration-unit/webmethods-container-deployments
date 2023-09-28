@@ -1,35 +1,36 @@
 ---
 
-# ## SAG GS image
+# ## SAG GOV image
 # image:
 #   registry: ghcr.io/softwareag-government-solutions
-#   repository: apigateway
+#   repository: apigateway-minimal
 #   pullPolicy: IfNotPresent
-#   tag: 10.11-latest
+#   tag: 10.15
 
-## SAG Trial image
+## SAG image
 image:
-  registry: ghcr.io/softwareag-government-solutions
+  registry: sagcr.azurecr.io
   repository: apigateway-minimal
   pullPolicy: IfNotPresent
-  tag: "10.11"
+  tag: "10.15"
 
 imagePullSecrets:
-  - name: saggov-ghcr
-
-## the apigateway tenant id
-tenantId: apigateway
+  - name: sag-containers-repo
 
 licenseSecret:
   name: softwareag-apimgt-licenses
   key: apigateway-license
   path: license.xml
 
+# note: this is not in effect if autoscaling in true
+replicaCount: 2
+
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 2
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 60
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+  # targetMemoryUtilizationPercentage: 90
 
 resources:
   requests:
@@ -39,49 +40,112 @@ resources:
     memory: 2Gi
     cpu: 2
 
-envConfigs:
-  JAVA_MIN_MEM: 1g
-  JAVA_MAX_MEM: 1g
-  JAVA_OPTS: ""
-  RUNTIME_WATT_PROPERTIES: watt.server.cachemanager.connectTimeout=300000 watt.server.threadPoolMin=10 watt.server.threadPool=500 watt.server.control.serverThreadThreshold=20 watt.net.timeout=400 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=10 watt.security.ssl.resumeClientSessions=true
+podSecurityContext:
+  runAsUser: 1724
+  runAsGroup: 1724
+  fsGroup: 1724
+
+securityContext:
+  allowPrivilegeEscalation: false
 
 ## type of clustering - possible values: none (default), terracotta, ignite
 clustering:
   type: ignite
+  healthCheck: true
+  name: APIGatewayCluster
+  sessionTimeout: 60
+  actionOnStartupError: shutdown
+  ignite:
+    discoveryPort: 47100
+    communicationPort: 47500
+    portRange: 0
 
 ## connectivity to external elastic search
 connectElasticSearch:
   enabled: true
-  hosts: elasticsearch-master-sag-apidatastore:9200
-
-## wait for elastic search to become available
-waitforelastic:
-  enabled: true
-  uri: http://elasticsearch-master-sag-apidatastore:9200
+  configsExistingSecrets: []
+  configs: |-
+    apigw:
+      elasticsearch:
+        tenantId: default
+        hosts: elasticsearch-es-http:9200
+        autostart: false
+        http:
+          keepAlive: true
+          keepAliveMaxConnections: 10
+          keepAliveMaxConnectionsPerRoute: 100
+          connectionTimeout: 1000
+          socketTimeout: 10000
+          maxRetryTimeout: 100000
+        https:
+          enabled: false
+        sniff:
+          enable: false
+          timeInterval: 1000
+        outboundProxy:
+          enabled: false
+          alias: somealias
+        clientHttpResponseSize: 1001231
 
 ## connectivity to external kibana
 connectKibana:
   enabled: true
-  uri: http://kibana-kibana:5601
+  configsExistingSecrets: []
+  configs: |-
+    apigw:
+      kibana:
+        dashboardInstance: http://kibana-kb-http:5601
+        autostart: false
 
-# apply stickiness for the UI ingress
+## wait for elastic search to become available
+waitforelastic:
+  enabled: true
+  uri: http://elasticsearch-es-http:9200
+
+envConfigs:
+  apigw_wrapper_java_initmemory: "512"
+  apigw_wrapper_java_maxmemory: "1024"
+  JAVA_OPTS: "-server -XX:+UseG1GC -XX:+DisableExplicitGC"
+
+## ports exposed by the container
+containerPorts:
+  gwruntime: 5555
+  gwruntimessl: 5543
+  gwui: 9072
+  gwuissl: 9073
+  diag: 9999
+  isruntime: 5543
+
+# apply stickiness for the services that require it
 service:
   gwruntime:
     port: 5555
   gwui:
+    port: 9072
     annotations:
       traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
-    port: 9072
+  isruntime:
+    port: 6655
+    annotations:
+      traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
 
-# ingress
+# ingresses
 ingress:
   gwruntime:
     enabled: true
+    className: traefik-external
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-    host: apigateway.eksdemo.sedemos.saggs.local
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    host: webmethods-apigateway.domain.local
   gwui:
     enabled: true
+    className: traefik-external
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-    host: apigateway.eksdemo.sedemos.saggs.local
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    host: webmethods-apigateway.domain.local
+  isruntime:
+    enabled: true
+    className: traefik-internal
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    host: webmethods-apigateway-isruntime.domain.local
