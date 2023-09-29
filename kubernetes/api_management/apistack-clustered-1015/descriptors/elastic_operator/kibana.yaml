@@ -9,6 +9,7 @@ spec:
   
   elasticsearchRef:
     name: elasticsearch
+    # namespace: a specific namespace...otherwise default = the current one
   
   config:
     server.basePath: /apigatewayui/dashboardproxy

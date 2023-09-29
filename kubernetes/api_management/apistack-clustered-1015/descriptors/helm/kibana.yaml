@@ -1,0 +1,20 @@
+---
+
+imageTag: 8.2.3
+elasticsearchHosts: "http://elasticsearch-master-sagapidatastore:9200"
+
+## the kibana.index value is formatted as "gateway_<tenantId>_dashboard"
+## So it should match the tenantId value specified in the apigateway.yaml deplyment file
+kibanaConfig:
+  kibana.yml: |
+    server.basePath: /apigatewayui/dashboardproxy
+    server.rewriteBasePath: false
+    elasticsearch.hosts: [ "http://elasticsearch-master-sagapidatastore:9200" ]
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+  limits:
+    cpu: 1
+    memory: 1Gi

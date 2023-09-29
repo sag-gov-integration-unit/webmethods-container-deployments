@@ -65,16 +65,16 @@ helm repo update
 The sample deployment described in this page leverage the Elastic stack from Elastic.
 For easy deployment of Elastic Search and Kibana, we'll be using the Elastic Kubernetes Operator called Elastic Cloud on Kubernetes (ECK).
 Elastic Cloud on Kubernetes (ECK) is a Kubernetes operator to orchestrate Elastic applications (Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent, and Elastic Maps Server) on Kubernetes. 
-See Elastic Cloud on Kubernetes (ECK) at https://www.elastic.co/guide/en/cloud-on-k8s/1.9/index.html for more details on that.
+See Elastic Cloud on Kubernetes (ECK) at https://www.elastic.co/guide/en/cloud-on-k8s/2.9/index.html for more details on that.
 
 <p align="center">
   <img src="./images/step2_elastic_operator.png" alt="Step 2 in picture - Elastic Search Operator" width="75%" />
 </p>
 
-Installation Summary (version 1.9.1)
+Installation Summary (version 2.8.0)
 ```bash
-kubectl create -f https://download.elastic.co/downloads/eck/1.9.1/crds.yaml
-kubectl apply -f https://download.elastic.co/downloads/eck/1.9.1/operator.yaml
+kubectl create -f https://download.elastic.co/downloads/eck/2.8.0/crds.yaml
+kubectl apply -f https://download.elastic.co/downloads/eck/2.8.0/operator.yaml
 ```
 
 ### 3) Create demo namespace
