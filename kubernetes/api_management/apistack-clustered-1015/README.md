@@ -64,11 +64,11 @@ kubectl create -f https://download.elastic.co/downloads/eck/2.8.0/crds.yaml
 kubectl apply -f https://download.elastic.co/downloads/eck/2.8.0/operator.yaml
 ```
 
-### 3) Ingress Contorller
+### 3) Ingress Controller
 
 When you install the API Gateway and the Dev Portal, their endpoints will need ot be exposed outside of the cluster. It's best to use an ingress for that... which you may already have installed in your cluster.
 
-For demonstration purposes, we create a simple guide to install the Traefik Ingress Controller at: [traefik-ingress](../../common/ingress/traefik/traefik-ingress.yaml)
+For demonstration purposes, we create a simple guide to install the Traefik Ingress Controller at: [traefik-ingress](../../common/ingress/traefik/readme.md)
 
 ### 4) Create demo namespace
 
