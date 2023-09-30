@@ -1,0 +1,35 @@
+---
+
+imageTag: 8.2.3
+clusterName: "elasticsearch"
+nodeGroup: "master"
+
+# Set JVM heap.
+esJavaOpts: "-Xmx1g -Xms1g"
+esConfig:
+  elasticsearch.yml: |
+    # This setting could have performance implications for production clusters.
+    node.store.allow_mmap: false
+
+# Disabling the security features for simplicity sake - DO NOT USE THIS IN PRODUCTION!
+# xpack.security.enabled: false
+# xpack.security.transport.ssl.enabled: false
+# xpack.security.http.ssl.enabled: false
+
+# Set some resource limits
+resources:
+  requests:
+    cpu: 500m
+    memory: 2Gi
+  limits:
+    cpu: 1
+    memory: 2Gi
+
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: "10Gi"
+
+# Permit co-located instances for testing
+antiAffinity: "soft"

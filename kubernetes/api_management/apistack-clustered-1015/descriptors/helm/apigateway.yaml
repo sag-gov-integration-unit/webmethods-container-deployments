@@ -133,19 +133,16 @@ service:
 ingress:
   gwruntime:
     enabled: true
-    className: traefik-external
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     host: webmethods-apigateway.domain.local
   gwui:
     enabled: true
-    className: traefik-external
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     host: webmethods-apigateway.domain.local
   isruntime:
-    enabled: true
-    className: traefik-internal
+    enabled: false
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     host: webmethods-apigateway-isruntime.domain.local

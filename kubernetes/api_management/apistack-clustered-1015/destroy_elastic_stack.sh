@@ -9,5 +9,5 @@ if [ "x$NAMESPACE" == "x" ]; then
 fi
 
 ## destroy elastic using the elastic operator descriptors
-kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/elasticsearch.yaml
 kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/kibana.yaml
+kubectl --namespace $NAMESPACE delete -f ./descriptors/elastic_operator/elasticsearch.yaml

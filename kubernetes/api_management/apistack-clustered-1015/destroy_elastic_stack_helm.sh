@@ -9,5 +9,5 @@ if [ "x$NAMESPACE" == "x" ]; then
 fi
 
 ## destroy elastic / kibana
-helm uninstall --namespace $NAMESPACE elasticsearch
 helm uninstall --namespace $NAMESPACE kibana
+helm uninstall --namespace $NAMESPACE elasticsearch

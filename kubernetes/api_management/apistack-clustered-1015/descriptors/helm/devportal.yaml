@@ -56,9 +56,8 @@ waitforelastic:
 # UI ingress
 ingress:
   enabled: true
-  className: traefik-external
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
   hosts:
     - host: webmethods-devportal.domain.local
       paths:
