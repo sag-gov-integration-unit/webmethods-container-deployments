@@ -64,7 +64,13 @@ kubectl create -f https://download.elastic.co/downloads/eck/2.8.0/crds.yaml
 kubectl apply -f https://download.elastic.co/downloads/eck/2.8.0/operator.yaml
 ```
 
-### 3) Create demo namespace
+### 3) Ingress Contorller
+
+When you install the API Gateway and the Dev Portal, their endpoints will need ot be exposed outside of the cluster. It's best to use an ingress for that... which you may already have installed in your cluster.
+
+For demonstration purposes, we create a simple guide to install the Traefik Ingress Controller at: [traefik-ingress](../../common/ingress/traefik/traefik-ingress.yaml)
+
+### 4) Create demo namespace
 
 To keep things well contained, let's create a demo namespace for our deployed artifacts:
 
@@ -78,9 +84,9 @@ kubectl create ns $NAMESPACE
 kubectl config set-context --current --namespace=$NAMESPACE
 ```
 
-### 4) Add pull secrets for the container images
+### 5) Add pull secrets for the container images
 
-#### 4a) The Software AG Container Registry
+#### 5a) The Software AG Container Registry
 
 The container images in Software AG Container Repository are not publicly accessible. 
 Upon access granted to the Software AG Container Repository, you'll need to add your auth_token into a K8s secret for proper image pulling...
@@ -99,7 +105,7 @@ where:
 my-sag-repo-username = your SAG Containers repo pull user (this is NOT your empower account)
 my-sag-repo-password = your SAG Containers repo pull password (this is NOT your empower password)
 
-#### 4b) The Software AG Government Solutions Container Registry
+#### 5b) The Software AG Government Solutions Container Registry
 
 The container images in our Software AG Government Solutions Container Registry are not publicly accessible. Upon access granted, you'll need to add your auth_token into a K8s secret entry for proper image pulling...
 
@@ -118,13 +124,13 @@ mygithubusername = your github username
 mygithubreadtoken = your github auth token with read access to the registry
 mygithubemail = your github email
 
-### 5) Add secrets for the SoftwareAG products
+### 6) Add secrets for the SoftwareAG products
 
 <p align="center">
   <img src="./images/step5_application_secets.png" alt="Step 5 in picture - Add secrets for the SoftwareAG products" width="60%" />
 </p>
 
-#### 5a) Add the SoftwareAG products licenses as secrets
+#### 6a) Add the SoftwareAG products licenses as secrets
 
 Each product require a valid license to operate. We'll add the valid licenses in K8s secrets so they can be used by the deployments.
 
@@ -142,7 +148,7 @@ kubectl create secret generic softwareag-apimgt-licenses \
   --from-file=devportal-license=./licensing/devportal-license.xml
 ```
 
-#### 5b) Add Secrets for the API Gateway / Dev Portal admin passwords
+#### 6b) Add Secrets for the API Gateway / Dev Portal admin passwords
 
 Let's create the secrets for the Administrator's passwords (API Gateway and Dev Portal)
 
