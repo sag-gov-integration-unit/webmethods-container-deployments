@@ -11,14 +11,14 @@ Value – 1
 helm repo add traefik https://helm.traefik.io/traefik
 helm repo update
 
-### Install in the namespace "traefik-v2"
+### Install in the namespace "traefik"
 
 kubectl create ns traefik
 helm upgrade --install --namespace=traefik \
     traefik traefik/traefik \
     -f traefik-ingress.yaml
 
-## Verify
+## Verify (kube proxy)
 
 kubectl --namespace=traefik port-forward $(kubectl get pods --namespace=traefik --selector "app.kubernetes.io/name=traefik" --output=name) 9000:9000
 
