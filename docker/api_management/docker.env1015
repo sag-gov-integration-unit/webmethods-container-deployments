@@ -1,5 +1,6 @@
 SAGGOVCR=ghcr.io/softwareag-government-solutions/
 SAGCR=sagcr.azurecr.io/
+ELASTICCR=docker.elastic.co/
 
 REG_APIGATEWAY=${SAGCR}
 TAG_APIGATEWAY=10.15
@@ -10,15 +11,14 @@ TAG_DEVPORTAL=10.15
 REPO_DEVPORTAL=devportal
 
 TAG_ELASTIC=8.2.3
-IMAGE_ELASTIC=docker.elastic.co/elasticsearch/elasticsearch
+IMAGE_ELASTIC=${ELASTICCR}elasticsearch/elasticsearch
 
-IMAGE_KIBANA=docker.elastic.co/kibana/kibana
-IMAGE_KIBANA_BASE=redhat/ubi8-minimal
+TAG_KIBANA=8.2.3
+IMAGE_KIBANA=${ELASTICCR}kibana/kibana
 
+REG_BIGMEMORY=${SAGCR}
 REPO_BIGMEMORY=bigmemorymax-server
 TAG_BIGMEMORY=4.4
-
-TAG_SAMPLE_APIS=dev-0.0.4
 
 REG_APIGATEWAY_CONFIGURATOR=
 REPO_APIGATEWAY_CONFIGURATOR=saggs/webmethods-apigateway-configurator
@@ -31,3 +31,5 @@ TAG_DEVPORTAL_CONFIGURATOR=10.15
 TENANTID=tenant1
 SAG_PASSWORD=somethingnew
 ELASTIC_PASSWORD=password
+
+TAG_SAMPLE_APIS=dev-0.0.4

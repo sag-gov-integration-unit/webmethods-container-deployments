@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 networks:
   stack:
@@ -10,8 +10,7 @@ volumes:
 services:
   
   apigateway1:
-    # image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
-    image: ${SAGCR}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${REG_APIGATEWAY}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 5555:5555
       - 9072:9072
@@ -36,8 +35,7 @@ services:
       - elasticsearch
 
   apigateway2:
-    # image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
-    image: ${SAGCR}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${REG_APIGATEWAY}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 6555:5555
       - 10072:9072
@@ -69,7 +67,7 @@ services:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Djdk.lang.Process.launchMechanism=vfork"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - http.port=9200
       - transport.port=9300
     volumes:
@@ -82,7 +80,7 @@ services:
       - stack
 
   kibana:
-    image: ${IMAGE_KIBANA}:${TAG_ELASTIC}
+    image: ${IMAGE_KIBANA}:${TAG_KIBANA}
     hostname: kibana
     environment:
       SERVER_NAME: kibana
