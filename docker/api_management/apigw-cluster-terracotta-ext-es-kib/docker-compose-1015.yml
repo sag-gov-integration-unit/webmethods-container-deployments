@@ -10,7 +10,7 @@ volumes:
 services:
   
   apigateway1:
-    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${REG_APIGATEWAY}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 5555:5555
       - 9072:9072
@@ -36,7 +36,7 @@ services:
       - elasticsearch
 
   apigateway2:
-    image: ${REG}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
+    image: ${REG_APIGATEWAY}${REPO_APIGATEWAY}:${TAG_APIGATEWAY}
     ports:
       - 6555:5555
       - 10072:9072
@@ -63,7 +63,7 @@ services:
 
   # Elasticsearch Docker Images: https://www.docker.elastic.co/
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG_ELASTIC}
+    image: ${IMAGE_ELASTIC}:${TAG_ELASTIC}
     hostname: elasticsearch
     environment:
       - bootstrap.memory_lock=true
@@ -74,15 +74,7 @@ services:
       - transport.port=9300
     volumes:
       - esdata:/data
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    cap_add:
-      - IPC_LOCK
+    mem_limit: 2gb
     ports:
       - 9200:9200
       - 9300:9300
@@ -90,23 +82,15 @@ services:
       - stack
 
   kibana:
-    image: kibana/kibana_waitforit:${TAG_ELASTIC}
-    build:
-      context: .
-      dockerfile: Dockerfile.kibana.waitforit
-      args:
-        BASE_BUILDER_IMAGE: redhat/ubi8-minimal
-        BASE_KIBANA_IMAGE: docker.elastic.co/kibana/kibana:${TAG_ELASTIC}
+    image: ${IMAGE_KIBANA}:${TAG_KIBANA}
     hostname: kibana
     environment:
-      WAIT_FOR_ENABLED: "true"
-      WAIT_FOR_HOST: "apigateway1"
-      WAIT_FOR_PORT: "5555"
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
       NODE_OPTIONS: --max_old_space_size=2048
+    mem_limit: 1gb
     ports:
       - 5601:5601
     links:
@@ -117,7 +101,7 @@ services:
       - elasticsearch
 
   terracotta1:
-    image: ${REG}${REPO_BIGMEMORY}:${TAG_BIGMEMORY}
+    image: ${REG_BIGMEMORY}${REPO_BIGMEMORY}:${TAG_BIGMEMORY}
     hostname: terracotta1
     volumes:
       - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
@@ -138,7 +122,7 @@ services:
       - stack
 
   terracotta2:
-    image: ${REG}${REPO_BIGMEMORY}:${TAG_BIGMEMORY}
+    image: ${REG_BIGMEMORY}${REPO_BIGMEMORY}:${TAG_BIGMEMORY}
     hostname: terracotta2
     volumes:
       - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
