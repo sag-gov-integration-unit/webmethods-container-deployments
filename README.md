@@ -12,7 +12,7 @@ For access and more technical details, go to [Product Containers by Software AG 
 
 ## Available Cloud Deployment types
 
-- [Docker Desktop](./docker/README.md)
+- [Docker](./docker/README.md)
 - [AWS Elatic Container Service (ECS)](./aws_ecs/README.md)
 - [Azure Container Infrastruicture (ACI)](./azure_aci/README.md)
 - [Kubernetes](./kubernetes/README.md)
