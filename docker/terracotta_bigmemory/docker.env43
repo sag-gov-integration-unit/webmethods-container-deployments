@@ -1,8 +1,9 @@
-REG=ghcr.io/softwareag-government-solutions/
+SAGGOVCR=ghcr.io/softwareag-government-solutions/
+SAGCR=sagcr.azurecr.io/
 
+REG_BIGMEMORY=${SAGCR}
 REPO_BIGMEMORY=bigmemorymax-server
 REPO_BIGMEMORY_MGTSERVER=bigmemorymax-management-server
-
 TAG_BIGMEMORY=4.3
 
 BIGMEMORY_KIT_URL: https://d2zwv9pap9ylyd.cloudfront.net/bigmemory-max-4.3.8.4.2.tar.gz

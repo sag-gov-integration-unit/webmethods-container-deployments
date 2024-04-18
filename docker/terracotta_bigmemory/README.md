@@ -17,35 +17,7 @@ To help with that, you can set the following Environment variable, which will th
 export BIGMEMORY_RELEASE=44
 ```
 
-## Terracotta Standalone
-
-Start stack:
-
-```
-docker-compose --env-file ./docker.env${BIGMEMORY_RELEASE} -f terracotta_bigmemory_standalone/docker-compose.yml up -d
-```
-
-Cleanup:
-
-```
-docker-compose --env-file ./docker.env${BIGMEMORY_RELEASE} -f terracotta_bigmemory_standalone/docker-compose.yml down
-```
-
-## Terracotta Standalone with Volume Persistence
-
-Start stack:
-
-```
-docker-compose --env-file ./docker.env${BIGMEMORY_RELEASE} -f terracotta_bigmemory_standalone_persistence/docker-compose.yml up -d
-```
-
-Cleanup:
-
-```
-docker-compose --env-file ./docker.env${BIGMEMORY_RELEASE} -f terracotta_bigmemory_standalone_persistence/docker-compose.yml down --volumes
-```
-
-## Terracotta cluster
+## Terracotta 2-nodes HA cluster
 
 Start stack:
 
@@ -59,7 +31,7 @@ Cleanup:
 docker-compose --env-file ./docker.env${BIGMEMORY_RELEASE} -f terracotta_bigmemory_cluster/docker-compose.yml down
 ```
 
-## Terracotta cluster with Volume Persistence
+## Terracotta 2-nodes HA cluster with Volume Persistence
 
 Start stack:
 
