@@ -118,20 +118,8 @@ services:
       - "9530"
       - "9540"
     volumes:
-      - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
-    environment: 
-      - LICENSE_FILE=/var/run/terracotta-license.key
-      - TSA_PORT=9510
-      - JMX_PORT=9520
-      - GROUP_PORT=9530
-      - MGT_PORT=9540
-      - HEAP_SIZE_MB_MIN=512m
-      - HEAP_SIZE_MB_MAX=1024m
-      - DATA_STORAGE_SIZE=2g
-      - DATA_OFFHEAP_SIZE=512m
-      - RESTARTABLE_ENABLED=false
-      - TC_SERVER_HOST1=terracotta1
-      - TC_SERVER_HOST2=terracotta2
+      - ./tc-configs/tc-config.xml:/opt/softwareag/config/tc-config.xml:ro
+      - ../licensing/terracotta-license.key:/opt/softwareag/config/license.key:ro
     networks:
       - stack
 
@@ -144,19 +132,7 @@ services:
       - "9530"
       - "9540"
     volumes:
-      - ../licensing/terracotta-license.key:/var/run/terracotta-license.key:ro
-    environment: 
-      - LICENSE_FILE=/var/run/terracotta-license.key
-      - TSA_PORT=9510
-      - JMX_PORT=9520
-      - GROUP_PORT=9530
-      - MGT_PORT=9540
-      - HEAP_SIZE_MB_MIN=512m
-      - HEAP_SIZE_MB_MAX=1024m
-      - DATA_STORAGE_SIZE=2g
-      - DATA_OFFHEAP_SIZE=512m
-      - RESTARTABLE_ENABLED=false
-      - TC_SERVER_HOST1=terracotta1
-      - TC_SERVER_HOST2=terracotta2
+      - ./tc-configs/tc-config.xml:/opt/softwareag/config/tc-config.xml:ro
+      - ../licensing/terracotta-license.key:/opt/softwareag/config/license.key:ro
     networks:
       - stack
