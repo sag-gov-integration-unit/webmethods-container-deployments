@@ -2,18 +2,21 @@
 
 Sample deployments of SoftwareAG webMethods API Management using Docker / Docker-compose.
 
-Requirement: 
+Requirements: 
 
-1) Run all commands from this directory (due to volumes path mapping)
-2) Make sure you save a valid licenses in "licensing" directory:
+1) Get Access to the SoftwareAG Container registry [https://containers.softwareag.com/](https://containers.softwareag.com) and ability to pull down the SoftwareAG Container images
+2) Run all commands from this directory (due to volumes path mapping)
+3) Make sure you save a valid licenses in "licensing" directory:
  - ApiGateway Advanced
    - expected filename: "./licensing/apigateway-licenseKey.xml"
  - Developer Portal (only needed for the deployments involving Developer Portal product)
    - expected filename: "./licensing/devportal-licenseKey.xml"
- - Microgateway (only needed for the deployments involving Microgateway product)
+ - Microgateway (Optional: only needed for the deployments involving this component)
    - expected filename: "./licensing/microgateway-licenseKey.xml"
+ - Terracotta BigMemory (Optional: only needed for the deployments involving this component)
+   - expected filename: "./licensing/terracotta-license.key"
 
-## webMethods Versions
+## webMethods API Management Versions
 
 The webMethods major versions flavors (wM 10.11, etc...) are pre-defined in the files named "docker.env<version>"
 To chose what version to load, you simply need to load the right environment file with your docker-compose command.
