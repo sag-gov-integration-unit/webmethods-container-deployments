@@ -29,19 +29,19 @@ export SAG_RELEASE=1015
 Start stack:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-ignite-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
+docker compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-ignite-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
 ```
 
 Start stack for Iron Bank sourced images:
 
 ```
-docker-compose --env-file ./docker.env.ironbank.${SAG_RELEASE} -f apigw-ignite-cluster-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
+docker compose --env-file ./docker.env.ironbank.${SAG_RELEASE} -f apigw-ignite-cluster-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-ignite-ext-es-kib/docker-compose-${SAG_RELEASE}.yml down -v
+docker compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-ignite-ext-es-kib/docker-compose-${SAG_RELEASE}.yml down -v
 ```
 
 ## Deployment 1b: API Gateway 2-nodes Cluster (with Terracotta Bigmemory) connected to external ElasticSearch/Kibana 
@@ -49,13 +49,13 @@ docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-ignite-ext
 Start stack:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-terracotta-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
+docker compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-terracotta-ext-es-kib/docker-compose-${SAG_RELEASE}.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-terracotta-ext-es-kib/docker-compose-${SAG_RELEASE}.yml down -v
+docker compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-terracotta-ext-es-kib/docker-compose-${SAG_RELEASE}.yml down -v
 ```
 
 ## Deployment 2: Developer Portal 2-nodes Cluster connected to external ElasticSearch
@@ -63,43 +63,38 @@ docker-compose --env-file ./docker.env${SAG_RELEASE} -f apigw-cluster-terracotta
 Start stack:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f devportal-cluster-ext-es/docker-compose.yml up -d
+docker compose --env-file ./docker.env${SAG_RELEASE} -f devportal-cluster-ext-es/docker-compose.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f devportal-cluster-ext-es/docker-compose.yml down -v
+docker compose --env-file ./docker.env${SAG_RELEASE} -f devportal-cluster-ext-es/docker-compose.yml down -v
 ```
 
-## Deployment 3: Complete API MGT Cluster (api gateway + devportal) connected to shared external ElasticSearch/Kibana 
+## Deployment 3: Complete Load-Balanced (NGINX) API MGT Cluster (api gateway + devportal) connected to shared external ElasticSearch/Kibana 
 
-This deployment includes a front load balancer (NGINX) to allow single point of access to the clustered APIGateway and Devportal components.
+This deployment includes:
+ - a front load balancer (NGINX) to allow single point of access to the clustered APIGateway and Devportal components.
+ - an API Gateway configurator job which updates the pasword and sets up few important configurations
+ - an Developer Portal configurator job which updates the devportal pasword and sets up few important configurations 
 
 URLs through NGINX load balancer:
- - API Gateway UI: http://localhost/apigatewayui/
- - API Gateway Engine Runtime: http://localhost/
- - Developer Portal UI: http://localhost:81
+ - API Gateway UI / API Calls: [http://localhost:8080](http://localhost:8080)
+ - Developer Portal UI: [http://localhost:9090](http://localhost:9090)
 
-URLs to the components directly (bypassing NGINX load balancer):
- - API Gateway UIs: 
-    - http://localhost:9072/apigatewayui/
-    - http://localhost:10072/apigatewayui/
- - API Gateway Engine Runtime: 
-    - http://localhost:5555/
-    - http://localhost:6555/
- - Developer Portal UI: 
-    - http://localhost:8083/portal/
-    - http://localhost:18083/portal/
+NOTE 1: The updated password (set by the configurators) is: somethingnew
+
+NOTE 2: since the components are fronted by the load balancer, the internal ports are not exposed (to mimic a real environment) - IF you want to access the APIGateway IS runtime (not typically needed), you'll need to expose the IS ports in the  [docker-compose file](./apimgt-cluster-complete/docker-compose-1015.yml)
 
 Start stack:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f apimgt-cluster-complete/docker-compose-${SAG_RELEASE}.yml up -d
+docker compose --env-file ./docker.env${SAG_RELEASE} -f apimgt-cluster-complete/docker-compose-${SAG_RELEASE}.yml up -d
 ```
 
 Cleanup:
 
 ```
-docker-compose --env-file ./docker.env${SAG_RELEASE} -f apimgt-cluster-complete/docker-compose-${SAG_RELEASE}.yml down -v
+docker compose --env-file ./docker.env${SAG_RELEASE} -f apimgt-cluster-complete/docker-compose-${SAG_RELEASE}.yml down -v
 ```

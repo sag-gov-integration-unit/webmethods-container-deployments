@@ -63,6 +63,9 @@ services:
   elasticsearch:
     image: ${IMAGE_ELASTIC}:${TAG_ELASTIC}
     hostname: elasticsearch
+    expose:
+      - "9200"
+      - "9300"
     environment:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
@@ -73,15 +76,23 @@ services:
     volumes:
       - esdata:/data
     mem_limit: 2gb
-    ports:
-      - 9200:9200
-      - 9300:9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
     networks:
       - stack
 
   kibana:
     image: ${IMAGE_KIBANA}:${TAG_KIBANA}
     hostname: kibana
+    expose:
+      - "5601"
     environment:
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
@@ -89,8 +100,6 @@ services:
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
       NODE_OPTIONS: --max_old_space_size=2048
     mem_limit: 1gb
-    ports:
-      - 5601:5601
     links:
       - elasticsearch
     networks:

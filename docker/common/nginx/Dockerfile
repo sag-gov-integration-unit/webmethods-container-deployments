@@ -1,7 +1,7 @@
-FROM nginx:alpine
+FROM nginx:1.25.5-alpine
+
+# remove default site
+RUN rm /etc/nginx/conf.d/default.conf
 
 # nginx conf files
-COPY conf/ /etc/nginx/
-
-# create the DIRs for the sites to enable
-RUN mkdir -p /etc/nginx/sites-enabled/ && mkdir -p /etc/nginx/sites-tcp/
+COPY conf/*.conf /etc/nginx/conf.d/
