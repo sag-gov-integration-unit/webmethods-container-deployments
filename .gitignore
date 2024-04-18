@@ -3,7 +3,5 @@
 build/
 nohup.out
 *.code-workspace
-*.key
-*.xml
 licensing/*
 docker.env.tests
