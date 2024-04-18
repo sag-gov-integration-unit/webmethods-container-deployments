@@ -5,5 +5,5 @@ nohup.out
 *.code-workspace
 *.key
 *.xml
-licensing/
+licensing/*
 docker.env.tests
