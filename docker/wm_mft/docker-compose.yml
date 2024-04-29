@@ -29,18 +29,20 @@ services:
       - ./licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:ro
       - ./licensing/mftgateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/packages/WmMFT/config/licenseKey.xml:ro
     ports:
-      - 6555:5555
-      - 6543:5543
+      - 5655:5555
+      - 5643:5543
+      - 5666:5566
+      - 5667:5567
     networks:
       - stack
 
   mftserver:
     image: ${REG_MFTSERVER}${REPO_MFTSERVER}:${TAG_MFTSERVER}
     ports:
-      - 5555:5555
-      - 5543:5543
       - 9100:9100
       - 9102:9102
+      - 5555:5555
+      - 5543:5543
       - 5566:5566
       - 5567:5567
     environment: 
