@@ -33,6 +33,8 @@ services:
       - 5643:5543
       - 5666:5566
       - 5667:5567
+      - 5621:5521
+      - 5622:5522
     networks:
       - stack
 
@@ -45,6 +47,8 @@ services:
       - 5543:5543
       - 5566:5566
       - 5567:5567
+      - 5521:5521
+      - 5522:5522
     environment: 
       SCRIPTS_LOGGER_LEVEL: "1"
       JAVA_MIN_MEM: 2g
