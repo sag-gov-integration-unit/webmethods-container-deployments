@@ -11,8 +11,8 @@ container-based deployment of webMethods Active Transfer solution, including:
 docker compose up -d
 
 UIs:
-MFT Admin UI: http://localhost:9100/mft/
-MWS Admin UI: http://localhost:8585
+- MFT Admin UI: http://localhost:9100/mft/
+- MWS Admin UI: http://localhost:8585
 
 ## Configure the stack without the MFT Gateway
 
