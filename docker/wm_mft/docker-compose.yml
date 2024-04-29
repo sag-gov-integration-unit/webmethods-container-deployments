@@ -1,0 +1,128 @@
+version: "3.9"
+
+networks:
+  stack:
+
+volumes:
+  postgres_data:
+    driver: local
+  mft_data:
+    driver: local
+  mws_data:
+    driver: local  
+  mws_logs:
+    driver: local
+
+services:
+  
+  mftgateway:
+    image: ${REG_MFTGATEWAY}${REPO_MFTGATEWAY}:${TAG_MFTGATEWAY}
+    environment: 
+      SCRIPTS_LOGGER_LEVEL: "1"
+      JAVA_MIN_MEM: 512m
+      JAVA_MAX_MEM: 1g
+      JAVA_OPTS: "-server -Dtest=1 -Dtes2=2 -Dtest3=3"
+      RUNTIME_WATT_PROPERTIES: "watt.net.timeout=600 watt.server.threadPool=1000 watt.server.threadPoolMin=50 watt.server.control.serverThreadThreshold=20"
+      PROPS_ADMIN_PASSWORD: ${APPS_ADMIN_PASSWORD}
+      MFT_SERVER_ID: "mftgateway-something-0"
+    volumes:
+      - ./licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:ro
+      - ./licensing/mftgateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/packages/WmMFT/config/licenseKey.xml:ro
+    ports:
+      - 6555:5555
+      - 6543:5543
+    networks:
+      - stack
+
+  mftserver:
+    image: ${REG_MFTSERVER}${REPO_MFTSERVER}:${TAG_MFTSERVER}
+    ports:
+      - 5555:5555
+      - 5543:5543
+      - 9100:9100
+      - 9102:9102
+      - 5566:5566
+      - 5567:5567
+    environment: 
+      SCRIPTS_LOGGER_LEVEL: "1"
+      JAVA_MIN_MEM: 2g
+      JAVA_MAX_MEM: 2g
+      JAVA_OPTS: "-server -Dtest=1 -Dtes2=2 -Dtest3=3"
+      RUNTIME_WATT_PROPERTIES: "watt.net.timeout=600 watt.server.threadPool=1000 watt.server.threadPoolMin=50 watt.server.control.serverThreadThreshold=20"
+      EXTDB_MFT_ENABLED: "true"
+      EXTDB_MFT_TYPE: postgresql
+      EXTDB_MFT_HOST: postgres
+      EXTDB_MFT_PORT: 5432
+      EXTDB_MFT_DBNAME: webmisdb
+      EXTDB_MFT_USERID: webmisdb
+      EXTDB_MFT_PASSWORD: ${POSTGRES_PASSWORD}
+      EXTDB_USERMGT_ENABLED: "true"
+      EXTDB_USERMGT_TYPE: postgresql
+      EXTDB_USERMGT_HOST: postgres
+      EXTDB_USERMGT_PORT: 5432
+      EXTDB_USERMGT_DBNAME: webmisdb
+      EXTDB_USERMGT_USERID: webmisdb
+      EXTDB_USERMGT_PASSWORD: ${POSTGRES_PASSWORD}
+      PROPS_ADMIN_PASSWORD: ${APPS_ADMIN_PASSWORD}
+      PROPS_STATS_DC_ENABLED: "true"
+    volumes:
+      - ./licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:ro
+      - ./licensing/mftserver-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/packages/WmMFT/config/licenseKey.xml:ro
+      - mft_data:/data:rw
+    hostname: mftserver
+    networks:
+      - stack
+
+  mws:
+    image: ${REG_MWS}${REPO_MWS}:${TAG_MWS}
+    environment: 
+      SCRIPTS_LOGGER_LEVEL: "1"
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 1g
+      JAVA_OPTS: "-server -Dtest=1 -Dtes2=2 -Dtest3=3"
+      DB_TYPE: postgresql
+      DB_URL: jdbc:wm:postgresql://postgres:5432;DatabaseName=webmisdb
+      DB_USERNAME: webmisdb
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      SYSADMIN_PASSWORD: ${APPS_ADMIN_PASSWORD}
+      POST_STARTUP_COMMANDS: ls -al; echo \"testing!\"
+    volumes:
+      - mws_data:/opt/softwareag/MWS/volumes/data
+      - mws_logs:/opt/softwareag/MWS/volumes/logs
+    ports:
+      - 8585:8585
+    hostname: mws
+    networks:
+      - stack
+
+  dbconfig:
+    image: ${REG_DBCONFIG}${REPO_DBCONFIG}:${TAG_DBCONFIG}
+    environment: 
+      SCRIPTS_LOGGER_LEVEL: 1
+      DB_ACTION: create
+      DB_TYPE: POSTGRESQL
+      DB_NAME: webmisdb
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: webmisdb
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_JDBC_URL: ""
+      DB_JDBC_ARGS: ""
+      PRODUCT_VERSION: 10.15
+      PRODUCT_NAMES: IS,MWS,Monitor
+      COMPONENT_NAMES: ActiveTransfer,ActiveTransferArchive,Archive
+      RUN_FINAL_INVENTORY: "true"
+      WAITFOR_DB_HOST: "true"
+      WAITFOR_DB_TIMEOUT_SEC: "30"
+    networks:
+      - stack
+
+  postgres:
+    image: postgres:12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: webmisdb
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - stack
