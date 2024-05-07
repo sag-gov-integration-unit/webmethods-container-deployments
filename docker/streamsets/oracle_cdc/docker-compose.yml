@@ -29,7 +29,7 @@ services:
     #   - "5500"
     volumes:
       - dbdata:/opt/oracle/oradata:rw
-      - ./oracle_inits:/opt/oracle/scripts/startup
+      - ./oracle_inits:/opt/oracle/scripts/setup
     environment:
       ORACLE_SID: ORCLCDB
       ORACLE_PDB: ORCLPDB1
@@ -37,5 +37,6 @@ services:
       INIT_SGA_SIZE: "2048"
       INIT_PGA_SIZE: "2048"
       ORACLE_CHARACTERSET: AL32UTF8
+      ENABLE_ARCHIVELOG: "true"
     networks:
       - stack
