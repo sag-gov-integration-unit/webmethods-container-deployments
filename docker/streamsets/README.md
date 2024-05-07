@@ -10,10 +10,16 @@ export STREAMSETS_DEPLOYMENT_ID=<YOUR STREAMSETS DEPLOYMENT ID>
 export STREAMSETS_DEPLOYMENT_TOKEN=<YOUR STREAMSETS DEPLOYMENT TOKEN>
 ```
 
-## Use Case 1: SDC with Oracle Change Data Capture (CDC) 
+For the Oracle container, you need to get access thought the official repo, at https://container-registry.oracle.com/ and login to the oracle registry with your registry credentials
 
-### First, start the stack:
+## Use Case 1: SDC with Oracle Change Data Capture (CDC) 
 
 ```
 docker compose --env-file .env -f ./oracle_cdc/docker-compose.yml up -d
+```
+
+If you need to login to the Oracle container (sqlplus prompt):
+
+```
+docker exec -it <Oracle Container ID> sqlplus / as sysdba
 ```
