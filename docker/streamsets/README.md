@@ -14,6 +14,8 @@ For the Oracle container, you need to get access thought the official repo, at h
 
 ## Use Case 1: SDC with Oracle Change Data Capture (CDC) 
 
+NOTE: The Oracle container will take 10+ minutes to start the first time (due to various initializations steps) BUT once the Oracle instance has started once, it will start much quicker anytime afterwards (1 min or so)
+
 ```
 docker compose --env-file .env -f ./oracle_cdc/docker-compose.yml up -d
 ```
@@ -22,4 +24,16 @@ If you need to login to the Oracle container (sqlplus prompt):
 
 ```
 docker exec -it <Oracle Container ID> sqlplus / as sysdba
+```
+
+To shut down the stack (but keeping the data in the volume):
+
+```
+docker compose --env-file .env -f ./oracle_cdc/docker-compose.yml down
+```
+
+To completely clean the stack, including the data in the volume:
+
+```
+docker compose --env-file .env -f ./oracle_cdc/docker-compose.yml down -v
 ```
