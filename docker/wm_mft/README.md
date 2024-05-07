@@ -56,6 +56,10 @@ The Web Transfer UI should then be accessible at http://localhost:5666
 
 Note: Port 5566 is already exposed by the MFT Server container, so the port 5666 is the one exposed on the MFT Gateway... (docker mapped to the internal 5566 we just setup)
 
-## Clean the stack
+## Destroy the stack + keep data
+
+docker compose down
+
+## Destroy the stack + destroy the data too
 
 docker compose down -v

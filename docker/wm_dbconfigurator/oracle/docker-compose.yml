@@ -1,0 +1,50 @@
+version: "3.9"
+
+networks:
+  stack:
+
+volumes:
+  dbdata:
+
+services:
+
+  dbconfig:
+    image: ${REG}webmethods-dbconfig:${TAG_DBCONFIG}
+    environment: 
+      SCRIPTS_LOGGER_LEVEL: 1
+      DB_ACTION: create
+      DB_TYPE: ORACLE
+      DB_NAME: webmisdb
+      DB_CONNECT_HOST: oracle
+      DB_CONNECT_PORT: 1521
+      PRODUCT_VERSION: 10.15
+      PRODUCT_NAME: IS
+      PRODUCT_DB_USER: webmisdb
+      PRODUCT_DB_PASSWORD: password
+      DB_CONNECT_JDBC_URL: ""
+      DB_CONNECT_JDBC_ARGS: ""
+      WAITFOR_DB_HOST: "true"
+      WAITFOR_DB_TIMEOUT_SEC: "30"
+    networks:
+      - stack
+
+  oracle:
+    image: ${ORACLE_REG}${ORACLE_REPO}:${ORACLE_TAG}
+    hostname: oracle
+    ports:
+      - 1521:1521
+      - 5500:5500
+    # expose:
+    #   - "1521"
+    #   - "5500"
+    volumes:
+      - dbdata:/opt/oracle/oradata:rw
+    environment:
+      ORACLE_SID: ORCLCDB
+      ORACLE_PDB: ORCLPDB1
+      ORACLE_PWD: ${ORACLE_PWD}
+      INIT_SGA_SIZE: "2048"
+      INIT_PGA_SIZE: "2048"
+      ORACLE_CHARACTERSET: AL32UTF8
+    networks:
+      - stack

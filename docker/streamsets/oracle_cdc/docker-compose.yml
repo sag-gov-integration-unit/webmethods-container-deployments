@@ -1,0 +1,41 @@
+version: "3.9"
+
+networks:
+  stack:
+
+volumes:
+  dbdata:
+
+services:
+  
+  streamsets_sdc:
+    image: ${STREAMSETS_REG}${STREAMSETS_REPO}:${STREAMSETS_TAG}
+    hostname: streamsets_sdc
+    environment:
+      STREAMSETS_DEPLOYMENT_SCH_URL: ${STREAMSETS_DEPLOYMENT_SCH_URL}
+      STREAMSETS_DEPLOYMENT_ID: ${STREAMSETS_DEPLOYMENT_ID}
+      STREAMSETS_DEPLOYMENT_TOKEN: ${STREAMSETS_DEPLOYMENT_TOKEN}
+    networks:
+      - stack
+
+  oracle:
+    image: ${ORACLE_REG}${ORACLE_REPO}:${ORACLE_TAG}
+    hostname: oracle
+    ports:
+      - 1521:1521
+      - 5500:5500
+    # expose:
+    #   - "1521"
+    #   - "5500"
+    volumes:
+      - dbdata:/opt/oracle/oradata:rw
+      - ./oracle_inits:/opt/oracle/scripts/startup
+    environment:
+      ORACLE_SID: ORCLCDB
+      ORACLE_PDB: ORCLPDB1
+      ORACLE_PWD: ${ORACLE_PWD}
+      INIT_SGA_SIZE: "2048"
+      INIT_PGA_SIZE: "2048"
+      ORACLE_CHARACTERSET: AL32UTF8
+    networks:
+      - stack
