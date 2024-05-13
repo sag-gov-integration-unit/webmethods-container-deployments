@@ -6,6 +6,18 @@ container-based deployment of webMethods Active Transfer solution, including:
  - My WebMethods Server (MWS)
  - Postgres DB
 
+## Requirements
+
+1) Get Access to the "sag-gov-integration-unit" container registry to get pre-built containers for MWS, MFT, DB Configurator... or build your own
+2) Run all commands from this directory (due to volumes path mapping)
+3) Make sure you save a valid licenses in "licensing" directory:
+ - Microservice Runtime
+   - expected filename: "./licensing/msr-licenseKey.xml"
+ - MFT Server
+   - expected filename: "./licensing/mftserver-licenseKey.xml"
+ - MFT SerGatewayver
+   - expected filename: "./licensing/mftgateway-licenseKey.xml"
+
 ## Start the stack
 
 NOTE: On first start, it's best to start the stack in controlled order so all the assets are created correctly
