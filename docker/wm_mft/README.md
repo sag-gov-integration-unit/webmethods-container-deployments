@@ -8,7 +8,35 @@ container-based deployment of webMethods Active Transfer solution, including:
 
 ## Start the stack
 
-docker compose up -d
+NOTE: On first start, it's best to start the stack in controlled order so all the assets are created correctly
+Since "docker compose" does not easily offer an easy way to start multiple components in a specific controlled order... let's perform several docker compose operations at first:
+
+```
+docker compose up -d postgres dbconfig
+```
+
+... wait for postgres healthy (docker ps | grep postgres) ...
+NOTE: the container "dbconfig" is a job... it should have run, setup the tables needed in postgres, and terminated (it's expected)
+If you want to check the status or logs for it, run:  
+"docker ps -a | grep dbconfig", find the ID, and run "docker logs <dbconfig container id>"
+
+Then:
+```
+docker compose up -d mws
+```
+
+... wait for healthy (docker ps | grep mws)
+NOTE: this will take several minutes, depending on the resources assigned to your docker environment.
+
+Then:
+```
+docker compose up -d mftgateway mftserver
+```
+
+On subsequent starts though, and provided the data volumes were not cleared/deleted, it's no problem to start it all in short:
+```
+docker compose up -d 
+```
 
 UIs:
 - MFT Admin UI: http://localhost:9100/mft/
