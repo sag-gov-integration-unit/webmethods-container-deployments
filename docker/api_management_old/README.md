@@ -39,7 +39,7 @@ export SAG_RELEASE=105
 
 By default, all deployments in this project are setup to use the protected "Software AG Government Solutions GitHub Container Registry" at: 
 
-ghcr.io/softwareag-government-solutions/
+ghcr.io/sag-gov-integration-unit/
 
 If you need to overwrite certain docker deployment vars like TAG or REG, simply add them to your shell ENV variables...
 

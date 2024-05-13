@@ -5,7 +5,7 @@ Sample deployment of webMethods Designer Workstation using Docker / Docker-compo
 ## Running the Designer Workstation container:
 
 ```bash
-docker run -d -p 5900-5920:5900-5920 --name designer ghcr.io/softwareag-government-solutions/webmethods-designer-workstation:10.7.2
+docker run -d -p 5900-5920:5900-5920 --name designer ghcr.io/sag-gov-integration-unit/webmethods-designer-workstation:10.7.2
 ```
 
 This will run a headless Ubuntu v20.04 desktop session.  Within the session, the VNC Server will run to provide remote access to the desktop.  When running the container, it will generate a random password for

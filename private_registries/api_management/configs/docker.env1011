@@ -1,4 +1,4 @@
-REG=ghcr.io/softwareag-government-solutions/
+REG=ghcr.io/sag-gov-integration-unit/
 TAG_APIGATEWAY=10.11
 TAG_APIGATEWAY_CONFIGURATOR=configurator-10.11-latest
 TAG_TERRACOTTA=4.3

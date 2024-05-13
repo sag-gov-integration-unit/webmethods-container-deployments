@@ -4,7 +4,7 @@
 # docker build --rm --no-cache -t 'um-with-license:1' . -f Dockerfile.add-license
 # docker run -d -p 9000:9000 --net apigateway-with-apiportal_webmethods --name universalmessaging um-with-license:1
 
-FROM ghcr.io/softwareag-government-solutions/webmethods-universalmessaging:dev-10.7.4-latest
+FROM ghcr.io/sag-gov-integration-unit/webmethods-universalmessaging:dev-10.7.4-latest
 
 ##Add your license file here in order to create an image with the appropriate file in place
 COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./UniversalMessaging.xml ${SAG_HOME}/UniversalMessaging/server/umserver/licence/licence.xml

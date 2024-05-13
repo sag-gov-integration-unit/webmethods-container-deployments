@@ -1,5 +1,5 @@
-#REG is the source of the webMethods containers.  use "ghcr.io/softwareag-government-solutions/" for Software AG Government Solutions
-REG=ghcr.io/softwareag-government-solutions/
+#REG is the source of the webMethods containers.  use "ghcr.io/sag-gov-integration-unit/" for Software AG Government Solutions
+REG=ghcr.io/sag-gov-integration-unit/
 
 #the TAG* values are used for resolving the names and versions of the containers
 TAG_APIGATEWAY=dev-10.7-latest

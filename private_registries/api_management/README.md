@@ -22,7 +22,7 @@ Here are all the images that will get processed/created here:
 
 ## Pre-requisites 1
 
-- Have access to Software Gov Solutions Github Registry at [ghcr.io/softwareag-government-solutions/](https://github.com/orgs/softwareag-government-solutions/packages)
+- Have access to Software Gov Solutions Github Registry at [ghcr.io/sag-gov-integration-unit/](https://github.com/orgs/softwareag-government-solutions/packages)
 - Have valid licenses (trial or full) for SoftwareAG products
 
 If you need help, contact [Software AG Government Solutions](https://www.softwareaggov.com/) at [info@softwareaggov.com](mailto:info@softwareaggov.com) 

@@ -3,7 +3,7 @@
 #
 # docker build --rm --no-cache -t 'apiportal-with-license:1' . -f Dockerfile.add-portal-license
 
-FROM ghcr.io/softwareag-government-solutions/webmethods-apiportal:dev-10.7.1-36
+FROM ghcr.io/sag-gov-integration-unit/webmethods-apiportal:dev-10.7.1-36
 
 ##Add your license file here in order to create an image with the appropriate file in place
 COPY --chown=${SAG_USERID}:${SAG_GROUPID} ./apiportal-license.xml ${SAG_HOME}/API_Portal/license.xml

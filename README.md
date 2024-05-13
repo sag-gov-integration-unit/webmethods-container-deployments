@@ -6,7 +6,7 @@ A project with sample container deployment blueprints for the various SoftwareAG
 
 By default, all deployments in this project are setup to use our enhanced-security images currently hosted on "Software AG Government Solutions GitHub Container Registry" at: 
 
-[ghcr.io/softwareag-government-solutions/](https://github.com/orgs/softwareag-government-solutions/packages)
+[ghcr.io/sag-gov-integration-unit/](https://github.com/orgs/softwareag-government-solutions/packages)
 
 For access and more technical details, go to [Product Containers by Software AG Government Solutions](https://softwareag-government-solutions.github.io/saggov-containers/)
 

@@ -1,2 +1,2 @@
-REG=ghcr.io/softwareag-government-solutions/
+REG=ghcr.io/sag-gov-integration-unit/
 TAG_APIPORTAL=dev-10.5-latest

@@ -1,4 +1,4 @@
-REG=ghcr.io/softwareag-government-solutions/
+REG=ghcr.io/sag-gov-integration-unit/
 
 REPO_MSR_CORE=webmethods-microservicesruntime
 REPO_MSR_JDBC=webmethods-microservicesruntime-jdbc
