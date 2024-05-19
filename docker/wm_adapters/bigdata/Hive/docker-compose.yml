@@ -11,6 +11,19 @@ volumes:
 
 services:
 
+  integrationserver:
+    image: ${REG}${REPO_IS_BIGDATA}:${TAG_IS}
+    env_file:
+      - ./sag.1015.env
+    environment: 
+      JAVA_MIN_MEM: 2g
+      JAVA_MAX_MEM: 2g
+      JAVA_OPTS: "-Dtest=1 -Dtes2=2 -Dtest3=3"
+    volumes:
+      - ../licensing/is-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+    ports:
+      - 5555:5555
+
   namenode:
     image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8
     container_name: namenode
