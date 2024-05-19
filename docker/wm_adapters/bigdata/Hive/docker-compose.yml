@@ -13,6 +13,7 @@ services:
 
   integrationserver:
     image: ${REG}${REPO_IS_BIGDATA}:${TAG_IS}
+    container_name: integrationserver
     env_file:
       - ./sag.1015.env
     environment: 
@@ -20,12 +21,15 @@ services:
       JAVA_MAX_MEM: 2g
       JAVA_OPTS: "-Dtest=1 -Dtes2=2 -Dtest3=3"
     volumes:
-      - ./licensing/is-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
       - ./work/is/replicate/:/opt/softwareag/IntegrationServer/instances/default/replicate/
-      - ./work/is/packages/:/opt/softwareag/IntegrationServer/instances/default/packages/
+      - ./work/is/custom_libs/:/opt/softwareag/IntegrationServer/lib/jars/custom/
+      # - ./work/is/packages/:/opt/softwareag/IntegrationServer/instances/default/packages/
       # - ./work/is/config/:/opt/softwareag/IntegrationServer/instances/default/config/
     ports:
       - 5555:5555
+    networks:
+      - stack
 
   namenode:
     image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8
@@ -70,7 +74,8 @@ services:
     depends_on:
       - hive-metastore
     ports:
-      - "10000:10000"
+      - 10000:10000
+      - 10001:10001
     networks:
       - stack
 
