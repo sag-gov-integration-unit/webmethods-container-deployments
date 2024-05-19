@@ -1,5 +1,14 @@
 
 version: '3.9'
+
+
+networks:
+  stack:
+
+volumes:
+  openldap_data:
+    driver: local
+
 services:
 
   namenode:
@@ -13,6 +22,8 @@ services:
       - ./hadoop-hive.env
     ports:
       - "50070:50070"
+    networks:
+      - stack
 
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
@@ -27,6 +38,8 @@ services:
       - namenode
     ports:
       - "50075:50075"
+    networks:
+      - stack
 
   hive-server:
     image: bde2020/hive:2.3.2-postgresql-metastore
@@ -42,6 +55,8 @@ services:
       - hive-metastore
     ports:
       - "10000:10000"
+    networks:
+      - stack
 
   hive-metastore:
     image: bde2020/hive:2.3.2-postgresql-metastore
@@ -55,6 +70,8 @@ services:
       - hive-metastore-postgresql
     ports:
       - "9083:9083"
+    networks:
+      - stack
 
   hive-metastore-postgresql:
     image: bde2020/hive-metastore-postgresql:2.3.0
@@ -63,3 +80,20 @@ services:
       - ./metastore-postgresql/postgresql/data:/var/lib/postgresql/data
     depends_on:
       - datanode
+    networks:
+      - stack
+
+  openldap:
+    image: bitnami/openldap:2
+    ports:
+      - '1389:1389'
+      - '1636:1636'
+    environment:
+      - LDAP_ADMIN_USERNAME=admin
+      - LDAP_ADMIN_PASSWORD=adminpassword
+      - LDAP_USERS=user01,user02
+      - LDAP_PASSWORDS=password1,password2
+    volumes:
+      - openldap_data:/bitnami/openldap
+    networks:
+      - stack
