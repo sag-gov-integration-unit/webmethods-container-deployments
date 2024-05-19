@@ -20,7 +20,9 @@ services:
       JAVA_MAX_MEM: 2g
       JAVA_OPTS: "-Dtest=1 -Dtes2=2 -Dtest3=3"
     volumes:
-      - ../licensing/is-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./licensing/is-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./work/is/replicate/:${SAG_HOME}/IntegrationServer/instances/default/replicate/
+      - ./work/is/packages/:${SAG_HOME}/IntegrationServer/instances/default/packages/
     ports:
       - 5555:5555
 
