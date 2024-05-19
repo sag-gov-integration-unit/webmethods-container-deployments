@@ -23,6 +23,7 @@ services:
       - ./licensing/is-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
       - ./work/is/replicate/:${SAG_HOME}/IntegrationServer/instances/default/replicate/
       - ./work/is/packages/:${SAG_HOME}/IntegrationServer/instances/default/packages/
+      # - ./work/is/config/:${SAG_HOME}/IntegrationServer/instances/default/config/
     ports:
       - 5555:5555
 
