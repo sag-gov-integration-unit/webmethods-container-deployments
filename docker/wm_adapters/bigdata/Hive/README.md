@@ -6,20 +6,27 @@
 docker-compose --env-file ./sag.1015.env up -d 
 ```
 
+## Load IS package
+
+IS UI at: http://localhost:5555/
+
+Working connection and code by loading into IS the package at ./packages/BigdataTesting.zip
+Copy the package into ./work/is/replicate/inbound, and load the package in IS.
+
+Hive connection uses the wM Datasource: wm.jdbcx.hive.HiveDataSource
+==> re-enter the password for the user "user01" for the connection to work.
+
 ## References for Hive initial setup:
 
 To load the employee table / data, follow:
-
 https://hshirodkar.medium.com/apache-hive-on-docker-4d7280ac6f8e
 
-Note -> another sample repo:
+Notes about LDAP setup:
+https://cwiki.apache.org/confluence/display/Hive/User+and+Group+Filter+Support+with+LDAP+Atn+Provider+in+HiveServer2
+
+Another sample repo for extras...
 https://github.com/big-data-europe/docker-hive
 
-## Load working IS package
-
-==> see working connection and code by loading into IS the package at ./packages/BigdataTesting.zip
-
-It uses the wM Datasource: wm.jdbcx.hive.HiveDataSource
 
 ## Some misc notes
 
@@ -42,7 +49,6 @@ docker cp hive-server:/opt/hive/lib ./work/hive/
 #### working datasource
 
 Datasource: wm.jdbcx.hive.HiveDataSource
-
 
 #### datasource with issues (so far)
 

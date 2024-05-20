@@ -21,11 +21,9 @@ services:
       JAVA_MAX_MEM: 2g
       JAVA_OPTS: "-Dtest=1 -Dtes2=2 -Dtest3=3"
     volumes:
-      - ./licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./integrationserver/licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
+      - ./integrationserver/custom_libs/:/opt/softwareag/IntegrationServer/lib/jars/custom/
       - ./work/is/replicate/:/opt/softwareag/IntegrationServer/instances/default/replicate/
-      - ./work/is/custom_libs/:/opt/softwareag/IntegrationServer/lib/jars/custom/
-      # - ./work/is/packages/:/opt/softwareag/IntegrationServer/instances/default/packages/
-      # - ./work/is/config/:/opt/softwareag/IntegrationServer/instances/default/config/
     ports:
       - 5555:5555
     networks:
