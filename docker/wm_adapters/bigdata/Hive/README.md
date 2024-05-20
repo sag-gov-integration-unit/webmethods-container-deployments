@@ -1,12 +1,21 @@
 # Hive setup to test the wM BigData Hive adapter
 
-## References:
+## Launch the full stack:
+
+```
+docker-compose --env-file ./sag.1015.env up -d 
+```
+
+## References for Hive initial setup:
+
+To load the employee table / data, follow:
 
 https://hshirodkar.medium.com/apache-hive-on-docker-4d7280ac6f8e
 
+Note -> another sample repo:
 https://github.com/big-data-europe/docker-hive
 
-## Load working package
+## Load working IS package
 
 ==> see working connection and code by loading into IS the package at ./packages/BigdataTesting.zip
 
