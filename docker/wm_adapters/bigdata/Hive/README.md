@@ -1,6 +1,6 @@
 # Hive setup to test the wM BigData Hive adapter
 
-## Launch the full stack:
+## Launch the full stack
 
 ```
 docker-compose --env-file ./sag.1015.env up -d 
@@ -13,10 +13,17 @@ IS UI at: http://localhost:5555/
 Working connection and code by loading into IS the package at ./packages/BigdataTesting.zip
 Copy the package into ./work/is/replicate/inbound, and load the package in IS.
 
-Hive connection uses the wM Datasource: wm.jdbcx.hive.HiveDataSource
-==> re-enter the password for the user "user01" for the connection to work.
+Hive connection uses the wM Datasource: "wm.jdbcx.hive.HiveDataSource"
 
-## References for Hive initial setup:
+==> re-enter the password for the user "user01" (=password1) for the connection to work.
+
+## Login to relevant containers
+
+docker exec -it hive-server /bin/bash
+
+docker exec -it integrationserver /bin/bash
+
+## References for Hive initial setup
 
 To load the employee table / data, follow:
 https://hshirodkar.medium.com/apache-hive-on-docker-4d7280ac6f8e
@@ -27,14 +34,17 @@ https://cwiki.apache.org/confluence/display/Hive/User+and+Group+Filter+Support+w
 Another sample repo for extras...
 https://github.com/big-data-europe/docker-hive
 
+## Some misc notes about Hive JDBC HiveDataSource
 
-## Some misc notes
+==> not working so far...
 
-### Login to relevant containers:
+It says:
 
-docker exec -it hive-server /bin/bash
-
-docker exec -it integrationserver /bin/bash
+Caused by: org.apache.hive.jdbc.JdbcUriParseException: Bad URL format: Missing prefix jdbc:hive2://
+	at org.apache.hive.jdbc.Utils.parseURL(Utils.java:289)
+	at org.apache.hive.jdbc.HiveConnection.<init>(HiveConnection.java:133)
+	at org.apache.hive.jdbc.HiveDataSource.getConnection(HiveDataSource.java:61)
+	... 42 more
 
 ### Hive JDBC "uber" jars
 
@@ -45,12 +55,6 @@ NOTE: Copying jars out of the hive server
 docker cp hive-server:/opt/hive/lib ./work/hive/
 
 ### Connection params
-
-#### working datasource
-
-Datasource: wm.jdbcx.hive.HiveDataSource
-
-#### datasource with issues (so far)
 
 Datasource: org.apache.hive.jdbc.HiveDataSource
 
