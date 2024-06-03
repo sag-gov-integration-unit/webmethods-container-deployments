@@ -95,3 +95,17 @@ Cleanup:
 ```
 docker compose --env-file ./docker.env${SAG_RELEASE} -f apimgt-cluster-complete/docker-compose-${SAG_RELEASE}.yml down -v
 ```
+
+## Deployment 4: Multiple Independent API Gateway instances connected to shaed ElasticSearch 
+
+Start stack:
+
+```
+docker compose --env-file ./docker.env${SAG_RELEASE} -f apigw-multiple-instances-shared-es/docker-compose-${SAG_RELEASE}.yml up -d
+```
+
+Cleanup:
+
+```
+docker compose --env-file ./docker.env${SAG_RELEASE} -f apigw-multiple-instances-shared-es/docker-compose-${SAG_RELEASE}.yml down -v
+```
