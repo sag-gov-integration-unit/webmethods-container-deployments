@@ -28,7 +28,6 @@ services:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway1
-    mem_limit: 3gb
     links:
       - elasticsearch
       - kibana1
@@ -75,7 +74,6 @@ services:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway2
-    mem_limit: 3gb
     links:
       - elasticsearch
       - kibana2
@@ -122,7 +120,6 @@ services:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway3
-    mem_limit: 3gb
     links:
       - elasticsearch
       - kibana3
@@ -161,12 +158,12 @@ services:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
       - http.port=9200
       - transport.port=9300
     volumes:
       - esdata:/data
-    mem_limit: 3gb
+    mem_limit: 4gb
     ulimits:
       memlock:
         soft: -1
