@@ -15,8 +15,8 @@ services:
       - 5555:5555
       - 9072:9072
     environment: 
-      JAVA_MIN_MEM: 512m
-      JAVA_MAX_MEM: 512m
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 1g
       JAVA_OPTS: ""
       apigw_elasticsearch_tenantId: tenant1
       apigw_elasticsearch_hosts: elasticsearch:9200
@@ -28,7 +28,7 @@ services:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway1
-    mem_limit: 1gb
+    mem_limit: 3gb
     links:
       - elasticsearch
       - kibana1
@@ -47,13 +47,13 @@ services:
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
-      NODE_OPTIONS: --max_old_space_size=2048
-    mem_limit: 256mb
+      NODE_OPTIONS: --max_old_space_size=1024
+    mem_limit: 1gb
     links:
       - elasticsearch
     networks:
       - stack
-    depends_on: 
+    depends_on:
       - elasticsearch
   
   apigateway2:
@@ -62,8 +62,8 @@ services:
       - 6555:5555
       - 10072:9072
     environment: 
-      JAVA_MIN_MEM: 512m
-      JAVA_MAX_MEM: 512m
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 1g
       JAVA_OPTS: ""
       apigw_elasticsearch_tenantId: tenant2
       apigw_elasticsearch_hosts: elasticsearch:9200
@@ -75,7 +75,7 @@ services:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
     hostname: apigateway2
-    mem_limit: 1gb
+    mem_limit: 3gb
     links:
       - elasticsearch
       - kibana2
@@ -94,8 +94,8 @@ services:
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
-      NODE_OPTIONS: --max_old_space_size=2048
-    mem_limit: 256mb
+      NODE_OPTIONS: --max_old_space_size=1024
+    mem_limit: 1gb
     links:
       - elasticsearch
     networks:
@@ -109,8 +109,8 @@ services:
       - 7555:5555
       - 11072:9072
     environment: 
-      JAVA_MIN_MEM: 512m
-      JAVA_MAX_MEM: 512m
+      JAVA_MIN_MEM: 1g
+      JAVA_MAX_MEM: 1g
       JAVA_OPTS: ""
       apigw_elasticsearch_tenantId: tenant3
       apigw_elasticsearch_hosts: elasticsearch:9200
@@ -121,8 +121,8 @@ services:
     volumes:
       - ./configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmAPIGateway/resources/configuration:ro
       - ../licensing/apigateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:rw
-    hostname: apigateway1
-    mem_limit: 1gb
+    hostname: apigateway3
+    mem_limit: 3gb
     links:
       - elasticsearch
       - kibana3
@@ -141,8 +141,8 @@ services:
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
-      NODE_OPTIONS: --max_old_space_size=2048
-    mem_limit: 256mb
+      NODE_OPTIONS: --max_old_space_size=1024
+    mem_limit: 1gb
     links:
       - elasticsearch
     networks:
@@ -166,7 +166,7 @@ services:
       - transport.port=9300
     volumes:
       - esdata:/data
-    mem_limit: 2gb
+    mem_limit: 3gb
     ulimits:
       memlock:
         soft: -1

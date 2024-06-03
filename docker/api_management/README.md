@@ -98,6 +98,9 @@ docker compose --env-file ./docker.env${SAG_RELEASE} -f apimgt-cluster-complete/
 
 ## Deployment 4: Multiple Independent API Gateway instances connected to shaed ElasticSearch 
 
+This stack launches 3 separate API Gateway instances (with each their own Kibana instance), all connected to a single Elastic Search instance.
+NOTE: make sure your docker setup has enough memory to run this stack... ("docker stats --no-stream" to check for yourself)
+
 Start stack:
 
 ```
