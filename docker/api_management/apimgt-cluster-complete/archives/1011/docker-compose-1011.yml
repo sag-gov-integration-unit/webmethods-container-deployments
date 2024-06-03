@@ -131,7 +131,7 @@ services:
       - http.port=9200
       - transport.port=9300
     volumes:
-      - esdata:/data
+      - esdata:/usr/share/elasticsearch/data
     ulimits:
       memlock:
         soft: -1
