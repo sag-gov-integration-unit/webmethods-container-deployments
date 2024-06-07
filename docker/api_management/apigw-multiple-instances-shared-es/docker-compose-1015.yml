@@ -6,6 +6,18 @@ networks:
 volumes:
   esdata:
     driver: local
+  kibdata1:
+    driver: local
+  kibdata2:
+    driver: local
+  kibdata3:
+    driver: local
+  kibconfig1:
+    driver: local
+  kibconfig2:
+    driver: local
+  kibconfig3:
+    driver: local
 
 services:
   
@@ -46,7 +58,11 @@ services:
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
+      PATH_DATA: /usr/share/kibana/data
       NODE_OPTIONS: --max_old_space_size=1024
+    volumes:
+      - kibdata1:/usr/share/kibana/data
+      - kibconfig1:/usr/share/kibana/config
     mem_limit: 1gb
     links:
       - elasticsearch
@@ -92,7 +108,11 @@ services:
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
+      PATH_DATA: /usr/share/kibana/data
       NODE_OPTIONS: --max_old_space_size=1024
+    volumes:
+      - kibdata2:/usr/share/kibana/data
+      - kibconfig2:/usr/share/kibana/config
     mem_limit: 1gb
     links:
       - elasticsearch
@@ -138,7 +158,11 @@ services:
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
+      PATH_DATA: /usr/share/kibana/data
       NODE_OPTIONS: --max_old_space_size=1024
+    volumes:
+      - kibdata3:/usr/share/kibana/data
+      - kibconfig3:/usr/share/kibana/config
     mem_limit: 1gb
     links:
       - elasticsearch

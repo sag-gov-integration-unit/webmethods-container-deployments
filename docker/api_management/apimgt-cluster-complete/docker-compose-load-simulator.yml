@@ -1,0 +1,39 @@
+version: "3.8"
+
+networks:
+  stack:
+
+services:
+
+  continuous-curl-runner:
+    image: ghcr.io/sag-gov-integration-unit/continuous-curl-runner:v1.0.1
+    volumes:
+      - ./simulator:/data:ro
+    environment: 
+      CURL_OPTS: "--insecure"
+      REQUESTS_JSON_FILE: /data/bookstore-requests.json
+      REQUESTS_INTERVAL: "5"
+      REQUESTS_SELECTION: "all"
+      test_user: "some_user"
+      test_password1: "passwd1"
+      test_password2: "passwd2"
+      test_password3: "passwd3"
+    networks:
+      - stack
+
+  continuous-curl-runner-bad:
+    image: ghcr.io/sag-gov-integration-unit/continuous-curl-runner:v1.0.1
+    platform: "linux/amd64"
+    volumes:
+      - ./simulator:/data:ro
+    environment: 
+      CURL_OPTS: '--insecure --user-agent "Qu1ck-Cr@wler.v127-0012-T0PHackTeam:Surfbot" -H "X-BlueCoat-Via: 127.0.0.1" -H "X-SpoofBot-Injector: SANITIZED INPUT"'
+      REQUESTS_JSON_FILE: /data/bookstore-requests-bad.json
+      REQUESTS_INTERVAL: "30"
+      REQUESTS_SELECTION: "all"
+      test_user: "some_user"
+      test_password1: "passwd1"
+      test_password2: "passwd2"
+      test_password3: "passwd3"
+    networks:
+      - stack

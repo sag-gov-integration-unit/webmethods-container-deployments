@@ -1,6 +1,8 @@
 
 # Manually re-assigning Kibana to the right default index / dataview in Elastic Search
 
+IMPORTANT ==> NOT SUPPORTED!!! (Kibana accross single Elastic search with multiple tenants)
+
 ## Kibana1
 
 curl -X POST "kibana1:5601/api/data_views/default" -H 'kbn-xsrf: true' -H 'Content-Type: application/json' -d'
@@ -49,7 +51,7 @@ curl -X GET http://kibana3:5601/api/data_views/default
 
 curl -X POST "kibana3:5601/api/index_patterns/default" -H 'kbn-xsrf: true' -H 'Content-Type: application/json' -d'
 {
-  "index_pattern_id": "gateway_tenant2_analytics",
+  "index_pattern_id": "gateway_tenant3_analytics",
   "force": true
 }
 '

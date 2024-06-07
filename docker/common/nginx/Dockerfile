@@ -1,4 +1,4 @@
-FROM nginx:1.25.5-alpine
+FROM nginx:1.25-alpine
 
 # remove default site
 RUN rm /etc/nginx/conf.d/default.conf

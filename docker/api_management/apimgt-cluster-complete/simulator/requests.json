@@ -1,0 +1,68 @@
+[
+    {
+        "method": "GET",
+        "url": "http://lbproxy:5555/gateway/bookstore/1.0/books",
+        "basic_auth": {
+            "username": "env{username}",
+            "password": "env{password}"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    },
+    {
+        "method": "GET",
+        "url": "http://lbproxy:5555/gateway/bookstore/1.0/books",
+        "basic_auth": {
+            "username": "env{username}",
+            "password": "env{password}"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    },
+    {
+        "method": "GET",
+        "url": "http://lbproxy:5555/gateway/bookstore/1.0/books",
+        "basic_auth": {
+            "username": "env{username}",
+            "password": "env{password}"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    },
+    {
+        "method": "GET",
+        "url": "http://lbproxy:5555/gateway/bookstore/1.0/books",
+        "basic_auth": {
+            "username": "env{username}",
+            "password": "env{password}"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    },
+    {
+        "method": "GET",
+        "url": "http://lbproxy:5555/gateway/bookstore/1.0/books",
+        "basic_auth": {
+            "username": "env{username}",
+            "password": "env{password}"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    },
+    {
+        "method": "GET",
+        "url": "http://lbproxy:5555/gateway/bookstore/1.0/books",
+        "basic_auth": {
+            "username": "env{username}",
+            "password": "env{password}"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+]

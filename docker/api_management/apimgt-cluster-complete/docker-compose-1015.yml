@@ -9,7 +9,7 @@ volumes:
 
 services:
 
-  lbnginx:
+  lbproxy:
     image: apigateway-reverseproxy:${TAG_APIGATEWAY}
     build:
       context: ../../common/nginx
@@ -221,5 +221,15 @@ services:
       changepassword_old: "manage"
       settings_loadbalancerurl_configure: "true"
       settings_loadbalancerurl_value: "http://lbnginx:81/portal/"
+    networks:
+      - stack
+
+  webmethods-sample-apis-uszip:
+    image: ${REG_SAMPLE_APIS}webmethods-sample-apis-uszip:${TAG_SAMPLE_APIS}
+    networks:
+      - stack
+
+  webmethods-sample-apis-bookstore:
+    image: ${REG_SAMPLE_APIS}webmethods-sample-apis-bookstore:${TAG_SAMPLE_APIS}
     networks:
       - stack
