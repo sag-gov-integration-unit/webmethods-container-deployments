@@ -15,9 +15,9 @@ services:
       context: ../../common/nginx
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
-      - "5050:5050"
-      - "9090:9090"
+      - "9955:9955"
+      - "9972:9972"
+      - "9983:9983"
     volumes:
       - ./nginx/apigateway.conf:/etc/nginx/conf.d/apigateway.conf:ro
       - ./nginx/devportal.conf:/etc/nginx/conf.d/devportal.conf:ro
@@ -99,7 +99,7 @@ services:
       PORTAL_SERVER_CACHE_DISTRIBUTED_ENABLED: "true"
       PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_0: "devportal1:47500..47509"
       PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_1: "devportal2:47500..47509"
-      PORTAL_SERVER_UMC_LB_URL: http://lbnginx:81/portal/
+      PORTAL_SERVER_UMC_LB_URL: http://lbproxy:9983/portal/
     volumes:
       -  ../licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:ro
     networks:
@@ -121,7 +121,7 @@ services:
       PORTAL_SERVER_CACHE_DISTRIBUTED_ENABLED: "true"
       PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_0: "devportal1:47500..47509"
       PORTAL_SERVER_CACHE_DISTRIBUTED_CLUSTER_PEERS_1: "devportal2:47500..47509"
-      PORTAL_SERVER_UMC_LB_URL: http://lbnginx:81/portal/
+      PORTAL_SERVER_UMC_LB_URL: http://lbproxy:9983/portal/
     volumes:
       - ../licensing/devportal-licenseKey.xml:/opt/softwareag/licenseKey.xml:rw
     networks:
@@ -145,7 +145,7 @@ services:
       - transport.port=9300
     volumes:
       - esdata:/usr/share/elasticsearch/data
-    mem_limit: 2gb
+    mem_limit: 3gb
     ulimits:
       memlock:
         soft: -1
@@ -169,7 +169,7 @@ services:
       SERVER_HOST: 0.0.0.0
       SERVER_BASEPATH: /apigatewayui/dashboardproxy
       NODE_OPTIONS: --max_old_space_size=2048
-    mem_limit: 1gb
+    mem_limit: 2gb
     links:
       - elasticsearch
     networks:
@@ -187,21 +187,21 @@ services:
       changepassword_enabled: "true"
       changepassword_old: "manage"
       settings_lburls_configure: "true"
-      settings_lburls_http_urls: "http://localhost:8080;http://lbnginx:8080"
+      settings_lburls_http_urls: "http://localhost:9955;http://lbproxy:9955"
       settings_lburls_https_urls: ""
       settings_lburls_websocket_url: "ws://localhost"
-      settings_lburls_webapp_url: "http://localhost:8080"
+      settings_lburls_webapp_url: "http://localhost:9955"
       settings_portalgateway_configure: "true"
       settings_portalgateway_name: API PortalGateway Config
       settings_portalgateway_description: API PortalGateway Configuration
       settings_portalgateway_version: "1.0"
       settings_portalgateway_stagename: "DEV"
-      settings_portalgateway_gateway_url: "http://lbnginx:8080"
+      settings_portalgateway_gateway_url: "http://lbproxy:9955"
       settings_portalgateway_gateway_username: "Administrator"
       settings_portalgateway_gateway_password: "somethingnew"
       settings_portalgateway_portaltype: devportal
       settings_portalgateway_devportal_tenant: "default"
-      settings_portalgateway_devportal_url: "http://lbnginx:9090/portal"
+      settings_portalgateway_devportal_url: "http://lbproxy:9983/portal"
       settings_portalgateway_devportal_username: "Administrator"
       settings_portalgateway_devportal_password: "somethingnew"
       settings_core_configure: "true"
@@ -220,7 +220,7 @@ services:
       changepassword_enabled: "true"
       changepassword_old: "manage"
       settings_loadbalancerurl_configure: "true"
-      settings_loadbalancerurl_value: "http://lbnginx:81/portal/"
+      settings_loadbalancerurl_value: "http://lbproxy:9983/portal/"
     networks:
       - stack
 
