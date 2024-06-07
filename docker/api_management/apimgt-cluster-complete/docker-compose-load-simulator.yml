@@ -14,10 +14,8 @@ services:
       REQUESTS_JSON_FILE: /data/bookstore-requests.json
       REQUESTS_INTERVAL: "5"
       REQUESTS_SELECTION: "all"
-      test_user: "some_user"
-      test_password1: "passwd1"
-      test_password2: "passwd2"
-      test_password3: "passwd3"
+      username: "some_user"
+      password: "passwd1"
     networks:
       - stack
 
@@ -31,9 +29,7 @@ services:
       REQUESTS_JSON_FILE: /data/bookstore-requests-bad.json
       REQUESTS_INTERVAL: "30"
       REQUESTS_SELECTION: "all"
-      test_user: "some_user"
-      test_password1: "passwd1"
-      test_password2: "passwd2"
-      test_password3: "passwd3"
+      username: "some_user"
+      password: "passwd1"
     networks:
       - stack
