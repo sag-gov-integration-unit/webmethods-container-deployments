@@ -207,6 +207,21 @@ services:
       settings_core_configure: "true"
       settings_core_watts: watt.server.cachemanager.connectTimeout=300000 watt.net.timeout=600 watt.net.clientKeepaliveUsageLimit=10000000 watt.server.threadPoolMin=50 watt.server.threadPool=1000 watt.server.control.serverThreadThreshold=50 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=500 watt.security.ssl.resumeClientSessions=true
       settings_core_extended: "pg_oauth2_isHTTPS=false pg_JWT_isHTTPS=false pg_OpenID_isHTTPS=false events.reportingQueue.size=5000 events.collectionPool.minThreads=2 events.collectionPool.maxThreads=32 events.reportingPool.minThreads=4 events.reportingPool.maxThreads=16 eventsRefreshInterval=60s events.collectionQueue.size=10000000"
+      settings_users_configure: "true"
+      settings_users_0_loginid: "usersimulator"
+      settings_users_0_active: "true"
+      settings_users_0_firstname: "SampleData"
+      settings_users_0_lastname: "Simulator"
+      settings_users_0_emails: "usersimulator@local.com"
+      settings_users_0_allowDigestAuth: "false"
+      settings_users_0_language: "en"
+      settings_users_1_loginid: "apiuser1"
+      settings_users_1_active: "true"
+      settings_users_1_firstname: "API User1"
+      settings_users_1_lastname: "API Users"
+      settings_users_1_emails: "apiuser1@local.com"
+      settings_users_1_allowDigestAuth: "false"
+      settings_users_1_language: "en"
     networks:
       - stack
 
