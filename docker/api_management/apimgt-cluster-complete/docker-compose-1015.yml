@@ -183,14 +183,14 @@ services:
       connect_host: apigateway1
       connect_port: "5555"
       connect_user: Administrator
-      connect_password: "${APIGW_ADMINPASSWORD}"
+      connect_password: "${APIGW_ADMINPASSWORD_NEW}"
       changepassword_enabled: "true"
       changepassword_old: "${APIGW_ADMINPASSWORD_DEFAULT}"
       settings_lburls_configure: "true"
-      settings_lburls_http_urls: "http://localhost:9955;http://lbproxy:9955"
-      settings_lburls_https_urls: "https://localhost:9943;https://lbproxy:9943"
-      settings_lburls_websocket_url: "ws://localhost"
-      settings_lburls_webapp_url: "http://localhost:9972"
+      settings_lburls_http_urls: "http://lbproxy:9955"
+      settings_lburls_https_urls: "https://lbproxy:9943"
+      settings_lburls_websocket_url: "ws://lbproxy"
+      settings_lburls_webapp_url: "http://lbproxy:9972"
       settings_portalgateway_configure: "true"
       settings_portalgateway_name: API PortalGateway Config
       settings_portalgateway_description: API PortalGateway Configuration
@@ -198,15 +198,15 @@ services:
       settings_portalgateway_stagename: "DEV"
       settings_portalgateway_gateway_url: "http://lbproxy:9955"
       settings_portalgateway_gateway_username: "Administrator"
-      settings_portalgateway_gateway_password: "${APIGW_ADMINPASSWORD}"
+      settings_portalgateway_gateway_password: "${APIGW_ADMINPASSWORD_NEW}"
       settings_portalgateway_portaltype: devportal
       settings_portalgateway_devportal_tenant: "default"
       settings_portalgateway_devportal_url: "http://lbproxy:9983/portal"
       settings_portalgateway_devportal_username: "Administrator"
-      settings_portalgateway_devportal_password: "${APIGW_ADMINPASSWORD}"
+      settings_portalgateway_devportal_password: "${DEVPORTAL_ADMINPASSWORD_NEW}"
       settings_core_configure: "true"
       settings_core_watts: watt.server.cachemanager.connectTimeout=300000 watt.net.timeout=600 watt.net.clientKeepaliveUsageLimit=10000000 watt.server.threadPoolMin=50 watt.server.threadPool=1000 watt.server.control.serverThreadThreshold=50 watt.security.ssl.cacheClientSessions=true watt.net.maxClientKeepaliveConns=500 watt.security.ssl.resumeClientSessions=true
-      settings_core_extended: "events.reportingQueue.size=5000 events.collectionPool.minThreads=2 events.collectionPool.maxThreads=32 events.reportingPool.minThreads=4 events.reportingPool.maxThreads=16 eventsRefreshInterval=60s events.collectionQueue.size=10000000"
+      settings_core_extended: "pg_oauth2_isHTTPS=false pg_JWT_isHTTPS=false pg_OpenID_isHTTPS=false events.reportingQueue.size=5000 events.collectionPool.minThreads=2 events.collectionPool.maxThreads=32 events.reportingPool.minThreads=4 events.reportingPool.maxThreads=16 eventsRefreshInterval=60s events.collectionQueue.size=10000000"
     networks:
       - stack
 
@@ -216,7 +216,7 @@ services:
       connect_host: devportal1
       connect_port: "8083"
       connect_user: Administrator
-      connect_password: "${DEVPORTAL_ADMINPASSWORD}"
+      connect_password: "${DEVPORTAL_ADMINPASSWORD_NEW}"
       changepassword_enabled: "true"
       changepassword_old: "${DEVPORTAL_ADMINPASSWORD_DEFAULT}"
       settings_loadbalancerurl_configure: "true"
