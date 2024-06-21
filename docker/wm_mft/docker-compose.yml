@@ -6,7 +6,15 @@ networks:
 volumes:
   postgres_data:
     driver: local
-  mft_data:
+  mftserver_file_data:
+    driver: local
+  mftserver_is_configs:
+    driver: local
+  mftserver_mft_configs:
+    driver: local
+  mftgateway_is_configs:
+    driver: local
+  mftgateway_mft_configs:
     driver: local
   mws_data:
     driver: local  
@@ -26,6 +34,8 @@ services:
       PROPS_ADMIN_PASSWORD: ${APPS_ADMIN_PASSWORD}
       MFT_SERVER_ID: "mftgateway-something-0"
     volumes:
+      - mftgateway_is_configs:/opt/softwareag/IntegrationServer/instances/default/config:rw
+      - mftgateway_mft_configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmMFT/config:rw
       - ./licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:ro
       - ./licensing/mftgateway-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/packages/WmMFT/config/licenseKey.xml:ro
     ports:
@@ -72,9 +82,11 @@ services:
       PROPS_ADMIN_PASSWORD: ${APPS_ADMIN_PASSWORD}
       PROPS_STATS_DC_ENABLED: "true"
     volumes:
+      - mftserver_is_configs:/opt/softwareag/IntegrationServer/instances/default/config:rw
+      - mftserver_mft_configs:/opt/softwareag/IntegrationServer/instances/default/packages/WmMFT/config:rw
       - ./licensing/msr-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml:ro
       - ./licensing/mftserver-licenseKey.xml:/opt/softwareag/IntegrationServer/instances/default/packages/WmMFT/config/licenseKey.xml:ro
-      - mft_data:/data:rw
+      - mftserver_file_data:/data:rw
     hostname: mftserver
     networks:
       - stack
