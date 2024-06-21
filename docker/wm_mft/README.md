@@ -18,7 +18,7 @@ container-based deployment of webMethods Active Transfer solution, including:
  - MFT SerGatewayver
    - expected filename: "./licensing/mftgateway-licenseKey.xml"
 
-## Start the stack
+## Start the stack - Steps by Steps (first time)
 
 NOTE: On first start, it's best to start the stack in controlled order so all the assets are created correctly
 Since "docker compose" does not easily offer an easy way to start multiple components in a specific controlled order... let's perform several docker compose operations at first:
@@ -28,9 +28,12 @@ docker compose up -d postgres dbconfig
 ```
 
 ... wait for postgres healthy (docker ps | grep postgres) ...
-NOTE: the container "dbconfig" is a job... it should have run, setup the tables needed in postgres, and terminated (it's expected)
+
+NOTE 1: the container "dbconfig" is a job... it should have run, setup the tables needed in postgres, and terminated (it's expected)
 If you want to check the status or logs for it, run:  
 "docker ps -a | grep dbconfig", find the ID, and run "docker logs <dbconfig container id>"
+
+NOTE 2: For postgres admin password, find it in the [.env](.env) file, in the variable POSTGRES_PASSWORD
 
 Then:
 ```
@@ -45,14 +48,20 @@ Then:
 docker compose up -d mftgateway mftserver
 ```
 
+## Start the stack Full (subsequent times)
+
 On subsequent starts though, and provided the data volumes were not cleared/deleted, it's no problem to start it all in short:
 ```
 docker compose up -d 
 ```
 
+## Start the stack Full (subsequent times)
+
 UIs:
 - MFT Admin UI: http://localhost:9100/mft/
 - MWS Admin UI: http://localhost:8585
+
+For admin password, find it in the [.env](.env) file in the variable APPS_ADMIN_PASSWORD
 
 ## Configure the stack without the MFT Gateway
 
